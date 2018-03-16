@@ -1,0 +1,41 @@
+{
+    "name": "c975l/purchasecredits-bundle",
+    "type": "symfony-bundle",
+    "description": "Bundle to purchase and use credits within a website",
+    "keywords": ["symfony", "bundle", "gift", "voucher"],
+    "homepage": "https://github.com/975L/PurchaseCreditsBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Laurent Marquet",
+            "email": "laurent.marquet@laposte.net",
+            "homepage": "https://github.com/Laurent3170",
+            "role": "Developer"
+        },
+        {
+            "name": "975L Community",
+            "homepage": "https://github.com/975L"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "doctrine/dbal": ">=2.6",
+        "symfony/framework-bundle": "^3",
+        "sensio/framework-extra-bundle": "^3",
+        "symfony/assetic-bundle": "^2",
+        "c975l/email-bundle": "^1",
+        "c975l/payment-bundle": "^1",
+        "c975l/toolbar-bundle": "^1",
+        "c975l/includelibrary-bundle": "^1"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": { "c975L\\PurchaseCreditsBundle\\": ""
+        }
+    },
+    "support": {
+        "email": "contact@975l.com",
+        "source": "https://github.com/975L/PurchaseCreditsBundle",
+        "issues": "https://github.com/975L/PurchaseCreditsBundle/issues"
+    }
+}
