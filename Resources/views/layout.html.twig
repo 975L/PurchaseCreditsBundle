@@ -1,0 +1,36 @@
+{% spaceless %}
+<!DOCTYPE html>
+    <head>
+        {% block head %}
+            <meta charset="utf-8" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+            <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=no" />
+            <meta name="format-detection" content="telephone=no" />
+            <title>User ({{ title }})</title>
+            <base />
+{# Stylesheets #}
+            {% block stylesheets %}
+                {# Uses c975L/IncludeLibraryBundle #}
+                {{ inc_lib('bootstrap', 'css', '3.*') }}
+                {{ inc_lib('fontawesome', 'css', '5.*') }}
+            {% endblock %}
+        {% endblock %}
+    </head>
+{# Body #}
+    <body>
+        {% block jquery %}
+            {# Uses c975L/IncludeLibraryBundle #}
+            {{ inc_lib('jquery', 'js', '3.*') }}
+        {% endblock %}
+        <div>
+            {% block purchaseCredits_content %}
+            {% endblock %}
+        </div>
+{# Javascript #}
+        {% block javascripts %}
+            {# Uses c975L/IncludeLibraryBundle #}
+            {{ inc_lib('bootstrap', 'js', '3.*') }}
+        {% endblock %}
+    </body>
+</html>
+{% endspaceless %}

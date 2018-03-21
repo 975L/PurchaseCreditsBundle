@@ -1,0 +1,89 @@
+{% extends "@c975LPurchaseCredits/layout.html.twig" %}
+
+{% trans_default_domain 'purchaseCredits' %}
+
+{# Defines specific variables #}
+{% set title = 'label.transactions'|trans %}
+
+{% block purchaseCredits_content %}
+{# Toolbar #}
+    {{ toolbar|raw }}
+{# Pagination #}
+    <div class="navigation text-center">
+        {{ knp_pagination_render(transactions) }}
+    </div>
+    <div class="well text-center">
+{# Explanation #}
+        {{ 'text.transactions_explanation'|trans }}
+        <br />
+{# Credits #}
+        {{ 'label.credits'|transchoice(app.user.credits) }} : <strong>{{ app.user.credits|localizednumber }} crd</strong>
+    </div>
+{# Table #}
+    <table class="table table-condensed table-responsive striped">
+        <thead>
+            <tr>
+{# Date #}
+                <th class="text-center">
+                    {{ knp_pagination_sortable(transactions, 'label.date'|trans({}, 'payment'), 'creation') }}&nbsp;<span class="fas fa-sort"></span>
+                </th>
+{# OrderId #}
+                <th class="text-center">
+                    {{ knp_pagination_sortable(transactions, 'label.order_id'|trans({}, 'payment'), 'orderId') }}&nbsp;<span class="fas fa-sort"></span>
+                </th>
+{# Credits #}
+                <th class="text-center">
+                    {{ knp_pagination_sortable(transactions, 'label.credits'|transchoice(2, {}, 'purchaseCredits'), 'credits') }}&nbsp;<span class="fas fa-sort"></span>
+               </th>
+{# Description #}
+                <th class="text-center">
+                    {{ knp_pagination_sortable(transactions, 'label.description'|trans({}, 'payment'), 'description') }}&nbsp;<span class="fas fa-sort"></span>
+                </th>
+            </tr>
+        </thead>
+{# Transactions #}
+        <tbody>
+            {% for transaction in transactions %}
+                <tr>
+{# Date #}
+                    <td class="text-center">
+                        {{ transaction.creation|localizeddate('long', 'short') }}
+                    </td>
+{# OrderId #}
+                    <td class="text-center">
+                        {% if transaction.orderId starts with 'pmt' %}
+                            <a href="{{ path('payment_display', ({'orderId': transaction.orderId|replace({'pmt': ''})})) }}">
+                                {{ transaction.orderId|replace({'pmt': ''}) }}</a>
+                        {% else %}
+                            {{ transaction.orderId }}
+                        {% endif %}
+                    </td>
+{# Credits #}
+                    <td class="text-center">
+                        <strong>
+                            {% if transaction.credits < 0 %}
+                                <span class="red">
+                                    {{ transaction.credits }} crd
+                                </span>
+                            {% elseif transaction.credits > 0 %}
+                                <span class="green">
+                                    +{{ transaction.credits }} crd
+                                </span>
+                            {% else %}
+                                {{ transaction.credits }} crd
+                            {% endif %}
+                        </strong>
+                    </td>
+{# Description #}
+                    <td class="text-center">
+                        {{ transaction.description }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{# Pagination #}
+    <div class="navigation text-center">
+        {{ knp_pagination_render(transactions) }}
+    </div>
+{% endblock %}

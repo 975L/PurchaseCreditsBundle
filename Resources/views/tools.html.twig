@@ -1,0 +1,12 @@
+{% trans_default_domain 'toolbar' %}
+
+{% spaceless %}
+{# Purchase Credits #}
+{% if type != 'transactions' %}
+    {{ toolbar_button(path('purchasecredits_transactions'), 'transactions') }}
+{% endif %}
+{# Transactions #}
+{% if type != 'purchase' %}
+    {{ toolbar_button(path('purchasecredits_purchase'), 'credits') }}
+{% endif %}
+{% endspaceless %}

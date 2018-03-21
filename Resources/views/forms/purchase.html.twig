@@ -1,0 +1,38 @@
+{% extends "@c975LPurchaseCredits/layout.html.twig" %}
+
+{% trans_default_domain 'purchaseCredits' %}
+
+{# Defines specific variables #}
+{% set title = 'label.purchase_credits'|trans %}
+
+{% block purchaseCredits_content %}
+{# Toolbar #}
+    {{ toolbar|raw }}
+{# Number of credits #}
+    <p class="alert alert-info text-center">
+        {{ 'text.you_have_number_credits'|trans({'%credits%' : app.user.credits})|raw }}
+    </p>
+{# form #}
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+{# Terms of sales acceptance #}
+        <div class="checkbox">
+            <label for="termsAccepted" class="required">
+                <input type="checkbox" id="termsAccepted" name="termsAccepted" required="required" />
+                <a href="{{ tosUrl }}">{{ 'label.accept_tos'|trans }}</a>
+            </label>
+        </div>
+{# Test #}
+        {% if live == false %}
+            <p class="alert alert-danger text-center">
+                {{ 'text.test'|trans }}
+            </p>
+        {% endif %}
+{# Submit #}
+        <div class="form-group text-center">
+            <button type="submit" name="submit" title="{{ 'label.purchase_credits'|trans }}" class="btn btn-block btn-lg btn-primary">
+                {{ 'label.purchase_credits'|trans }}
+            </button>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

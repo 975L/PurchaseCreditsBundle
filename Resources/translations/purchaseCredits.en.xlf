@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" target-language="en" datatype="plaintext" original="gitVoucher.en.xlf">
+        <body>
+            <trans-unit id="1">
+                <source>label.credits</source>
+                <target>Credit|Credits</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>label.purchase_credits</source>
+                <target>Purchase Credits</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>label.transactions</source>
+                <target>Transactions</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>text.not_enough_credits</source>
+                <target>You don't have enough credits</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>label.accept_tos</source>
+                <target>I agree with Terms of sales</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>text.test</source>
+                <target>!!! Warning, Credits are still under test, they will not be valid, payment will not be debited !!!</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>text.credits_purchased</source>
+                <target>Congrats! The credits (%credits%) have been bought and added to your account!</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>text.transactions_explanation</source>
+                <target>I can find below all my transactions on the site in "crd"</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>text.you_have_number_credits</source>
+                <target><![CDATA[You have <strong>%credits% crd</strong>]]></target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

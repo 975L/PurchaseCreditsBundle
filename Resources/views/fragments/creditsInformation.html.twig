@@ -1,0 +1,21 @@
+{% trans_default_domain 'purchaseCredits' %}
+
+{# Number of credits #}
+<p>
+    {{ 'label.credits'|transchoice(app.user.credits) }} : <strong>{{ app.user.credits|localizednumber }} crd</strong>
+{# Transactions #}
+    -
+    <a href="{{ path('purchasecredits_transactions') }}">
+        {{ 'label.transactions'|trans }}</a>
+{# Purchase Credits #}
+    -
+    <strong>
+        <a href="{{ path('purchasecredits_purchase') }}">
+            {{ 'label.purchase_credits'|trans }}</a>
+    </strong>
+{# Not enough credits #}
+    {% if app.user.credits <= 0 %}
+        <br />
+        <span class="text-danger"><span class="fas fa-exclamation"></span>&nbsp;{{ 'text.not_enough_credits'|trans }}</span>
+    {% endif %}
+</p>

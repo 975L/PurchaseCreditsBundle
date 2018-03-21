@@ -1,0 +1,27 @@
+{% extends "@c975LPurchaseCredits/layout.html.twig" %}
+{% trans_default_domain 'purchaseCredits' %}
+{% set title = 'label.dashboard'|trans({}, 'toolbar') %}
+
+{% block purchaseCredits_content %}
+{# Toolbar #}
+    {{ toolbar|raw }}
+{# Number of credits #}
+    <p class="alert alert-info text-center">
+        {{ 'text.you_have_number_credits'|trans({'%credits%' : app.user.credits})|raw }}
+    </p>
+{# Transactions #}
+    <p class="text-center">
+        <a href="{{ path('purchasecredits_transactions') }}">
+            {{ 'label.transactions'|trans }}</a>
+        &nbsp;-&nbsp;
+{# Purchase Credits #}
+        <a href="{{ path('purchasecredits_purchase') }}">
+            {{ 'label.purchase_credits'|trans }}</a>
+    </p>
+{# Not enough credits #}
+    {% if app.user.credits <= 0 %}
+        <p class="alert alert-danger text-center">
+            <span class="fas fa-exclamation"></span>&nbsp;{{ 'text.not_enough_credits'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" target-language="fr" datatype="plaintext" original="gitVoucher.en.xlf">
+        <body>
+            <trans-unit id="1">
+                <source>label.credits</source>
+                <target>Crédit|Crédits</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>label.purchase_credits</source>
+                <target>Acheter des Crédits</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>label.transactions</source>
+                <target>Transactions</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>text.not_enough_credits</source>
+                <target>Vous n'avez pas suffisamment de crédits</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>label.accept_tos</source>
+                <target>J'accepte les Conditions générales de vente</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>text.test</source>
+                <target>!!! Attention, les Crédits sont encore en test, ils ne seront pas valides, le paiement ne sera pas débité !!!</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>text.credits_purchased</source>
+                <target>Félicitations ! Les crédits (%credits%) ont bien été achetés et ajoutés sur votre compte !</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>text.transactions_explanation</source>
+                <target>Je peux trouver ci-dessous toutes mes transactions sur le site en "crd"</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>text.you_have_number_credits</source>
+                <target><![CDATA[Vous avez <strong>%credits% crd</strong>]]></target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

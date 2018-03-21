@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" target-language="es" datatype="plaintext" original="gitVoucher.en.xlf">
+        <body>
+            <trans-unit id="1">
+                <source>label.credits</source>
+                <target>Credito|Creditos</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>label.purchase_credits</source>
+                <target>Comprar Creditos</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>label.transactions</source>
+                <target>Transacciones</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>text.not_enough_credits</source>
+                <target>No tienes suficientes créditos</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>label.accept_tos</source>
+                <target>Acepto los Términos de venta</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>text.test</source>
+                <target>!!! Atención, los Creditos todavía están en prueba, no serán válidos, el pago no se debitará !!!</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>text.credits_purchased</source>
+                <target>¡Congrats! Los créditos (%credits%) se han comprado y se añade a su  cuenta!</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>text.transactions_explanation</source>
+                <target>Puedo encontrar por debajo todas mis transacciones sobre el sitio en "crd"</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>text.you_have_number_credits</source>
+                <target><![CDATA[Teneis <strong>%credits% crd</strong>]]></target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
