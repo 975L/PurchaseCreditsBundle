@@ -20,7 +20,7 @@
             </trans-unit>
             <trans-unit id="5">
                 <source>label.accept_tos</source>
-                <target>J'accepte les Conditions générales de vente</target>
+                <target><![CDATA[J'accepte les <a href="%tosUrl%">Conditions générales de vente</a>]]></target>
             </trans-unit>
             <trans-unit id="6">
                 <source>text.test</source>
@@ -37,6 +37,10 @@
             <trans-unit id="9">
                 <source>text.you_have_number_credits</source>
                 <target><![CDATA[Vous avez <strong>%credits% crd</strong>]]></target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>label.mandatory_field</source>
+                <target>* Champ requis</target>
             </trans-unit>
         </body>
     </file>

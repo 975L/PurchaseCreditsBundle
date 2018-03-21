@@ -19,7 +19,7 @@
         <div class="checkbox">
             <label for="termsAccepted" class="required">
                 <input type="checkbox" id="termsAccepted" name="termsAccepted" required="required" />
-                <a href="{{ tosUrl }}">{{ 'label.accept_tos'|trans }}</a>
+                {{ 'label.accept_tos'|trans({'%tosUrl%': tosUrl})|raw }}
             </label>
         </div>
 {# Test #}
@@ -35,4 +35,10 @@
             </button>
         </div>
     {{ form_end(form) }}
+{# Mandatory field #}
+    <p class="text-muted">
+        <em>
+            {{ 'label.mandatory_field'|trans }}
+        </em>
+    </p>
 {% endblock %}
