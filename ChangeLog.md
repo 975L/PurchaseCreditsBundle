@@ -1,5 +1,11 @@
 # Changelog
 
+v1.2
+----
+- Added send email when purchasing credits (21/03/2018)
+- Added VAT config value (21/03/2018)
+- Replaced text `not_enough_credits` by `no_credits` because having 0 credits may be enough on websites to have free services (26/03/2018)
+
 v1.1.1
 ------
 - Modified label for Terms of Sales acceptance (21/03/2018)

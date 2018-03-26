@@ -34,6 +34,7 @@ class c975LPurchaseCreditsExtension extends Extension
         $container->setParameter('c975_l_purchase_credits.creditsNumber', $processedConfig['creditsNumber']);
         $container->setParameter('c975_l_purchase_credits.creditsPrice', $processedConfig['creditsPrice']);
         $container->setParameter('c975_l_purchase_credits.currency', strtoupper($processedConfig['currency']));
+        $container->setParameter('c975_l_purchase_credits.vat', $processedConfig['vat'] * 100);
         $container->setParameter('c975_l_purchase_credits.live', $processedConfig['live']);
         $container->setParameter('c975_l_purchase_credits.userEntity', $processedConfig['userEntity']);
         $container->setParameter('c975_l_purchase_credits.roleNeeded', $processedConfig['roleNeeded']);

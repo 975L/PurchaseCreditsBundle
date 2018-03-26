@@ -1,0 +1,27 @@
+{% extends "@c975LEmail/emails/layout.html.twig" %}
+{% trans_default_domain 'purchaseCredits' %}
+
+{% block email_content %}
+{# Credits purchased #}
+    <p>
+        {{ 'text.purchased_credits'|trans({'%credits%': credits, '%site%': site})|raw }}
+    </p>
+{# New credits amount #}
+    <p>
+        {{ 'label.new_credits_amount'|trans }} : <strong>{{ userCredits }} crd</strong>
+    </p>
+{# Date #}
+    <p>
+        {{ 'label.date'|trans }} : <strong>{{ payment.creation|localizeddate('medium', 'medium') }}</strong>
+    </p>
+{# Order Id #}
+    <p>
+        {{ 'label.order_id'|trans }} : <strong>{{ payment.orderId }}</strong>
+    </p>
+{# Test #}
+    {% if live == false %}
+        <p class="alert alert-danger text-center">
+            {{ 'text.test'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}

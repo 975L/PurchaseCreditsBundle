@@ -15,8 +15,8 @@
                 <target>Transactions</target>
             </trans-unit>
             <trans-unit id="4">
-                <source>text.not_enough_credits</source>
-                <target>You don't have enough credits</target>
+                <source>text.no_credits</source>
+                <target>You don't have Credits</target>
             </trans-unit>
             <trans-unit id="5">
                 <source>label.accept_tos</source>
@@ -28,7 +28,7 @@
             </trans-unit>
             <trans-unit id="7">
                 <source>text.credits_purchased</source>
-                <target>Congrats! The credits (%credits%) have been bought and added to your account!</target>
+                <target>Congrats! The Credits (%credits%) have been bought and added to your account!</target>
             </trans-unit>
             <trans-unit id="8">
                 <source>text.transactions_explanation</source>
@@ -41,6 +41,22 @@
             <trans-unit id="10">
                 <source>label.mandatory_field</source>
                 <target>* Mandatory field</target>
+            </trans-unit>
+            <trans-unit id="11">
+                <source>label.terms_of_sales_filename</source>
+                <target>TermsOfSales</target>
+            </trans-unit>
+            <trans-unit id="12">
+                <source>label.purchased_credits</source>
+                <target>Credits purchased (%credits% crd)</target>
+            </trans-unit>
+            <trans-unit id="13">
+                <source>text.purchased_credits</source>
+                <target><![CDATA[You have well purchased <strong>%credits%</strong> crd on <strong>%site%</strong>.]]></target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>label.new_credits_amount</source>
+                <target>New amount of Credits</target>
             </trans-unit>
         </body>
     </file>

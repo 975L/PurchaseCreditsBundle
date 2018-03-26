@@ -4,12 +4,16 @@ PurchaseCreditsBundle
 PurchaseCreditsBundle does the following:
 
 - Allows to purchase and use credits within your website,
-- Interfaces with Stripe via c975L\PaymentBundle for their payment,
+- Interfaces with Stripe via [c975LPaymentBundle](https://github.com/975L/PaymentBundle) for its payment,
+- Integrates with [c975LToolbarBundle](https://github.com/975L/ToolbarBundle),
+- Emails the user about purchased credits and joins your Terms of sales as PDF to the email,
 
 This Bundle relies on the use of [c975LPaymentBundle](https://github.com/975L/PaymentBundle), [Stripe](https://stripe.com/) and its [PHP Library](https://github.com/stripe/stripe-php).
 **So you MUST have a Stripe account.**
 
 It is also recomended to use this with a SSL certificat to reassure the user.
+
+As the Terms of sales MUST be sent to the user with the Gift-Voucher, you MUST provide a Route or url for this PDF file. If you don't have such, you may consider using [c975LSiteBundle](https://github.com/975L/SiteBundle) for its pre-defined models and [c975LPageEditBundle](https://github.com/975L/PageEditBundle) for its ability to create a PDF.
 
 [PurchaseCreditsBundle dedicated web page](https://975l.com/en/pages/purchase-credits-bundle).
 
@@ -56,6 +60,8 @@ c975_l_purchase_credits:
     creditsPrice: [1, 5, 8, 70]
     #The currency code on 3 letters
     currency: 'EUR' #'EUR'(default)
+    #(Optional) Your VAT rate without % i.e. 5.5 for 5.5%, or 20 for 20%
+    vat: 5.5 #null(default)
     #The entity used for your User
     userEntity: 'AppBundle\Entity\User'
     #The role needed to create/modify/use a PurchaseCredits
@@ -203,7 +209,7 @@ use c975L\PurchaseCreditsBundle\Entity\Transaction;
             ->setUserId($user->getId())
             ->setUserIp($request->getClientIp())
             ->setCreation(new \DateTime())
-        ;
+            ;
         $em->persist($transaction);
 
         //Adds credits to user

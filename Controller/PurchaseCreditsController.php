@@ -123,6 +123,7 @@ class PurchaseCreditsController extends Controller
                     'userIp' => $request->getClientIp(),
                     'live' => $this->getParameter('c975_l_purchase_credits.live'),
                     'returnRoute' => 'purchasecredits_payment_done',
+                    'vat' => $this->getParameter('c975_l_purchase_credits.vat'),
                     );
                 $paymentService = $this->get(\c975L\PaymentBundle\Service\PaymentService::class);
                 $paymentService->create($paymentData);
@@ -200,8 +201,52 @@ class PurchaseCreditsController extends Controller
                 //Persist in database
                 $em->flush();
 
-                //Creates flash
+                //Gets the Terms of sales
                 $translator = $this->get('translator');
+                $tosPdfUrl = null;
+                $tosPdfConfig = $this->getParameter('c975_l_purchase_credits.tosPdf');
+
+                //Calculates the url if a Route is provided
+                $purchaseCreditsService = $this->get(\c975L\PurchaseCreditsBundle\Service\PurchaseCreditsService::class);
+                if (strpos($tosPdfConfig, ',') !== false) {
+                    $routeData = $purchaseCreditsService->getUrlFromRoute($tosPdfConfig);
+                    $tosPdfUrl = $this->generateUrl($routeData['route'], $routeData['params'], UrlGeneratorInterface::ABSOLUTE_URL);
+                //An url has been provided
+                } elseif (strpos($tosPdfConfig, 'http') !== false) {
+                    $tosPdfUrl = $tosPdfConfig;
+                }
+
+                //Gets the content of TermsOfSales
+                $tosPdfArray = null;
+                if ($tosPdfUrl !== null) {
+                    $tosPdfContent = file_get_contents($tosPdfUrl);
+                    $filenameTos = $translator->trans('label.terms_of_sales_filename', array(), 'purchaseCredits') . '.pdf';
+                    $tosPdfArray = array($tosPdfContent, $filenameTos, 'application/pdf');
+                }
+
+                //Sends email
+                $subject = $translator->trans('label.purchased_credits', array('%credits%' => $action['addCredits']), 'purchaseCredits');
+                $body = $this->renderView('@c975LPurchaseCredits/emails/purchase.html.twig', array(
+                    'payment' => $payment,
+                    'credits' => $action['addCredits'],
+                    'userCredits' => $user->getCredits(),
+                    'live' => $this->getParameter('c975_l_purchase_credits.live'),
+                    ));
+                $emailData = array(
+                    'subject' => $subject,
+                    'sentFrom' => $this->getParameter('c975_l_email.sentFrom'),
+                    'sentTo' => $user->getEmail(),
+                    'replyTo' => $this->getParameter('c975_l_email.sentFrom'),
+                    'body' => $body,
+                    'attach' => array(
+                        $tosPdfArray,
+                        ),
+                    'ip' => $request->getClientIp(),
+                    );
+                $emailService = $this->get(\c975L\EmailBundle\Service\EmailService::class);
+                $emailService->send($emailData, true);
+
+                //Creates flash
                 $flash = $translator->trans('text.credits_purchased', array('%credits%' => $action['addCredits']), 'purchaseCredits');
                 $request->getSession()
                     ->getFlashBag()

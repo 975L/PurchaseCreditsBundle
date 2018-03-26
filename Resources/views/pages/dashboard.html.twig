@@ -21,7 +21,7 @@
 {# Not enough credits #}
     {% if app.user.credits <= 0 %}
         <p class="alert alert-danger text-center">
-            <span class="fas fa-exclamation"></span>&nbsp;{{ 'text.not_enough_credits'|trans }}
+            <span class="fas fa-exclamation"></span>&nbsp;{{ 'text.no_credits'|trans }}
         </p>
     {% endif %}
 {% endblock %}
