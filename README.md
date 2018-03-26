@@ -244,5 +244,18 @@ The display of the list of transactions is done via the bundle, but in case you 
 {{ path('purchasecredits_transaction_display', {'orderId': 'TRANSACTION_ORDER_ID'}) }}
 ```
 
+Credits Div data for javascript use
+-----------------------------------
+If you want to insert a div containing the user's credits, to be used by javascript, you can do it via the Twig extension:
+```
+{# Credits DivData #}
+{{ purchasecredits_divData() }}
+```
 
-
+Then you can access it via
+```javascript
+$(document).ready(function() {
+    var firstname = $('#userCredits').data('credits');
+});
+```
+Have a look at it to see the properties covered.

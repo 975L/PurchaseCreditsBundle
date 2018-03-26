@@ -9,3 +9,6 @@ services:
 
     c975L\PurchaseCreditsBundle\Service\:
         resource: '../../Service/*'
+
+    c975L\PurchaseCreditsBundle\Twig\:
+        resource: '../../Twig/*'

@@ -1,0 +1,5 @@
+{% if is_granted('ROLE_USER') and app.user is defined %}
+    <div id="userCredits"
+        data-credits="{{ app.user.credits }}"
+    ></div>
+{% endif %}
