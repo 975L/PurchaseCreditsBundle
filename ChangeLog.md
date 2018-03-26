@@ -1,5 +1,9 @@
 # Changelog
 
+v1.3.1.1
+--------
+- Corrected `README.md` (26/03/2018)
+
 v1.3.1
 ------
 - Added `Resources/views/fragments/divData.html.twig` to display user's credits to be use by javascript (26/03/2018)

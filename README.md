@@ -255,7 +255,7 @@ If you want to insert a div containing the user's credits, to be used by javascr
 Then you can access it via
 ```javascript
 $(document).ready(function() {
-    var firstname = $('#userCredits').data('credits');
+    var credits = $('#userCredits').data('credits');
 });
 ```
 Have a look at it to see the properties covered.
