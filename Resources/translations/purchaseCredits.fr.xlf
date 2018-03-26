@@ -16,7 +16,7 @@
             </trans-unit>
             <trans-unit id="4">
                 <source>text.no_credits</source>
-                <target>Vous n'avez pas plus de Crédits</target>
+                <target>Vous n'avez pas de Crédits</target>
             </trans-unit>
             <trans-unit id="5">
                 <source>label.accept_tos</source>

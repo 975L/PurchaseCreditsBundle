@@ -1,5 +1,10 @@
 # Changelog
 
+v1.3.1.2
+--------
+- Corrected credits type in sql file (26/03/2018)
+- Corrected french translation (26/03/2018)
+
 v1.3.1.1
 --------
 - Corrected `README.md` (26/03/2018)
