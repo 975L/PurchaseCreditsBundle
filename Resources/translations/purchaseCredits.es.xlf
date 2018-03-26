@@ -12,7 +12,7 @@
             </trans-unit>
             <trans-unit id="3">
                 <source>label.transactions</source>
-                <target>Transacciones</target>
+                <target>Transacción|Transacciones</target>
             </trans-unit>
             <trans-unit id="4">
                 <source>text.no_credits</source>

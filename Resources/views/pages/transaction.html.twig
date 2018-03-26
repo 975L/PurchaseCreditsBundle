@@ -1,0 +1,37 @@
+{% extends "@c975LPurchaseCredits/layout.html.twig" %}
+{% trans_default_domain 'purchaseCredits' %}
+{% set title = 'label.transactions'|transchoice(1) ~ ': ' ~ transaction.orderId %}
+
+{% block purchaseCredits_content %}
+{# Toolbar #}
+    {{ toolbar|raw }}
+{# Date #}
+    <p>
+        {{ 'label.date'|trans({}, 'payment') }}: <strong>{{ transaction.creation|localizeddate('long', 'short') }}</strong>
+    </p>
+{# OrderId #}
+    <p>
+        {{ 'label.order_id'|trans }}: <strong>{{ transaction.orderId }}</strong>
+    </p>
+{# Credits #}
+    <p>
+        {{ 'label.credits'|transchoice(2) }}:
+        <strong>
+            {% if transaction.credits < 0 %}
+                <span class="red">
+                    {{ transaction.credits }} crd
+                </span>
+            {% elseif transaction.credits > 0 %}
+                <span class="green">
+                    +{{ transaction.credits }} crd
+                </span>
+            {% else %}
+                {{ transaction.credits }} crd
+            {% endif %}
+        </strong>
+    </p>
+{# Description #}
+    <p>
+        {{ 'label.description'|trans({}, 'payment') }}: <strong>{{ transaction.description }}</strong>
+    </p>
+{% endblock %}

@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use c975L\Email\Service\EmailService;
 use c975L\PaymentBundle\Entity\Payment;
@@ -305,5 +306,56 @@ class PurchaseCreditsController extends Controller
                 'toolbar' => $toolbar,
                 ));
         }
+    }
+
+//TRANSACTION DISPLAY
+    /**
+     * @Route("/purchase-credits/transaction/{orderId}",
+     *      name="purchasecredits_transaction_display")
+     * @Method({"GET", "HEAD"})
+     */
+    public function transactionDisplayAction(Request $request, $orderId)
+    {
+        //Gets the user
+        $user = $this->getUser();
+
+        if ($user !== null && $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            //Gets the manager
+            $em = $this->getDoctrine()->getManager();
+
+            //Gets the repository
+            $repository = $em->getRepository('c975L\PurchaseCreditsBundle\Entity\Transaction');
+
+            //Gets the transaction
+            $transaction = $repository->findOneByOrderId($orderId);
+
+            if ($transaction instanceof Transaction) {
+                if ($transaction->getUserId() == $user->getId()) {
+                    //Defines toolbar
+                    $tools  = $this->renderView('@c975LPurchaseCredits/tools.html.twig', array(
+                        'type' => 'display',
+                    ));
+                    $toolbar = $this->forward('c975L\ToolbarBundle\Controller\ToolbarController::displayAction', array(
+                        'tools'  => $tools,
+                        'dashboard'  => 'purchasecredits',
+                    ))->getContent();
+
+                    //Renders the page
+                    return $this->render('@c975LPurchaseCredits/pages/transaction.html.twig', array(
+                        'transaction' => $transaction,
+                        'toolbar' => $toolbar,
+                        ));
+                }
+
+                //Access is denied
+                throw $this->createAccessDeniedException();
+            }
+
+            //Not found
+            throw $this->createNotFoundException();
+        }
+
+        //Access is denied
+        throw $this->createAccessDeniedException();
     }
 }

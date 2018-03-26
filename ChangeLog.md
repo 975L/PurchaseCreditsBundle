@@ -1,5 +1,10 @@
 # Changelog
 
+v1.3
+----
+- Added Route to display transaction + example in `README.md` (26/03/2018)
+- Added field payment order in transactions list (26/03/2018)
+
 v1.2
 ----
 - Added send email when purchasing credits (21/03/2018)

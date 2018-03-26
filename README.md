@@ -236,3 +236,13 @@ If you want to display information about credits to user, you can add, in your T
 ```twig
 {% include('@c975LPurchaseCredits/fragments/creditsInformation.html.twig') %}
 ```
+
+Transaction display
+-------------------
+The display of the list of transactions is done via the bundle, but in case you want to link to a specific transaction, you can do so with the following:
+```twig
+{{ path('purchasecredits_transaction_display', {'orderId': 'TRANSACTION_ORDER_ID'}) }}
+```
+
+
+

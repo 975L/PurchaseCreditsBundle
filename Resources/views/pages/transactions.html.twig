@@ -1,9 +1,6 @@
 {% extends "@c975LPurchaseCredits/layout.html.twig" %}
-
 {% trans_default_domain 'purchaseCredits' %}
-
-{# Defines specific variables #}
-{% set title = 'label.transactions'|trans %}
+{% set title = 'label.transactions'|transchoice(2) %}
 
 {% block purchaseCredits_content %}
 {# Toolbar #}
@@ -31,6 +28,10 @@
                 <th class="text-center">
                     {{ knp_pagination_sortable(transactions, 'label.order_id'|trans({}, 'payment'), 'orderId') }}&nbsp;<span class="fas fa-sort"></span>
                 </th>
+{# Payment #}
+                <th class="text-center">
+                    {{ 'label.payment'|trans({}, 'payment') }}
+                </th>
 {# Credits #}
                 <th class="text-center">
                     {{ knp_pagination_sortable(transactions, 'label.credits'|transchoice(2, {}, 'purchaseCredits'), 'credits') }}&nbsp;<span class="fas fa-sort"></span>
@@ -51,11 +52,16 @@
                     </td>
 {# OrderId #}
                     <td class="text-center">
+                        <a href="{{ path('purchasecredits_transaction_display', ({'orderId': transaction.orderId|replace({'pmt': ''})})) }}">
+                            {{ transaction.orderId|replace({'pmt': ''}) }}</a>
+                    </td>
+{# Payment #}
+                    <td class="text-center">
                         {% if transaction.orderId starts with 'pmt' %}
                             <a href="{{ path('payment_display', ({'orderId': transaction.orderId|replace({'pmt': ''})})) }}">
-                                {{ transaction.orderId|replace({'pmt': ''}) }}</a>
+                                {{ 'label.payment'|trans({}, 'payment') }}</a>
                         {% else %}
-                            {{ transaction.orderId }}
+                            -
                         {% endif %}
                     </td>
 {# Credits #}
