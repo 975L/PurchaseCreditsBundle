@@ -2,7 +2,20 @@
 
 {# Number of credits #}
 <p>
-    {{ 'label.credits'|transchoice(app.user.credits) }} : <strong>{{ app.user.credits|localizednumber }} crd</strong>
+    {{ 'label.credits'|transchoice(app.user.credits) }} :
+    <strong>
+        {% if app.user.credits < 0 %}
+            <span class="red">
+                {{ app.user.credits }} crd
+            </span>
+        {% elseif app.user.credits > 0 %}
+            <span class="green">
+                +{{ app.user.credits }} crd
+            </span>
+        {% else %}
+            {{ app.user.credits }} crd
+        {% endif %}
+    </strong>
 {# Transactions #}
     -
     <a href="{{ path('purchasecredits_transactions') }}">

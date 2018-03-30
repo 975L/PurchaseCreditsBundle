@@ -230,6 +230,13 @@ The different Routes (naming self-explanatory) available are:
 - purchasecredits_purchase
 - purchasecredits_transactions
 
+Twig access
+-----------
+You can access user's credits in Twig via
+```twig
+{{ app.user.credits }}
+```
+
 Credits information
 -------------------
 If you want to display information about credits to user, you can add, in your Twig template, the following code. It will display, on one line, the number of credits, a link to transactions, a link to purchase and a warning when credits are <= 0.

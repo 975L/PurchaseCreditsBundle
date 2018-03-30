@@ -1,5 +1,10 @@
 # Changelog
 
+v1.3.2
+------
+- Added color display for remaining credits (27/03/2018)
+- Added info about Twig access in `README.md` (28/03/2018)
+
 v1.3.1.2
 --------
 - Corrected credits type in sql file (26/03/2018)
