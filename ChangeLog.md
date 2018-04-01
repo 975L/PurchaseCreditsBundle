@@ -1,5 +1,9 @@
 # Changelog
 
+v1.3.3
+------
+- Changed "you" to 'I' in translations (01/04/2018)
+
 v1.3.2
 ------
 - Added color display for remaining credits (27/03/2018)

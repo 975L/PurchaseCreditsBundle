@@ -16,7 +16,7 @@
             </trans-unit>
             <trans-unit id="4">
                 <source>text.no_credits</source>
-                <target>Vous n'avez pas de Crédits</target>
+                <target>Je n'ai pas de Crédits</target>
             </trans-unit>
             <trans-unit id="5">
                 <source>label.accept_tos</source>
@@ -28,15 +28,15 @@
             </trans-unit>
             <trans-unit id="7">
                 <source>text.credits_purchased</source>
-                <target>Félicitations ! Les Crédits (%credits%) ont bien été achetés et ajoutés sur votre compte !</target>
+                <target>Félicitations ! Les Crédits (%credits%) ont bien été achetés et ajoutés sur mon compte !</target>
             </trans-unit>
             <trans-unit id="8">
                 <source>text.transactions_explanation</source>
                 <target>Je peux trouver ci-dessous toutes mes transactions sur le site en "crd"</target>
             </trans-unit>
             <trans-unit id="9">
-                <source>text.you_have_number_credits</source>
-                <target><![CDATA[Vous avez <strong>%credits% crd</strong>]]></target>
+                <source>text.number_credits</source>
+                <target><![CDATA[J'ai <strong>%credits% crd</strong>]]></target>
             </trans-unit>
             <trans-unit id="10">
                 <source>label.mandatory_field</source>
@@ -52,7 +52,7 @@
             </trans-unit>
             <trans-unit id="13">
                 <source>text.purchased_credits</source>
-                <target><![CDATA[Vous avez bien acheté <strong>%credits%</strong> crd sur <strong>%site%</strong>.]]></target>
+                <target><![CDATA[J'ai bien acheté <strong>%credits%</strong> crd sur <strong>%site%</strong>.]]></target>
             </trans-unit>
             <trans-unit id="14">
                 <source>label.new_credits_amount</source>

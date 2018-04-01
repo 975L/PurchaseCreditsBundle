@@ -10,7 +10,7 @@
     {{ toolbar|raw }}
 {# Number of credits #}
     <p class="alert alert-info text-center">
-        {{ 'text.you_have_number_credits'|trans({'%credits%' : app.user.credits})|raw }}
+        {{ 'text.number_credits'|trans({'%credits%' : app.user.credits})|raw }}
     </p>
 {# form #}
     {{ form_start(form) }}
