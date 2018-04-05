@@ -81,8 +81,8 @@ Then, enable the routes by adding them to the `app/config/routing.yml` file of y
 ```yml
 c975_l_purchase_credits:
     resource: "@c975LPurchaseCreditsBundle/Controller/"
-    type:     annotation
-    prefix:   /
+    type: annotation
+    prefix: /
     #Multilingual website use the following
     #prefix: /{_locale}
     #requirements:
@@ -179,8 +179,6 @@ All the process for purchase and payment is managed via the bundle. All you have
 ```php
 <?php
 //In your controller file
-use c975L\PurchaseCreditsBundle\Entity\Transaction;
-
     /**
      * @Route("/YOUR_ROUTE",
      *      name="YOUR_ROUTE_NAME")
@@ -193,33 +191,18 @@ use c975L\PurchaseCreditsBundle\Entity\Transaction;
         //Gets the manager
         $em = $this->getDoctrine()->getManager();
 
-        //Gets the user
-        $user = $this->getUser();
-
         //Adds transaction, to keep trace of it and for user to see it in its list of transactions
-        //You can call without argument, Transaction will buid an orderId on the same scheme as Payment's one
-        $transaction = new Transaction();
-        //Or you can provide your own one
-        //The only restriction is that it MUST NOT start with 'pmt'
-        //This string is added to the Payment orderId to provide a link to the payment
-        //$transaction = new Transaction('YOUR_OWN_ORDER_ID');
+        //You can call create() without argument, TransactionService will add an orderId built on the same scheme as Payment's one
+        //The only restriction is that your orderId MUST NOT start with 'pmt' as this string is added to the Payment orderId, to provide a link to the payment
+        $transactionService = $this->get(\c975L\PurchaseCreditsBundle\Service\TransactionService::class);
+        $transaction = $transactionService->create('YOUR_OWN_ORDER_ID_OR_EMPTY');
         $transaction
             ->setCredits(+-CREDITS)
             ->setDescription('YOUR_DESCRIPTION')
-            ->setUserId($user->getId())
-            ->setUserIp($request->getClientIp())
-            ->setCreation(new \DateTime())
-            ;
-        $em->persist($transaction);
+        ;
+        $transactionService->persist($transaction, $this->getUser());
 
-        //Adds credits to user
-        $user->addCredits(CREDITS);
-
-        //Subtracts credits to user, notice the '-'
-        $user->addCredits(-CREDITS);
-
-        //Persists user
-        $em->persist($user);
+        //You need to flush DB as $transaction and $user are persisted but not flushed
         $em->flush();
 ```
 

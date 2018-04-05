@@ -1,6 +1,6 @@
 <?php
 /*
- * (c) 2018: 975l <contact@975l.com>
+ * (c) 2018: 975L <contact@975l.com>
  * (c) 2018: Laurent Marquet <laurent.marquet@laposte.net>
  *
  * This source file is subject to the MIT license that is bundled
@@ -179,21 +179,13 @@ class PurchaseCreditsController extends Controller
                     ->findOneById($payment->getUserId());
 
                 //Transaction
-                $transaction = new Transaction('pmt' . $payment->getOrderId());
+                $transactionService = $this->get(\c975L\PurchaseCreditsBundle\Service\TransactionService::class);
+                $transaction = $transactionService->create('pmt' . $payment->getOrderId());
                 $transaction
                     ->setCredits($action['addCredits'])
-                    ->setDescription($payment->getdescription())
-                    ->setUserId($user->getId())
-                    ->setUserIp($request->getClientIp())
-                    ->setCreation(new \DateTime())
+                    ->setDescription($payment->getDescription())
                 ;
-                $em->persist($transaction);
-
-                //Adds credits to user
-                if ($this->getParameter('c975_l_purchase_credits.live') === true) {
-                    $user->addCredits($action['addCredits']);
-                    $em->persist($user);
-                }
+                $transactionService->persist($transaction, $user);
 
                 //Set payment as finished
                 $payment->setFinished(true);

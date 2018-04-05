@@ -1,5 +1,9 @@
 # Changelog
 
+v1.4
+----
+- Added TransactionService to simplify creation of Transaction [BC-Break] (04/04/2018)
+
 v1.3.3
 ------
 - Changed "you" to 'I' in translations (01/04/2018)

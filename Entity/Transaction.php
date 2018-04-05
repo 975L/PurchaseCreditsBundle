@@ -1,6 +1,6 @@
 <?php
 /*
- * (c) 2018: 975l <contact@975l.com>
+ * (c) 2018: 975L <contact@975l.com>
  * (c) 2018: Laurent Marquet <laurent.marquet@laposte.net>
  *
  * This source file is subject to the MIT license that is bundled
@@ -68,17 +68,6 @@ class Transaction
      * @ORM\Column(name="creation", type="datetime", nullable=true)
      */
     protected $creation;
-
-
-    public function __construct($orderId = null)
-    {
-        if ($orderId === null) {
-            $now = \DateTime::createFromFormat('U.u', microtime(true));
-            $orderId = $now->format('Ymd-His-u');
-        }
-
-        $this->setOrderId($orderId);
-    }
 
 
 
