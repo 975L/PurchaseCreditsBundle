@@ -298,6 +298,9 @@ class PurchaseCreditsController extends Controller
                 'toolbar' => $toolbar,
                 ));
         }
+
+        //Access is denied
+        throw $this->createAccessDeniedException();
     }
 
 //TRANSACTION DISPLAY
