@@ -1,5 +1,10 @@
 # Changelog
 
+v1.4.2
+------
+- Modified toolbars calls due to modification of c975LToolbarBundle (13/05/2018)
+- Modified display for credit amount in transactions (13/05/2018)
+
 v1.4.1
 ------
 - Added missing `createAccessDeniedException()` for transactions view (14/04/2018)

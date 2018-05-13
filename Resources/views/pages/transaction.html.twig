@@ -4,7 +4,7 @@
 
 {% block purchaseCredits_content %}
 {# Toolbar #}
-    {{ toolbar|raw }}
+    {{ toolbar_display('@c975LPurchaseCredits/tools.html.twig', 'transaction', 'md', transaction) }}
 {# Date #}
     <p>
         {{ 'label.date'|trans({}, 'payment') }}: <strong>{{ transaction.creation|localizeddate('long', 'short') }}</strong>

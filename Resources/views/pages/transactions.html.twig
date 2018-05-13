@@ -4,7 +4,7 @@
 
 {% block purchaseCredits_content %}
 {# Toolbar #}
-    {{ toolbar|raw }}
+    {{ toolbar_display('@c975LPurchaseCredits/tools.html.twig', 'transactions', 'md') }}
 {# Pagination #}
     <div class="navigation text-center">
         {{ knp_pagination_render(transactions) }}
@@ -14,7 +14,20 @@
         {{ 'text.transactions_explanation'|trans }}
         <br />
 {# Credits #}
-        {{ 'label.credits'|transchoice(app.user.credits) }} : <strong>{{ app.user.credits|localizednumber }} crd</strong>
+        {{ 'label.credits'|transchoice(app.user.credits) }} :
+        <strong>
+            {% if app.user.credits < 0 %}
+                <span class="red">
+                    {{ app.user.credits }} crd
+                </span>
+            {% elseif app.user.credits > 0 %}
+                <span class="green">
+                    +{{ app.user.credits }} crd
+                </span>
+            {% else %}
+                {{ app.user.credits }} crd
+            {% endif %}
+        </strong>
     </div>
 {# Table #}
     <table class="table table-condensed table-responsive striped">

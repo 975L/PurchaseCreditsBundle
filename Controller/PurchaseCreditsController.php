@@ -35,20 +35,9 @@ class PurchaseCreditsController extends Controller
         //Gets the user
         $user = $this->getUser();
 
+        //Returns the dashboard
         if ($user !== null && $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-            //Defines toolbar
-            $tools  = $this->renderView('@c975LPurchaseCredits/tools.html.twig', array(
-                'type' => 'dashboard',
-            ));
-            $toolbar = $this->forward('c975L\ToolbarBundle\Controller\ToolbarController::displayAction', array(
-                'tools'  => $tools,
-                'dashboard'  => 'purchasecredits',
-            ))->getContent();
-
-            //Returns the dashboard
-            return $this->render('@c975LPurchaseCredits/pages/dashboard.html.twig', array(
-                'toolbar' => $toolbar,
-            ));
+            return $this->render('@c975LPurchaseCredits/pages/dashboard.html.twig');
         }
 
         //Access is denied
@@ -133,21 +122,11 @@ class PurchaseCreditsController extends Controller
                 return $this->redirectToRoute('payment_form');
             }
 
-            //Defines toolbar
-            $tools  = $this->renderView('@c975LPurchaseCredits/tools.html.twig', array(
-                'type' => 'purchase',
-            ));
-            $toolbar = $this->forward('c975L\ToolbarBundle\Controller\ToolbarController::displayAction', array(
-                'tools'  => $tools,
-                'dashboard'  => 'purchasecredits',
-            ))->getContent();
-
             return $this->render('@c975LPurchaseCredits/forms/purchase.html.twig', array(
                 'form' => $form->createView(),
                 'user' => $this->getUser(),
                 'live' => $this->getParameter('c975_l_purchase_credits.live'),
                 'tosUrl' => $tosUrl,
-                'toolbar' => $toolbar,
             ));
         }
 
@@ -283,19 +262,9 @@ class PurchaseCreditsController extends Controller
                 25
             );
 
-            //Defines toolbar
-            $tools  = $this->renderView('@c975LPurchaseCredits/tools.html.twig', array(
-                'type' => 'transactions',
-            ));
-            $toolbar = $this->forward('c975L\ToolbarBundle\Controller\ToolbarController::displayAction', array(
-                'tools'  => $tools,
-                'dashboard'  => 'purchasecredits',
-            ))->getContent();
-
             //Renders the page
             return $this->render('@c975LPurchaseCredits/pages/transactions.html.twig', array(
                 'transactions' => $pagination,
-                'toolbar' => $toolbar,
                 ));
         }
 
@@ -326,19 +295,9 @@ class PurchaseCreditsController extends Controller
 
             if ($transaction instanceof Transaction) {
                 if ($transaction->getUserId() == $user->getId()) {
-                    //Defines toolbar
-                    $tools  = $this->renderView('@c975LPurchaseCredits/tools.html.twig', array(
-                        'type' => 'display',
-                    ));
-                    $toolbar = $this->forward('c975L\ToolbarBundle\Controller\ToolbarController::displayAction', array(
-                        'tools'  => $tools,
-                        'dashboard'  => 'purchasecredits',
-                    ))->getContent();
-
                     //Renders the page
                     return $this->render('@c975LPurchaseCredits/pages/transaction.html.twig', array(
                         'transaction' => $transaction,
-                        'toolbar' => $toolbar,
                         ));
                 }
 

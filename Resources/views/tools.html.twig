@@ -1,12 +1,22 @@
 {% trans_default_domain 'toolbar' %}
 
 {% spaceless %}
+{# Dashboard #}
+{{ toolbar_button(path('purchasecredits_dashboard'), 'dashboard', 'label.purchasecredits'|trans) }}
+
 {# Purchase Credits #}
 {% if type != 'transactions' %}
     {{ toolbar_button(path('purchasecredits_transactions'), 'transactions') }}
 {% endif %}
+
 {# Transactions #}
 {% if type != 'purchase' %}
     {{ toolbar_button(path('purchasecredits_purchase'), 'credits') }}
 {% endif %}
+
+{# Signout #}
+{{ toolbar_button(path('user_signout'), 'signout') }}
+
+{# Other dashboards #}
+{{ toolbar_dashboards('md') }}
 {% endspaceless %}

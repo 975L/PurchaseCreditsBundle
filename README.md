@@ -85,7 +85,7 @@ c975_l_purchase_credits:
     prefix: /
     #Multilingual website use the following
     #prefix: /{_locale}
-    #defaults:   { _locale: %locale% }
+    #defaults:   { _locale: '%locale%' }
     #requirements:
     #    _locale: en|fr|es
 ```

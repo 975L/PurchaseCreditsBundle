@@ -4,7 +4,7 @@
 
 {% block purchaseCredits_content %}
 {# Toolbar #}
-    {{ toolbar|raw }}
+    {{ toolbar_display('@c975LPurchaseCredits/tools.html.twig', 'dashboard', 'md') }}
 {# Number of credits #}
     <p class="alert alert-info text-center">
         {{ 'text.number_credits'|trans({'%credits%' : app.user.credits})|raw }}
