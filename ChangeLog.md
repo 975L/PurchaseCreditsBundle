@@ -1,5 +1,9 @@
 # Changelog
 
+v1.4.3
+------
+- Corrected missing `$transaction` return when created (17/05/2018)
+
 v1.4.2
 ------
 - Modified toolbars calls due to modification of c975LToolbarBundle (13/05/2018)

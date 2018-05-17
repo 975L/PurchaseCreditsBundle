@@ -43,6 +43,8 @@ class TransactionService
             ->setCreation(new \DateTime())
             ->setUserIp($this->request->getClientIp())
         ;
+
+        return $transaction;
     }
 
     //Persists Transaction + User's data
