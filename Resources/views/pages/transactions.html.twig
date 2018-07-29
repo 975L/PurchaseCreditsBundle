@@ -14,20 +14,7 @@
         {{ 'text.transactions_explanation'|trans }}
         <br />
 {# Credits #}
-        {{ 'label.credits'|transchoice(app.user.credits) }} :
-        <strong>
-            {% if app.user.credits < 0 %}
-                <span class="red">
-                    {{ app.user.credits }} crd
-                </span>
-            {% elseif app.user.credits > 0 %}
-                <span class="green">
-                    +{{ app.user.credits }} crd
-                </span>
-            {% else %}
-                {{ app.user.credits }} crd
-            {% endif %}
-        </strong>
+        {{ 'label.credits'|transchoice(app.user.credits) }} : {{ app.user.credits|purchasecredits_format }}
     </div>
 {# Table #}
     <table class="table table-condensed table-responsive striped">
@@ -65,8 +52,8 @@
                     </td>
 {# OrderId #}
                     <td class="text-center">
-                        <a href="{{ path('purchasecredits_transaction_display', ({'orderId': transaction.orderId|replace({'pmt': ''})})) }}">
-                            {{ transaction.orderId|replace({'pmt': ''}) }}</a>
+                        <a href="{{ path('purchasecredits_transaction_display', ({'orderId': transaction.orderId})) }}">
+                            {{ transaction.orderId }}</a>
                     </td>
 {# Payment #}
                     <td class="text-center">
@@ -79,19 +66,7 @@
                     </td>
 {# Credits #}
                     <td class="text-center">
-                        <strong>
-                            {% if transaction.credits < 0 %}
-                                <span class="red">
-                                    {{ transaction.credits }} crd
-                                </span>
-                            {% elseif transaction.credits > 0 %}
-                                <span class="green">
-                                    +{{ transaction.credits }} crd
-                                </span>
-                            {% else %}
-                                {{ transaction.credits }} crd
-                            {% endif %}
-                        </strong>
+                        {{ transaction.credits|purchasecredits_format }}
                     </td>
 {# Description #}
                     <td class="text-center">

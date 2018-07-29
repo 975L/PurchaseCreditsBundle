@@ -12,6 +12,10 @@
     <p class="alert alert-info text-center">
         {{ 'text.number_credits'|trans({'%credits%' : app.user.credits})|raw }}
     </p>
+{# Choosepurchase of credits #}
+    <p>
+        {{ 'text.choose_number_credits'|trans }}
+    </p>
 {# form #}
     {{ form_start(form) }}
         {{ form_widget(form) }}

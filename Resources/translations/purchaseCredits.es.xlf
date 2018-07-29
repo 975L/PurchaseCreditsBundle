@@ -58,6 +58,10 @@
                 <source>label.new_credits_amount</source>
                 <target>Nueva cantidad de Créditos</target>
             </trans-unit>
+            <trans-unit id="15">
+                <source>text.choose_number_credits</source>
+                <target>Elijo la cantidad de Créditos que quiero comprar a continuación</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

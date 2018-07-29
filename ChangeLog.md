@@ -1,5 +1,16 @@
 # Changelog
 
+v1.4.4
+------
+- Removed required in composer.json (22/05/2018)
+- Removed 'Action' in Controllers method as not requested anymore (29/07/2018)
+- Use of Yoda-style (29/07/2018)
+- Split of Controller files (29/07/2018)
+- Created a Twig extension to display credits in place of doing so in Twig templates (29/07/2018)
+- Added sentence about choosing number of credits on the purchase form (29/07/2018)
+- Made Controller more SOLID compliant (29/07/2018)
+- Added `_locale` variable in sendMail (29/07/2018)
+
 v1.4.3
 ------
 - Corrected missing `$transaction` return when created (17/05/2018)

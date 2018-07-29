@@ -21,8 +21,7 @@ class TransactionService
         \Symfony\Component\DependencyInjection\ContainerInterface $container,
         \Symfony\Component\HttpFoundation\RequestStack $requestStack,
         \Doctrine\ORM\EntityManager $em
-    )
-    {
+    ) {
         $this->container = $container;
         $this->request = $requestStack->getCurrentRequest();
         $this->em = $em;
@@ -33,7 +32,7 @@ class TransactionService
     {
         $transaction = new Transaction();
 
-        if ($orderId === null) {
+        if (null === $orderId) {
             $now = \DateTime::createFromFormat('U.u', microtime(true));
             $orderId = $now->format('Ymd-His-u');
         }
@@ -55,13 +54,14 @@ class TransactionService
         $this->em->persist($transaction);
 
         //Adds/Subtracts credits to user
-        if ($this->container->getParameter('c975_l_purchase_credits.live') === true) {
+        if (true === $this->container->getParameter('c975_l_purchase_credits.live')) {
             //Credits are live on site
             if ($transaction->getCredits() < 0 ||
                 //Payment is live on site
-                $this->container->getParameter('c975_l_payment.live') === true ||
+                true === $this->container->getParameter('c975_l_payment.live') ||
+
                 //Transaction is not resulting from a test payment
-                substr($transaction->getOrderId(), 0,3) != 'pmt') {
+                substr($transaction->getOrderId(), 0, 3) != 'pmt') {
                 $user->addCredits($transaction->getCredits());
                 $em->persist($user);
             }

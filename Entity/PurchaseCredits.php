@@ -11,19 +11,33 @@ namespace c975L\PurchaseCreditsBundle\Entity;
 class PurchaseCredits
 {
     protected $credits;
+    protected $amount;
+    protected $currency;
 
-    public function __construct($credits)
+    public function setCredits($credits)
     {
-        $this->setCredits($credits);
+        $this->credits = $credits;
     }
-
     public function getCredits()
     {
         return $this->credits;
     }
 
-    public function setCredits($credits)
+    public function setAmount($amount)
     {
-        $this->credits = $credits;
+        $this->amount = $amount;
+    }
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    public function setCurrency($currency)
+    {
+        $this->currency = strtoupper($currency);
+    }
+    public function getCurrency()
+    {
+        return strtoupper($this->currency);
     }
 }

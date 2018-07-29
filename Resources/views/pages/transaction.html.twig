@@ -11,24 +11,12 @@
     </p>
 {# OrderId #}
     <p>
-        {{ 'label.order_id'|trans }}: <strong>{{ transaction.orderId }}</strong>
+        {{ 'label.order_id'|trans({}, 'payment') }}: <strong>{{ transaction.orderId }}</strong>
     </p>
 {# Credits #}
     <p>
         {{ 'label.credits'|transchoice(2) }}:
-        <strong>
-            {% if transaction.credits < 0 %}
-                <span class="red">
-                    {{ transaction.credits }} crd
-                </span>
-            {% elseif transaction.credits > 0 %}
-                <span class="green">
-                    +{{ transaction.credits }} crd
-                </span>
-            {% else %}
-                {{ transaction.credits }} crd
-            {% endif %}
-        </strong>
+        {{ transaction.credits|purchasecredits_format }}
     </p>
 {# Description #}
     <p>
