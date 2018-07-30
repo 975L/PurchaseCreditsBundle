@@ -14,10 +14,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use c975L\PurchaseCreditsBundle\Entity\Transaction;
 
 class TransactionController extends Controller
 {
+    private $accessGranted;
+
+    public function __construct(AuthorizationCheckerInterface $authChecker)
+    {
+        $this->accessGranted = $authChecker->isGranted('ROLE_USER');
+    }
+
 //LIST
     /**
      * @Route("/purchase-credits/transactions",
@@ -26,29 +34,29 @@ class TransactionController extends Controller
      */
     public function list(Request $request)
     {
-        if (null !== $this->getUser() && $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-            //Gets the transactions
-            $transactions = $this->getDoctrine()
-                ->getManager()
-                ->getRepository('c975L\PurchaseCreditsBundle\Entity\Transaction')
-                ->findByUserId($this->getUser()->getId(), array('creation' => 'desc'));
-
-            //Pagination
-            $paginator  = $this->get('knp_paginator');
-            $pagination = $paginator->paginate(
-                $transactions,
-                $request->query->getInt('p', 1),
-                25
-            );
-
-            //Renders the page
-            return $this->render('@c975LPurchaseCredits/pages/transactions.html.twig', array(
-                'transactions' => $pagination,
-                ));
+        //Access denied
+        if (true !== $this->accessGranted) {
+            throw $this->createAccessDeniedException();
         }
 
-        //Access is denied
-        throw $this->createAccessDeniedException();
+        //Gets the transactions
+        $transactions = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('c975L\PurchaseCreditsBundle\Entity\Transaction')
+            ->findByUserId($this->getUser()->getId(), array('creation' => 'desc'));
+
+        //Pagination
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $transactions,
+            $request->query->getInt('p', 1),
+            25
+        );
+
+        //Renders the page
+        return $this->render('@c975LPurchaseCredits/pages/transactions.html.twig', array(
+            'transactions' => $pagination,
+        ));
     }
 
 //DISPLAY
@@ -57,35 +65,21 @@ class TransactionController extends Controller
      *      name="purchasecredits_transaction_display")
      * @Method({"GET", "HEAD"})
      */
-    public function display($orderId)
+    public function display(Transaction $transaction)
     {
-        //Gets the user
-        $user = $this->getUser();
-
-        if ($this->getUser() !== null && $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-            //Gets the transaction
-            $transaction = $this->getDoctrine()
-                ->getManager()
-                ->getRepository('c975L\PurchaseCreditsBundle\Entity\Transaction')
-                ->findOneByOrderId($orderId);
-
-            if ($transaction instanceof Transaction) {
-                if ($transaction->getUserId() == $this->getUser()->getId()) {
-                    //Renders the page
-                    return $this->render('@c975LPurchaseCredits/pages/transaction.html.twig', array(
-                        'transaction' => $transaction,
-                        ));
-                }
-
-                //Access is denied
-                throw $this->createAccessDeniedException();
-            }
-
-            //Not found
-            throw $this->createNotFoundException();
+        //Access denied
+        if (true !== $this->accessGranted) {
+            throw $this->createAccessDeniedException();
         }
 
-        //Access is denied
+        //Renders the transaction
+        if ($transaction->getUserId() == $this->getUser()->getId()) {
+            return $this->render('@c975LPurchaseCredits/pages/transaction.html.twig', array(
+                'transaction' => $transaction,
+            ));
+        }
+
+        //Access is denied as transaction not linked to user
         throw $this->createAccessDeniedException();
     }
 }

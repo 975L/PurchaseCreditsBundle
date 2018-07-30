@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use c975L\PaymentBundle\Entity\Payment;
 use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
 use c975L\PurchaseCreditsBundle\Form\PurchaseCreditsType;
@@ -22,6 +23,13 @@ use c975L\PurchaseCreditsBundle\Service\PurchaseCreditsService;
 
 class PurchaseCreditsController extends Controller
 {
+    private $accessGranted;
+
+    public function __construct(AuthorizationCheckerInterface $authChecker)
+    {
+        $this->accessGranted = $authChecker->isGranted('ROLE_USER');
+    }
+
 //DASHBOARD
     /**
      * @Route("/purchase-credits/dashboard",
@@ -30,13 +38,13 @@ class PurchaseCreditsController extends Controller
      */
     public function dashboardAction()
     {
-        //Returns the dashboard
-        if (null !== $this->getUser() && $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-            return $this->render('@c975LPurchaseCredits/pages/dashboard.html.twig');
+        //Access denied
+        if (true !== $this->accessGranted) {
+            throw $this->createAccessDeniedException();
         }
 
-        //Access is denied
-        throw $this->createAccessDeniedException();
+        //Renders the dashboard
+        return $this->render('@c975LPurchaseCredits/pages/dashboard.html.twig');
     }
 
 //PURCHASE
@@ -49,40 +57,41 @@ class PurchaseCreditsController extends Controller
      */
     public function purchaseCreditsAction(Request $request, PurchaseCreditsService $purchaseCreditsService, $credits)
     {
-        if (null !== $this->getUser() && $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-            //Defines prices
-            $prices = $purchaseCreditsService->getPrices();
-            $pricesChoices = $purchaseCreditsService->getPricesChoices($prices);
-
-            //Defines form
-            $credits = in_array($credits, $this->getParameter('c975_l_purchase_credits.creditsNumber')) === true ? (int) $credits : 0;
-            $purchaseCredits = new PurchaseCredits();
-
-            $form = $this->createForm(PurchaseCreditsType::class, $purchaseCredits, array('prices' => $pricesChoices));
-            $form->handleRequest($request);
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                $purchaseCredits->setCredits($form->getData()->getCredits());
-                $purchaseCredits->setAmount($prices[$form->getData()->getCredits()] * 100);
-                $purchaseCredits->setCurrency($this->getParameter('c975_l_purchase_credits.currency'));
-
-                //Redirects to the payment
-                $userId = null !== $this->getUser() ? $this->getUser()->getId() : null;
-                $purchaseCreditsService->payment($purchaseCredits, $userId);
-
-                return $this->redirectToRoute('payment_form');
-            }
-
-            return $this->render('@c975LPurchaseCredits/forms/purchase.html.twig', array(
-                'form' => $form->createView(),
-                'user' => $this->getUser(),
-                'live' => $this->getParameter('c975_l_purchase_credits.live'),
-                'tosUrl' => $purchaseCreditsService->getTosUrl(),
-            ));
+        //Access denied
+        if (true !== $this->accessGranted) {
+            throw $this->createAccessDeniedException();
         }
 
-        //Access is denied
-        throw $this->createAccessDeniedException();
+        //Defines prices
+        $prices = $purchaseCreditsService->getPrices();
+        $pricesChoices = $purchaseCreditsService->getPricesChoices($prices);
+
+        //Defines form
+        $credits = in_array($credits, $this->getParameter('c975_l_purchase_credits.creditsNumber')) === true ? (int) $credits : 0;
+        $purchaseCredits = new PurchaseCredits();
+
+        $form = $this->createForm(PurchaseCreditsType::class, $purchaseCredits, array('prices' => $pricesChoices));
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $purchaseCredits->setCredits($form->getData()->getCredits());
+            $purchaseCredits->setAmount($prices[$form->getData()->getCredits()] * 100);
+            $purchaseCredits->setCurrency($this->getParameter('c975_l_purchase_credits.currency'));
+
+            //Redirects to the payment
+            $userId = null !== $this->getUser() ? $this->getUser()->getId() : null;
+            $purchaseCreditsService->payment($purchaseCredits, $userId);
+
+            return $this->redirectToRoute('payment_form');
+        }
+
+        //Renders the purchase credits page
+        return $this->render('@c975LPurchaseCredits/forms/purchase.html.twig', array(
+            'form' => $form->createView(),
+            'user' => $this->getUser(),
+            'live' => $this->getParameter('c975_l_purchase_credits.live'),
+            'tosUrl' => $purchaseCreditsService->getTosUrl(),
+        ));
     }
 
 //PAYMENT DONE
@@ -93,14 +102,15 @@ class PurchaseCreditsController extends Controller
      */
     public function paymentDoneAction(PurchaseCreditsService $purchaseCreditsService, $orderId)
     {
-        //Gets Stripe payment
-        $em = $this->getDoctrine()->getManager();
-        $payment = $em->getRepository('c975L\PaymentBundle\Entity\Payment')
+        //Gets Stripe payment not finished
+        $payment = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('c975L\PaymentBundle\Entity\Payment')
             ->findOneByOrderIdNotFinished($orderId);
 
+        //Adds the credits
         if ($payment instanceof Payment) {
-            //Adds the credits
-            $purchaseCreditsService->addCredits($payment);
+            $purchaseCreditsService->add($payment);
         }
 
         //Redirects to the display of payment

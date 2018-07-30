@@ -27,6 +27,18 @@ class TransactionService
         $this->em = $em;
     }
 
+    //Adds Transaction
+    public function add($payment, $credits, $user)
+    {
+        $transaction = $this->create('pmt' . $payment->getOrderId());
+        $transaction
+            ->setCredits($credits)
+            ->setDescription($payment->getDescription())
+        ;
+
+        $this->persist($transaction, $user);
+    }
+
     //Creates Transaction
     public function create($orderId = null)
     {
@@ -54,14 +66,18 @@ class TransactionService
         $this->em->persist($transaction);
 
         //Adds/Subtracts credits to user
-        if (true === $this->container->getParameter('c975_l_purchase_credits.live')) {
+        if (
             //Credits are live on site
-            if ($transaction->getCredits() < 0 ||
-                //Payment is live on site
-                true === $this->container->getParameter('c975_l_payment.live') ||
-
-                //Transaction is not resulting from a test payment
-                substr($transaction->getOrderId(), 0, 3) != 'pmt') {
+            true === $this->container->getParameter('c975_l_purchase_credits.live') &&
+            //Method addCredits() exists on user class
+            method_exists(get_class($user), 'addCredits') &&
+            //Credits are used by user
+            (($transaction->getCredits() < 0 ||
+            //Payment is live on site
+            true === $this->container->getParameter('c975_l_payment.live') ||
+            //Transaction is not resulting from a test payment
+            substr($transaction->getOrderId(), 0, 3) != 'pmt'))
+        ) {
                 $user->addCredits($transaction->getCredits());
                 $em->persist($user);
             }

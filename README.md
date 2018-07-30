@@ -92,7 +92,7 @@ c975_l_purchase_credits:
 
 Step 5: User entity
 -------------------
-Your User entity needs to have a property `credits` with proper and getter and setter, plus a `addCredits()` one, notice the `+=`, this method is used to add and subtract credits:
+Your User entity **MUST** have a property `credits` with proper and getter and setter, plus a `addCredits()` one, notice the `+=`, this method is used to add and subtract credits:
 ```php
 //Your entity file
 namespace AppBundle\Entity;
@@ -180,12 +180,14 @@ All the process for purchase and payment is managed via the bundle. All you have
 ```php
 <?php
 //In your controller file
+use c975L\PurchaseCreditsBundle\Service\TransactionService;
+
     /**
      * @Route("/YOUR_ROUTE",
      *      name="YOUR_ROUTE_NAME")
      * @Method({"GET", "HEAD"})
      */
-    public function YOUR_METHOD_NAME(Request $request)
+    public function YOUR_METHOD_NAME(Request $request, TransactionService $transactionService)
     {
         //Your stuff...
 
@@ -195,7 +197,6 @@ All the process for purchase and payment is managed via the bundle. All you have
         //Adds transaction, to keep trace of it and for user to see it in its list of transactions
         //You can call create() without argument, TransactionService will add an orderId built on the same scheme as Payment's one
         //The only restriction is that your orderId MUST NOT start with 'pmt' as this string is added to the Payment orderId, to provide a link to the payment
-        $transactionService = $this->get(\c975L\PurchaseCreditsBundle\Service\TransactionService::class);
         $transaction = $transactionService->create('YOUR_OWN_ORDER_ID_OR_EMPTY');
         $transaction
             ->setCredits(+-CREDITS)

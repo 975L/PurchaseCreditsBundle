@@ -1,5 +1,13 @@
 # Changelog
 
+v1.4.5
+------
+- Injected `AuthorizationCheckerInterface` in Controllers to avoid use of `$this->get()` (30/07/2018)
+- Made use of ParamConverter (30/07/2018)
+- Moved `PurchaseCreditsService` > `addTransaction()` to `TransactionService` > `add()` (30/07/2018)
+- Corrected `README.md` (30/07/2018)
+- Added test to check if `addCredits()` method exists in User Class (30/07/2018)
+
 v1.4.4
 ------
 - Removed required in composer.json (22/05/2018)

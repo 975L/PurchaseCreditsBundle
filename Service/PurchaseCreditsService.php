@@ -10,9 +10,6 @@
 namespace c975L\PurchaseCreditsBundle\Service;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-//use c975L\Email\Service\EmailService;
-//use c975L\PaymentBundle\Entity\Payment;
-//use c975L\PaymentBundle\Service\PaymentService;
 
 class PurchaseCreditsService
 {
@@ -46,7 +43,7 @@ class PurchaseCreditsService
     }
 
     //Adds credits
-    public function addCredits($payment)
+    public function add($payment)
     {
         $action = (array) json_decode($payment->getAction());
         if (array_key_exists('addCredits', $action)) {
@@ -56,7 +53,7 @@ class PurchaseCreditsService
                 ->findOneById($payment->getUserId());
 
             //Adds Transaction
-            $this->addTransaction($payment, $action['addCredits'], $user);
+            $this->transactionService->add($payment, $action['addCredits'], $user);
 
             //Set payment as finished
             $payment->setFinished(true);
@@ -77,18 +74,6 @@ class PurchaseCreditsService
         }
 
         return false;
-    }
-
-    //Adds Transaction
-    public function addTransaction($payment, $credits, $user)
-    {
-        $transaction = $this->transactionService->create('pmt' . $payment->getOrderId());
-        $transaction
-            ->setCredits($credits)
-            ->setDescription($payment->getDescription())
-        ;
-
-        $this->transactionService->persist($transaction, $user);
     }
 
     //Gets prices for credits
