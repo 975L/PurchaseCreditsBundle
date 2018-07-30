@@ -1,5 +1,9 @@
 # Changelog
 
+v1.4.5.1
+--------
+- Corrected `TransactionService` (30/07/2018)
+
 v1.4.5
 ------
 - Injected `AuthorizationCheckerInterface` in Controllers to avoid use of `$this->get()` (30/07/2018)

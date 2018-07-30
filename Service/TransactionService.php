@@ -80,7 +80,6 @@ class TransactionService
         ) {
                 $user->addCredits($transaction->getCredits());
                 $em->persist($user);
-            }
         }
     }
 }
