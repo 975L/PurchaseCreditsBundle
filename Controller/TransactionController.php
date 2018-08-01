@@ -19,25 +19,15 @@ use c975L\PurchaseCreditsBundle\Entity\Transaction;
 
 class TransactionController extends Controller
 {
-    private $accessGranted;
-
-    public function __construct(AuthorizationCheckerInterface $authChecker)
-    {
-        $this->accessGranted = $authChecker->isGranted('ROLE_USER');
-    }
-
-//LIST
+//ALL
     /**
      * @Route("/purchase-credits/transactions",
      *      name="purchasecredits_transactions")
      * @Method({"GET", "HEAD"})
      */
-    public function list(Request $request)
+    public function all(Request $request)
     {
-        //Access denied
-        if (true !== $this->accessGranted) {
-            throw $this->createAccessDeniedException();
-        }
+        $this->denyAccessUnlessGranted('all', null);
 
         //Gets the transactions
         $transactions = $this->getDoctrine()
@@ -53,7 +43,7 @@ class TransactionController extends Controller
             25
         );
 
-        //Renders the page
+        //Renders the transactions
         return $this->render('@c975LPurchaseCredits/pages/transactions.html.twig', array(
             'transactions' => $pagination,
         ));
@@ -67,19 +57,11 @@ class TransactionController extends Controller
      */
     public function display(Transaction $transaction)
     {
-        //Access denied
-        if (true !== $this->accessGranted) {
-            throw $this->createAccessDeniedException();
-        }
+        $this->denyAccessUnlessGranted('display', $transaction);
 
         //Renders the transaction
-        if ($transaction->getUserId() == $this->getUser()->getId()) {
-            return $this->render('@c975LPurchaseCredits/pages/transaction.html.twig', array(
-                'transaction' => $transaction,
-            ));
-        }
-
-        //Access is denied as transaction not linked to user
-        throw $this->createAccessDeniedException();
+        return $this->render('@c975LPurchaseCredits/pages/transaction.html.twig', array(
+            'transaction' => $transaction,
+        ));
     }
 }

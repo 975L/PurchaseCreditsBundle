@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use c975L\PaymentBundle\Entity\Payment;
 use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
 use c975L\PurchaseCreditsBundle\Form\PurchaseCreditsType;
@@ -23,13 +22,6 @@ use c975L\PurchaseCreditsBundle\Service\PurchaseCreditsService;
 
 class PurchaseCreditsController extends Controller
 {
-    private $accessGranted;
-
-    public function __construct(AuthorizationCheckerInterface $authChecker)
-    {
-        $this->accessGranted = $authChecker->isGranted('ROLE_USER');
-    }
-
 //DASHBOARD
     /**
      * @Route("/purchase-credits/dashboard",
@@ -38,10 +30,7 @@ class PurchaseCreditsController extends Controller
      */
     public function dashboardAction()
     {
-        //Access denied
-        if (true !== $this->accessGranted) {
-            throw $this->createAccessDeniedException();
-        }
+        $this->denyAccessUnlessGranted('dashboard', null);
 
         //Renders the dashboard
         return $this->render('@c975LPurchaseCredits/pages/dashboard.html.twig');
@@ -57,10 +46,8 @@ class PurchaseCreditsController extends Controller
      */
     public function purchaseCreditsAction(Request $request, PurchaseCreditsService $purchaseCreditsService, $credits)
     {
-        //Access denied
-        if (true !== $this->accessGranted) {
-            throw $this->createAccessDeniedException();
-        }
+        $purchaseCredits = new PurchaseCredits();
+        $this->denyAccessUnlessGranted('purchase', $purchaseCredits);
 
         //Defines prices
         $prices = $purchaseCreditsService->getPrices();
@@ -68,7 +55,6 @@ class PurchaseCreditsController extends Controller
 
         //Defines form
         $credits = in_array($credits, $this->getParameter('c975_l_purchase_credits.creditsNumber')) === true ? (int) $credits : 0;
-        $purchaseCredits = new PurchaseCredits();
 
         $form = $this->createForm(PurchaseCreditsType::class, $purchaseCredits, array('prices' => $pricesChoices));
         $form->handleRequest($request);
