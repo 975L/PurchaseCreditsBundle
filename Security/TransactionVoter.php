@@ -48,8 +48,10 @@ class TransactionVoter extends Voter
         switch ($attribute) {
             case self::ALL:
                 return $this->decisionManager->decide($token, array('ROLE_USER'));
+                break;
             case self::DISPLAY:
                 return $this->isOwner($token, $subject);
+                break;
         }
 
         throw new \LogicException('Invalid attribute: ' . $attribute);

@@ -1,5 +1,9 @@
 # Changelog
 
+v1.5.1
+------
+- Added missing breaks (03/08/2018)
+
 v1.5
 ----
 - Made use of Voters for access rights (01/08/2018)
