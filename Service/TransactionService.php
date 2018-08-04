@@ -79,7 +79,7 @@ class TransactionService
             substr($transaction->getOrderId(), 0, 3) != 'pmt'))
         ) {
                 $user->addCredits($transaction->getCredits());
-                $em->persist($user);
+                $this->em->persist($user);
         }
     }
 }
