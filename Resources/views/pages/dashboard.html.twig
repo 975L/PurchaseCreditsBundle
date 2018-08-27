@@ -6,17 +6,14 @@
 {# Toolbar #}
     {{ toolbar_display('@c975LPurchaseCredits/tools.html.twig', 'dashboard', 'md') }}
 {# Number of credits #}
-    <p class="alert alert-info text-center">
-        {{ 'text.number_credits'|trans({'%credits%' : app.user.credits})|raw }}
-    </p>
+    {{ include('@c975LPurchaseCredits/fragments/numberCredits.html.twig') }}
 {# Transactions #}
     <p class="text-center">
-        <a href="{{ path('purchasecredits_transactions') }}">
-            {{ 'label.transactions'|transchoice(2) }}</a>
-        &nbsp;-&nbsp;
+        {{ toolbar_button_text(path('purchasecredits_transactions'), 'transactions', 'md', 'true', 'right', 'label.transactions'|transchoice(2)) }}
+    </p>
 {# Purchase Credits #}
-        <a href="{{ path('purchasecredits_purchase') }}">
-            {{ 'label.purchase_credits'|trans }}</a>
+    <p class="text-center">
+        {{ toolbar_button_text(path('purchasecredits_purchase'), 'credits', 'md', 'true', 'right', 'label.purchase_credits'|transchoice(2)) }}
     </p>
 {# Not enough credits #}
     {% if app.user.credits <= 0 %}

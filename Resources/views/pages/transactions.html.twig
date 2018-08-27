@@ -52,14 +52,12 @@
                     </td>
 {# OrderId #}
                     <td class="text-center">
-                        <a href="{{ path('purchasecredits_transaction_display', ({'orderId': transaction.orderId})) }}">
-                            {{ transaction.orderId }}</a>
+                        {{ toolbar_button_text(path('purchasecredits_transaction_display', {'orderId': transaction.orderId}), 'display', 'sm', 'true', 'right', transaction.orderId) }}
                     </td>
 {# Payment #}
                     <td class="text-center">
                         {% if transaction.orderId starts with 'pmt' %}
-                            <a href="{{ path('payment_display', ({'orderId': transaction.orderId|replace({'pmt': ''})})) }}">
-                                {{ 'label.payment'|trans({}, 'payment') }}</a>
+                            {{ toolbar_button_text(path('payment_display', {'orderId': transaction.orderId|replace({'pmt': ''})}), 'display', 'sm', 'true', 'right', 'label.payment'|trans({}, 'payment')) }}
                         {% else %}
                             -
                         {% endif %}

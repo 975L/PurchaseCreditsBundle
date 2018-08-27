@@ -9,6 +9,11 @@
 
 namespace c975L\PurchaseCreditsBundle\Twig;
 
+/**
+ * Twig extension to display the formatted number of credits using `|purchasecredits_format`
+ * @author Laurent Marquet <laurent.marquet@laposte.net>
+ * @copyright 2018 975L <contact@975l.com>
+ */
 class FormatCredits extends \Twig_Extension
 {
     public function getFilters()
@@ -22,6 +27,10 @@ class FormatCredits extends \Twig_Extension
         );
     }
 
+    /**
+     * Returns the number of credits formatted
+     * @return string
+     */
     public function formatCredits($amount)
     {
         if ($amount < 0) {
@@ -30,6 +39,6 @@ class FormatCredits extends \Twig_Extension
             return '<strong><span class="green">+' . $amount . ' crd</span></strong>';
         }
 
-        return '<strong> 0 crd</strong>';
+        return '<strong>0 crd</strong>';
     }
 }

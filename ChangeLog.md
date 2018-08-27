@@ -1,5 +1,24 @@
 # Changelog
 
+v1.6
+----
+- Replaced links in dashboard (transactions) by buttons (25/08/2018)
+- Removed left 'Action' in Controllers method (25/08/2018)
+- Made controller skinny (25/08/2018)
+- Added documentation (25/08/2018)
+- Added link to BuyMeCoffee (25/08/2018)
+- Added link to apidoc (25/08/2018)
+- Removed FQCN (25/08/2018)
+- Split service in multiples files + Interface (25/08/2018)
+- Updated `README.md` (25/08/2018)
+- Made use of @ParamConverter for Payment (25/08/2018)
+- Added IP Address to purchase form to be GDPR compliant
+- Added GDPR checkbox to purchase form (25/08/2018)
+- Added `PaymentController` (25/08/2018)
+- Removed 'true ===' as not needed (25/08/2018)
+- Added dependency on "c975l/config-bundle" and "c975l/services-bundle" (26/08/2018)
+- Deleted un-needed translations (26/08/2018)
+
 v1.5.1
 ------
 - Added missing breaks (03/08/2018)

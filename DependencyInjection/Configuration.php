@@ -12,6 +12,11 @@ namespace c975L\PurchaseCreditsBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
+/**
+ * DI Configuration Class
+ * @author Laurent Marquet <laurent.marquet@laposte.net>
+ * @copyright 2018 975L <contact@975l.com>
+ */
 class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder()
@@ -26,6 +31,9 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('creditsPrice')
                     ->prototype('scalar')->end()
+                ->end()
+                ->booleanNode('gdpr')
+                    ->defaultTrue()
                 ->end()
                 ->scalarNode('currency')
                     ->defaultValue('EUR')

@@ -14,14 +14,40 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
 
+/**
+ * Voter for PurchaseCredits access
+ * @author Laurent Marquet <laurent.marquet@laposte.net>
+ * @copyright 2018 975L <contact@975l.com>
+ */
 class PurchaseCreditsVoter extends Voter
 {
+    /**
+     * @var AccessDecisionManagerInterface
+     */
     private $decisionManager;
+
+    /**
+     * The role needed to be allowed access (defined in config)
+     * @var string
+     */
     private $roleNeeded;
 
+    /**
+     * Used for access to dashboard
+     * @var string
+     */
     public const DASHBOARD = 'dashboard';
+
+    /**
+     * Used for access to purchase
+     * @var string
+     */
     public const PURCHASE = 'purchase';
 
+    /**
+     * Contains all the available attributes to check with in supports()
+     * @var array
+     */
     private const ATTRIBUTES = array(
         self::DASHBOARD,
         self::PURCHASE,
@@ -33,6 +59,10 @@ class PurchaseCreditsVoter extends Voter
         $this->roleNeeded = $roleNeeded;
     }
 
+    /**
+     * Checks if attribute and subject are supported
+     * @return bool
+     */
     protected function supports($attribute, $subject)
     {
         if (null !== $subject) {
@@ -42,6 +72,11 @@ class PurchaseCreditsVoter extends Voter
         return in_array($attribute, self::ATTRIBUTES);
     }
 
+    /**
+     * Votes if access is granted
+     * @return bool
+     * @throws \LogicException
+     */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
         //Defines access rights

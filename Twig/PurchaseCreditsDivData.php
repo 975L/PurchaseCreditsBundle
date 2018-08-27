@@ -9,6 +9,11 @@
 
 namespace c975L\PurchaseCreditsBundle\Twig;
 
+/**
+ * Twig extension to display a "<div data-...></div>" that contains informations related to credits using `purchasecredits_divData()`
+ * @author Laurent Marquet <laurent.marquet@laposte.net>
+ * @copyright 2018 975L <contact@975l.com>
+ */
 class PurchaseCreditsDivData extends \Twig_Extension
 {
     public function getFunctions()
@@ -25,6 +30,10 @@ class PurchaseCreditsDivData extends \Twig_Extension
         );
     }
 
+    /**
+     * Returns the xhtml code for "<div data-...></div>" formatted
+     * @return string
+     */
     public function divData(\Twig_Environment $environment)
     {
         $render = $environment->render('@c975LPurchaseCredits/fragments/divData.html.twig');

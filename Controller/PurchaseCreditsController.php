@@ -10,25 +10,66 @@ namespace c975L\PurchaseCreditsBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use c975L\PaymentBundle\Entity\Payment;
 use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
 use c975L\PurchaseCreditsBundle\Form\PurchaseCreditsType;
-use c975L\PurchaseCreditsBundle\Service\PurchaseCreditsService;
-
+use c975L\PurchaseCreditsBundle\Service\PurchaseCreditsServiceInterface;
+use c975L\PurchaseCreditsBundle\Service\Payment\PurchaseCreditsPaymentInterface;
+use c975L\ServicesBundle\Service\ServiceToolsInterface;
+/**
+ * PurchaseCredits Controller class
+ * @author Laurent Marquet <laurent.marquet@laposte.net>
+ * @copyright 2018 975L <contact@975l.com>
+ */
 class PurchaseCreditsController extends Controller
 {
+    /**
+     * Stores PurchaseCreditsPaymentInterface
+     * @var PurchaseCreditsPaymentInterface
+     */
+    private $purchaseCreditsPayment;
+
+    /**
+     * Stores PurchaseCreditsServiceInterface
+     * @var PurchaseCreditsServiceInterface
+     */
+    private $purchaseCreditsService;
+
+    /**
+     * Stores ServiceToolsInterface
+     * @var ServiceToolsInterface
+     */
+    private $serviceTools;
+
+    public function __construct(
+        PurchaseCreditsPaymentInterface $purchaseCreditsPayment,
+        PurchaseCreditsServiceInterface $purchaseCreditsService,
+        ServiceToolsInterface $serviceTools
+    )
+    {
+        $this->purchaseCreditsPayment = $purchaseCreditsPayment;
+        $this->purchaseCreditsService = $purchaseCreditsService;
+        $this->serviceTools = $serviceTools;
+    }
+
 //DASHBOARD
     /**
+     * Displays the dashboard for PurchaseCredits
+     * @return Response
+     * @throws AccessDeniedException
+     *
      * @Route("/purchase-credits/dashboard",
      *      name="purchasecredits_dashboard")
      * @Method({"GET", "HEAD"})
      */
-    public function dashboardAction()
+    public function dashboard()
     {
         $this->denyAccessUnlessGranted('dashboard', null);
 
@@ -36,72 +77,47 @@ class PurchaseCreditsController extends Controller
         return $this->render('@c975LPurchaseCredits/pages/dashboard.html.twig');
     }
 
-//PURCHASE
+//PURCHASE CREDITS
     /**
+     * Displays the form to purchase credits
+     * @return Response
+     * @throws AccessDeniedException
+     *
      * @Route("/purchase-credits/{credits}",
      *      name="purchasecredits_purchase",
      *      defaults={"credits": "0"},
      *      requirements={"credits": "([0-9]+)"})
      * @Method({"GET", "HEAD", "POST"})
      */
-    public function purchaseCreditsAction(Request $request, PurchaseCreditsService $purchaseCreditsService, $credits)
+    public function purchaseCredits(Request $request, $credits)
     {
-        $purchaseCredits = new PurchaseCredits();
+        $purchaseCredits = $this->purchaseCreditsService->create();
         $this->denyAccessUnlessGranted('purchase', $purchaseCredits);
 
-        //Defines prices
-        $prices = $purchaseCreditsService->getPrices();
-        $pricesChoices = $purchaseCreditsService->getPricesChoices($prices);
-
         //Defines form
-        $credits = in_array($credits, $this->getParameter('c975_l_purchase_credits.creditsNumber')) === true ? (int) $credits : 0;
-
-        $form = $this->createForm(PurchaseCreditsType::class, $purchaseCredits, array('prices' => $pricesChoices));
+        $purchaseCreditsConfig = array(
+            'credits' => in_array($credits, $this->getParameter('c975_l_purchase_credits.creditsNumber')) ? (int) $credits : 0,
+            'pricesChoice' => $this->purchaseCreditsService->getPricesChoice(),
+            'gdpr' => $this->getParameter('c975_l_purchase_credits.gdpr'),
+            );
+        $form = $this->createForm(PurchaseCreditsType::class, $purchaseCredits, array('purchaseCreditsConfig' => $purchaseCreditsConfig));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $purchaseCredits->setCredits($form->getData()->getCredits());
-            $purchaseCredits->setAmount($prices[$form->getData()->getCredits()] * 100);
-            $purchaseCredits->setCurrency($this->getParameter('c975_l_purchase_credits.currency'));
+            //Defines the PurchaseCredits
+            $this->purchaseCreditsService->define($purchaseCredits);
 
             //Redirects to the payment
-            $userId = null !== $this->getUser() ? $this->getUser()->getId() : null;
-            $purchaseCreditsService->payment($purchaseCredits, $userId);
-
+            $this->purchaseCreditsPayment->payment($purchaseCredits, $this->getUser());
             return $this->redirectToRoute('payment_form');
         }
 
-        //Renders the purchase credits page
+        //Renders the purchase credits form
         return $this->render('@c975LPurchaseCredits/forms/purchase.html.twig', array(
             'form' => $form->createView(),
             'user' => $this->getUser(),
             'live' => $this->getParameter('c975_l_purchase_credits.live'),
-            'tosUrl' => $purchaseCreditsService->getTosUrl(),
-        ));
-    }
-
-//PAYMENT DONE
-    /**
-     * @Route("/purchase-credits/payment-done/{orderId}",
-     *      name="purchasecredits_payment_done")
-     * @Method({"GET", "HEAD"})
-     */
-    public function paymentDoneAction(PurchaseCreditsService $purchaseCreditsService, $orderId)
-    {
-        //Gets Stripe payment not finished
-        $payment = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('c975L\PaymentBundle\Entity\Payment')
-            ->findOneByOrderIdNotFinished($orderId);
-
-        //Adds the credits
-        if ($payment instanceof Payment) {
-            $purchaseCreditsService->add($payment);
-        }
-
-        //Redirects to the display of payment
-        return $this->redirectToRoute('payment_display', array(
-            'orderId' => $orderId,
+            'tosUrl' => $this->serviceTools->getUrl($this->getParameter('c975_l_purchase_credits.tosUrl')),
         ));
     }
 }
