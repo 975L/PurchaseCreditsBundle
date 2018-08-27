@@ -7,6 +7,9 @@ services:
     c975L\PurchaseCreditsBundle\Controller\:
         resource: '../../Controller/*'
 
+    c975L\PurchaseCreditsBundle\Form\:
+        resource: '../../Form/*'
+
     c975L\PurchaseCreditsBundle\Security\:
         resource: '../../Security/*'
         bind:

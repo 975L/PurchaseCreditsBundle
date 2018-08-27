@@ -26,6 +26,12 @@ interface PurchaseCreditsServiceInterface
     public function create();
 
     /**
+     * Shortcut to call PurchaseCreditsFormFactory to create Form
+     * @return Form
+     */
+    public function createForm(string $name, PurchaseCredits $purchaseCredits, int $credits, array $priceChoices);
+
+    /**
      * Gets prices for credits
      * @return array
      */

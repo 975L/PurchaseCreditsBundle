@@ -1,5 +1,11 @@
 # Changelog
 
+v1.6.1
+------
+- Used a `switch()` for the FormFactory more readable (27/08/2018)
+- Renamed "purchaseCreditsConfig" to "config" in `PurchaseCreditsType` (27/08/2018)
+- Changed the FormFactory to the right version and made use of it (27/08/2018)
+
 v1.6
 ----
 - Replaced links in dashboard (transactions) by buttons (25/08/2018)

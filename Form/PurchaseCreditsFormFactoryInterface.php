@@ -7,22 +7,21 @@
  * with this source code in the file LICENSE.
  */
 
-namespace c975L\ContactFormBundle\Form;
+namespace c975L\PurchaseCreditsBundle\Form;
 
 use Symfony\Component\Form\Form;
-use c975L\ContactFormBundle\Entity\ContactForm;
-use c975L\ContactFormBundle\Event\ContactFormEvent;
+use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
 
 /**
- * Interface to be called for DI for ContactFormFactoryInterface related services
+ * Interface to be called for DI for PurchaseCreditsFormFactoryInterface related services
  * @author Laurent Marquet <laurent.marquet@laposte.net>
  * @copyright 2018 975L <contact@975l.com>
  */
-interface ContactFormFactoryInterface
+interface PurchaseCreditsFormFactoryInterface
 {
     /**
      * Returns the defined form
      * @return Form
      */
-    public function create(string $name, ContactForm $contactForm, ContactFormEvent $event);
+    public function create(string $name, PurchaseCredits $purchaseCredits, int $credits, array $priceChoices);
 }

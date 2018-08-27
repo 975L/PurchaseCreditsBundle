@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use c975L\PaymentBundle\Entity\Payment;
 use c975L\ServicesBundle\Service\ServiceToolsInterface;
 use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
+use c975L\PurchaseCreditsBundle\Form\PurchaseCreditsFormFactoryInterface;
 use c975L\PurchaseCreditsBundle\Service\TransactionServiceInterface;
 use c975L\PurchaseCreditsBundle\Service\PurchaseCreditsServiceInterface;
 use c975L\PurchaseCreditsBundle\Service\Email\PurchaseCreditsEmailInterface;
@@ -46,6 +47,12 @@ class PurchaseCreditsService implements PurchaseCreditsServiceInterface
     private $purchaseCreditsEmail;
 
     /**
+     * Stores PurchaseCreditsFormFactoryInterface
+     * @var PurchaseCreditsFormFactoryInterface
+     */
+    private $purchaseCreditsFormFactory;
+
+    /**
      * Stores ServiceToolsInterface
      * @var ServiceToolsInterface
      */
@@ -73,6 +80,7 @@ class PurchaseCreditsService implements PurchaseCreditsServiceInterface
         ContainerInterface $container,
         EntityManagerInterface $em,
         PurchaseCreditsEmailInterface $purchaseCreditsEmail,
+        PurchaseCreditsFormFactoryInterface $purchaseCreditsFormFactory,
         ServiceToolsInterface $serviceTools,
         RequestStack $requestStack,
         TransactionServiceInterface $transactionService,
@@ -82,6 +90,7 @@ class PurchaseCreditsService implements PurchaseCreditsServiceInterface
         $this->container = $container;
         $this->em = $em;
         $this->purchaseCreditsEmail = $purchaseCreditsEmail;
+        $this->purchaseCreditsFormFactory = $purchaseCreditsFormFactory;
         $this->serviceTools = $serviceTools;
         $this->request = $requestStack->getCurrentRequest();
         $this->transactionService = $transactionService;
@@ -99,6 +108,14 @@ class PurchaseCreditsService implements PurchaseCreditsServiceInterface
         ;
 
         return $purchaseCredits;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createForm(string $name, PurchaseCredits $purchaseCredits, int $credits, array $priceChoices)
+    {
+        return $this->purchaseCreditsFormFactory->create($name, $purchaseCredits, $credits, $priceChoices);
     }
 
     /**

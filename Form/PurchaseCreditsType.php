@@ -30,8 +30,8 @@ class PurchaseCreditsType extends AbstractType
                 'multiple' => false,
                 'label' => 'label.number_credits',
                 'required' => true,
-                'data' => $options['purchaseCreditsConfig']['credits'],
-                'choices' => $options['purchaseCreditsConfig']['pricesChoice']
+                'data' => $options['config']['credits'],
+                'choices' => $options['config']['pricesChoice']
                 ))
             ->add('userIp', TextType::class, array(
                 'label' => 'label.ip',
@@ -42,7 +42,7 @@ class PurchaseCreditsType extends AbstractType
                 )))
         ;
         //GDPR
-        if ($options['purchaseCreditsConfig']['gdpr']) {
+        if ($options['config']['gdpr']) {
             $builder
                 ->add('gdpr', CheckboxType::class, array(
                     'label' => 'text.gdpr',
@@ -61,6 +61,6 @@ class PurchaseCreditsType extends AbstractType
             'translation_domain' => 'purchaseCredits',
         ));
 
-        $resolver->setRequired('purchaseCreditsConfig');
+        $resolver->setRequired('config');
     }
 }

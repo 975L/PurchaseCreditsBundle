@@ -19,7 +19,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use c975L\PaymentBundle\Entity\Payment;
 use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
-use c975L\PurchaseCreditsBundle\Form\PurchaseCreditsType;
 use c975L\PurchaseCreditsBundle\Service\PurchaseCreditsServiceInterface;
 use c975L\PurchaseCreditsBundle\Service\Payment\PurchaseCreditsPaymentInterface;
 use c975L\ServicesBundle\Service\ServiceToolsInterface;
@@ -95,12 +94,7 @@ class PurchaseCreditsController extends Controller
         $this->denyAccessUnlessGranted('purchase', $purchaseCredits);
 
         //Defines form
-        $purchaseCreditsConfig = array(
-            'credits' => in_array($credits, $this->getParameter('c975_l_purchase_credits.creditsNumber')) ? (int) $credits : 0,
-            'pricesChoice' => $this->purchaseCreditsService->getPricesChoice(),
-            'gdpr' => $this->getParameter('c975_l_purchase_credits.gdpr'),
-            );
-        $form = $this->createForm(PurchaseCreditsType::class, $purchaseCredits, array('purchaseCreditsConfig' => $purchaseCreditsConfig));
+        $form = $this->purchaseCreditsService->createForm('purchase', $purchaseCredits, $credits, $this->purchaseCreditsService->getPricesChoice());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

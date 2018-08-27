@@ -7,22 +7,21 @@
  * with this source code in the file LICENSE.
  */
 
-namespace c975L\ContactFormBundle\Form;
+namespace c975L\PurchaseCreditsBundle\Form;
 
 use Symfony\Component\Form\Form;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use c975L\ContactFormBundle\Entity\ContactForm;
-use c975L\ContactFormBundle\Event\ContactFormEvent;
-use c975L\ContactFormBundle\Form\ContactFormType;
-use c975L\ContactFormBundle\Form\ContactFormFactoryInterface;
+use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
+use c975L\PurchaseCreditsBundle\Form\PurchaseCreditsType;
+use c975L\PurchaseCreditsBundle\Form\PurchaseCreditsFormFactoryInterface;
 
 /**
- * FormFactory class
+ * PurchaseCreditsFormFactory class
  * @author Laurent Marquet <laurent.marquet@laposte.net>
  * @copyright 2018 975L <contact@975l.com>
  */
-class ContactFormFactory implements ContactFormFactoryInterface
+class PurchaseCreditsFormFactory implements PurchaseCreditsFormFactoryInterface
 {
     /**
      * Stores container
@@ -42,17 +41,21 @@ class ContactFormFactory implements ContactFormFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create(string $name, ContactForm $contactForm, ContactFormEvent $event)
+    public function create(string $name, PurchaseCredits $purchaseCredits, int $credits, array $priceChoices)
     {
-        $contactFormConfig = array();
-
-        if ('display' === $name) {
-            $contactFormConfig = array(
-                'receiveCopy' => $event->getReceiveCopy(),
-                'gdpr' => $this->container->getParameter('c975_l_contact_form.gdpr'),
-            );
+        switch ($name) {
+            case 'purchase':
+                $config = array(
+                    'credits' => in_array($credits, $this->container->getParameter('c975_l_purchase_credits.creditsNumber')) ? (int) $credits : 0,
+                    'pricesChoice' => $priceChoices,
+                    'gdpr' => $this->container->getParameter('c975_l_purchase_credits.gdpr'),
+                    );
+                break;
+            default:
+                $config = array();
+                break;
         }
 
-        return $this->formFactory->create(ContactFormType::class, $contactForm, array('contactFormConfig' => $contactFormConfig));
+        return $this->formFactory->create(PurchaseCreditsType::class, $purchaseCredits, array('config' => $config));
     }
 }
