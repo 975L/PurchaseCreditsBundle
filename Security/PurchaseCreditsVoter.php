@@ -36,13 +36,13 @@ class PurchaseCreditsVoter extends Voter
      * Used for access to dashboard
      * @var string
      */
-    public const DASHBOARD = 'dashboard';
+    public const DASHBOARD = 'c975LPurchaseCredits-dashboard';
 
     /**
      * Used for access to purchase
      * @var string
      */
-    public const PURCHASE = 'purchase';
+    public const PURCHASE = 'c975LPurchaseCredits-purchase';
 
     /**
      * Contains all the available attributes to check with in supports()
@@ -84,6 +84,7 @@ class PurchaseCreditsVoter extends Voter
             case self::DASHBOARD:
             case self::PURCHASE:
                 return $this->decisionManager->decide($token, array('ROLE_USER'));
+                break;
         }
 
         throw new \LogicException('Invalid attribute: ' . $attribute);

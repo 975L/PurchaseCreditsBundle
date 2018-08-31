@@ -36,13 +36,13 @@ class TransactionVoter extends Voter
      * Used for access to all
      * @var string
      */
-    public const ALL = 'all';
+    public const ALL = 'c975LPurchaseCredits-all';
 
     /**
      * Used for access to display
      * @var string
      */
-    public const DISPLAY = 'display';
+    public const DISPLAY = 'c975LPurchaseCredits-display';
 
     /**
      * Contains all the available attributes to check with in supports()

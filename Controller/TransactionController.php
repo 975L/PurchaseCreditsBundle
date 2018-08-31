@@ -39,7 +39,7 @@ class TransactionController extends Controller
      */
     public function all(Request $request, PaginatorInterface $paginator, TransactionServiceInterface $transactionService)
     {
-        $this->denyAccessUnlessGranted('all', null);
+        $this->denyAccessUnlessGranted('c975LPurchaseCredits-all', null);
 
         //Renders the transactions
         $transactions = $paginator->paginate(
@@ -63,7 +63,7 @@ class TransactionController extends Controller
      */
     public function display(Transaction $transaction)
     {
-        $this->denyAccessUnlessGranted('display', $transaction);
+        $this->denyAccessUnlessGranted('c975LPurchaseCredits-display', $transaction);
 
         //Renders the transaction
         return $this->render('@c975LPurchaseCredits/pages/transaction.html.twig', array(

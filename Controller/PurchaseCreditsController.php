@@ -70,7 +70,7 @@ class PurchaseCreditsController extends Controller
      */
     public function dashboard()
     {
-        $this->denyAccessUnlessGranted('dashboard', null);
+        $this->denyAccessUnlessGranted('c975LPurchaseCredits-dashboard', null);
 
         //Renders the dashboard
         return $this->render('@c975LPurchaseCredits/pages/dashboard.html.twig');
@@ -91,7 +91,7 @@ class PurchaseCreditsController extends Controller
     public function purchaseCredits(Request $request, $credits)
     {
         $purchaseCredits = $this->purchaseCreditsService->create();
-        $this->denyAccessUnlessGranted('purchase', $purchaseCredits);
+        $this->denyAccessUnlessGranted('c975LPurchaseCredits-purchase', $purchaseCredits);
 
         //Defines form
         $form = $this->purchaseCreditsService->createForm('purchase', $purchaseCredits, $credits, $this->purchaseCreditsService->getPricesChoice());
