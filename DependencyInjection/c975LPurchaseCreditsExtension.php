@@ -29,19 +29,5 @@ class c975LPurchaseCreditsExtension extends Extension
             new FileLocator(__DIR__.'/../Resources/config')
         );
         $loader->load('services.yml');
-
-        $configuration = new Configuration();
-        $processedConfig = $this->processConfiguration($configuration, $configs);
-
-        $container->setParameter('c975_l_purchase_credits.creditsNumber', $processedConfig['creditsNumber']);
-        $container->setParameter('c975_l_purchase_credits.creditsPrice', $processedConfig['creditsPrice']);
-        $container->setParameter('c975_l_purchase_credits.gdpr', $processedConfig['gdpr']);
-        $container->setParameter('c975_l_purchase_credits.currency', strtoupper($processedConfig['currency']));
-        $container->setParameter('c975_l_purchase_credits.vat', $processedConfig['vat'] * 100);
-        $container->setParameter('c975_l_purchase_credits.live', $processedConfig['live']);
-        $container->setParameter('c975_l_purchase_credits.userEntity', $processedConfig['userEntity']);
-        $container->setParameter('c975_l_purchase_credits.roleNeeded', $processedConfig['roleNeeded']);
-        $container->setParameter('c975_l_purchase_credits.tosUrl', $processedConfig['tosUrl']);
-        $container->setParameter('c975_l_purchase_credits.tosPdf', $processedConfig['tosPdf']);
     }
 }
