@@ -17,11 +17,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\PaymentBundle\Entity\Payment;
+use c975L\ServicesBundle\Service\ServiceToolsInterface;
 use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
 use c975L\PurchaseCreditsBundle\Service\PurchaseCreditsServiceInterface;
 use c975L\PurchaseCreditsBundle\Service\Payment\PurchaseCreditsPaymentInterface;
-use c975L\ServicesBundle\Service\ServiceToolsInterface;
 /**
  * PurchaseCredits Controller class
  * @author Laurent Marquet <laurent.marquet@laposte.net>
@@ -74,6 +75,39 @@ class PurchaseCreditsController extends Controller
 
         //Renders the dashboard
         return $this->render('@c975LPurchaseCredits/pages/dashboard.html.twig');
+    }
+
+//CONFIG
+    /**
+     * Displays the configuration
+     * @return Response
+     * @throws AccessDeniedException
+     *
+     * @Route("/purchase-credits/config",
+     *      name="purchasecredits_config")
+     * @Method({"GET", "HEAD", "POST"})
+     */
+    public function config(Request $request, ConfigServiceInterface $configService)
+    {
+        $this->denyAccessUnlessGranted('c975LPurchaseCredits-config', null);
+
+        //Defines form
+        $form = $configService->createForm('c975l/purchasecredits-bundle');
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            //Validates config
+            $configService->setConfig($form);
+
+            //Redirects
+            return $this->redirectToRoute('purchasecredits_dashboard');
+        }
+
+        //Renders the config form
+        return $this->render('@c975LConfig/forms/config.html.twig', array(
+            'form' => $form->createView(),
+            'toolbar' => '@c975LPurchaseCredits',
+        ));
     }
 
 //PURCHASE CREDITS

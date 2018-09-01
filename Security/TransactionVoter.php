@@ -12,6 +12,7 @@ namespace c975L\PurchaseCreditsBundle\Security;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\PurchaseCreditsBundle\Entity\Transaction;
 
 /**
@@ -22,15 +23,16 @@ use c975L\PurchaseCreditsBundle\Entity\Transaction;
 class TransactionVoter extends Voter
 {
     /**
+     * Stores ConfigServiceInterface
+     * @var ConfigServiceInterface
+     */
+    private $configService;
+
+    /**
+     * Stores AccessDecisionManagerInterface
      * @var AccessDecisionManagerInterface
      */
     private $decisionManager;
-
-    /**
-     * The role needed to be allowed access (defined in config)
-     * @var string
-     */
-    private $roleNeeded;
 
     /**
      * Used for access to all
@@ -53,11 +55,15 @@ class TransactionVoter extends Voter
         self::DISPLAY,
     );
 
-    public function __construct(AccessDecisionManagerInterface $decisionManager, string $roleNeeded)
+    public function __construct(
+        ConfigServiceInterface $configService,
+        AccessDecisionManagerInterface $decisionManager
+    )
     {
+        $this->configService = $configService;
         $this->decisionManager = $decisionManager;
-        $this->roleNeeded = $roleNeeded;
     }
+
 
     /**
      * Checks if attribute and subject are supported
@@ -111,6 +117,6 @@ class TransactionVoter extends Voter
      */
     private function isAdmin($token)
     {
-        return $this->decisionManager->decide($token, array($this->roleNeeded));
+        return $this->decisionManager->decide($token, array($this->configService->getParameter('c975LPurchaseCredits.roleNeeded', 'c975l/purchasecredits-bundle')));
     }
 }

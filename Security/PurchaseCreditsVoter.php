@@ -12,6 +12,7 @@ namespace c975L\PurchaseCreditsBundle\Security;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
 
 /**
@@ -22,15 +23,22 @@ use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
 class PurchaseCreditsVoter extends Voter
 {
     /**
+     * Stores ConfigServiceInterface
+     * @var ConfigServiceInterface
+     */
+    private $configService;
+
+    /**
+     * Stores AccessDecisionManagerInterface
      * @var AccessDecisionManagerInterface
      */
     private $decisionManager;
 
     /**
-     * The role needed to be allowed access (defined in config)
+     * Used for access to config
      * @var string
      */
-    private $roleNeeded;
+    public const CONFIG = 'c975LPurchaseCredits-config';
 
     /**
      * Used for access to dashboard
@@ -49,15 +57,20 @@ class PurchaseCreditsVoter extends Voter
      * @var array
      */
     private const ATTRIBUTES = array(
+        self::CONFIG,
         self::DASHBOARD,
         self::PURCHASE,
     );
 
-    public function __construct(AccessDecisionManagerInterface $decisionManager, string $roleNeeded)
+    public function __construct(
+        ConfigServiceInterface $configService,
+        AccessDecisionManagerInterface $decisionManager
+    )
     {
+        $this->configService = $configService;
         $this->decisionManager = $decisionManager;
-        $this->roleNeeded = $roleNeeded;
     }
+
 
     /**
      * Checks if attribute and subject are supported
@@ -81,6 +94,9 @@ class PurchaseCreditsVoter extends Voter
     {
         //Defines access rights
         switch ($attribute) {
+            case self::CONFIG:
+                return $this->decisionManager->decide($token, array($this->configService->getParameter('c975LPurchaseCredits.roleNeeded', 'c975l/purchasecredits-bundle')));
+                break;
             case self::DASHBOARD:
             case self::PURCHASE:
                 return $this->decisionManager->decide($token, array('ROLE_USER'));

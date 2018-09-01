@@ -14,6 +14,11 @@
     {{ toolbar_button(path('purchasecredits_purchase'), 'credits') }}
 {% endif %}
 
+{# Configuration #}
+{% if is_granted(config('c975LPurchaseCredits.roleNeeded')) %}
+    {{ toolbar_button(path('purchasecredits_config'), 'config') }}
+{% endif %}
+
 {# Signout #}
 {{ toolbar_button(path('user_signout'), 'signout') }}
 

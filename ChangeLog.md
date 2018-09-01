@@ -6,6 +6,7 @@
 - Added `bundle.yaml` (01/09/2018)
 - Added `UPGRADE.md` (01/09/2018)
 - Removed declaration of parameters in Configuration class as they are end-user parameters and defined in c975L/ConfigBundle (01/09/2018)
+- Added Route `purchasecredits_config` (01/09/2018)
 
 
 v1.x

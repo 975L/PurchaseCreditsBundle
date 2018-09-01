@@ -7,6 +7,12 @@
     {{ toolbar_display('@c975LPurchaseCredits/tools.html.twig', 'dashboard', 'md') }}
 {# Number of credits #}
     {{ include('@c975LPurchaseCredits/fragments/numberCredits.html.twig') }}
+{# Configuration #}
+    {% if is_granted(config('c975LPurchaseCredits.roleNeeded')) %}
+        <p class="text-center">
+            {{ toolbar_button_text(path('purchasecredits_config'), 'config') }}
+        </p>
+    {% endif %}
 {# Transactions #}
     <p class="text-center">
         {{ toolbar_button_text(path('purchasecredits_transactions'), 'transactions', 'md', 'true', 'right', 'label.transactions'|transchoice(2)) }}
