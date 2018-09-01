@@ -9,10 +9,8 @@
 {# Toolbar #}
     {{ toolbar_display('@c975LPurchaseCredits/tools.html.twig', 'purchase', 'md') }}
 {# Number of credits #}
-    <p class="alert alert-info text-center">
-        {{ 'text.number_credits'|trans({'%credits%' : app.user.credits})|raw }}
-    </p>
-{# Choosepurchase of credits #}
+    {{ include('@c975LPurchaseCredits/fragments/numberCredits.html.twig') }}
+{# Choose number of Credits to purchase #}
     <p>
         {{ 'text.choose_number_credits'|trans }}
     </p>
@@ -23,7 +21,7 @@
         <div class="checkbox">
             <label for="termsAccepted" class="required">
                 <input type="checkbox" id="termsAccepted" name="termsAccepted" required="required" />
-                {{ 'label.accept_tos'|trans({'%tosUrl%': tosUrl})|raw }}
+                {{ 'label.accept_tos'|trans({'%tosUrl%': tosUrl}, 'services')|raw }}
             </label>
         </div>
 {# Test #}
@@ -42,7 +40,7 @@
 {# Mandatory field #}
     <p class="text-muted">
         <em>
-            {{ 'label.mandatory_field'|trans }}
+            {{ 'label.mandatory_field'|trans({}, 'services') }}
         </em>
     </p>
 {% endblock %}

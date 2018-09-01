@@ -11,7 +11,9 @@ namespace c975L\PurchaseCreditsBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Transaction
+ * Entity Transaction (linked to DB table `user_transactions`)
+ * @author Laurent Marquet <laurent.marquet@laposte.net>
+ * @copyright 2017 975L <contact@975l.com>
  *
  * @ORM\Table(name="user_transactions")
  * @ORM\Entity
@@ -19,6 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Transaction
 {
     /**
+     * Transaction unique id
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
@@ -28,6 +31,7 @@ class Transaction
     protected $id;
 
     /**
+     * OrdreId for the Transaction
      * @var string
      *
      * @ORM\Column(name="order_id", type="string", nullable=true)
@@ -35,13 +39,15 @@ class Transaction
     protected $orderId;
 
     /**
-     * @var integer
+     * Credits added or subtracted
+     * @var int
      *
      * @ORM\Column(name="credits", type="integer", nullable=true)
      */
     protected $credits;
 
     /**
+     * Description for the Transaction
      * @var string
      *
      * @ORM\Column(name="description", type="string", nullable=true)
@@ -49,13 +55,15 @@ class Transaction
     protected $description;
 
     /**
-     * @var integer
+     * User unique id
+     * @var int
      *
      * @ORM\Column(name="user_id", type="integer", nullable=true)
      */
     protected $userId;
 
     /**
+     * User IP address
      * @var string
      *
      * @ORM\Column(name="user_ip", type="string", nullable=true)
@@ -63,29 +71,15 @@ class Transaction
     protected $userIp;
 
     /**
+     * DateTime creation for the Transaction
      * @var \DateTime
      *
      * @ORM\Column(name="creation", type="datetime", nullable=true)
      */
     protected $creation;
 
-
-
-    /**
-     * Set id
-     *
-     * @param integer $id
-     */
-    public function setId()
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
     /**
      * Get id
-     *
      * @return int
      */
     public function getId()
@@ -95,9 +89,7 @@ class Transaction
 
     /**
      * Set orderId
-     *
-     * @param string $orderId
-     *
+     * @param string
      * @return Transaction
      */
     public function setOrderId($orderId)
@@ -109,7 +101,6 @@ class Transaction
 
     /**
      * Get orderId
-     *
      * @return string
      */
     public function getOrderId()
@@ -119,9 +110,7 @@ class Transaction
 
     /**
      * Set credits
-     *
-     * @param integer $credits
-     *
+     * @param int
      * @return Transaction
      */
     public function setCredits($credits)
@@ -133,8 +122,7 @@ class Transaction
 
     /**
      * Get credits
-     *
-     * @return integer
+     * @return int
      */
     public function getCredits()
     {
@@ -143,9 +131,7 @@ class Transaction
 
     /**
      * Set description
-     *
-     * @param string $description
-     *
+     * @param string
      * @return Transaction
      */
     public function setDescription($description)
@@ -157,7 +143,6 @@ class Transaction
 
     /**
      * Get description
-     *
      * @return string
      */
     public function getDescription()
@@ -167,9 +152,7 @@ class Transaction
 
     /**
      * Set userId
-     *
-     * @param integer $userId
-     *
+     * @param int
      * @return Transaction
      */
     public function setUserId($userId)
@@ -181,8 +164,7 @@ class Transaction
 
     /**
      * Get userId
-     *
-     * @return integer
+     * @return int
      */
     public function getUserId()
     {
@@ -191,9 +173,7 @@ class Transaction
 
     /**
      * Set userIp
-     *
-     * @param string $userIp
-     *
+     * @param string
      * @return Transaction
      */
     public function setUserIp($userIp)
@@ -205,7 +185,6 @@ class Transaction
 
     /**
      * Get userIp
-     *
      * @return string
      */
     public function getUserIp()
@@ -215,9 +194,7 @@ class Transaction
 
     /**
      * Set creation
-     *
-     * @param \DateTime $creation
-     *
+     * @param \DateTime
      * @return Transaction
      */
     public function setCreation($creation)
@@ -229,7 +206,6 @@ class Transaction
 
     /**
      * Get creation
-     *
      * @return \DateTime
      */
     public function getCreation()

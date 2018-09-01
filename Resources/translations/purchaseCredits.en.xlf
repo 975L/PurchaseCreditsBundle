@@ -18,10 +18,6 @@
                 <source>text.no_credits</source>
                 <target>I don't have Credits</target>
             </trans-unit>
-            <trans-unit id="5">
-                <source>label.accept_tos</source>
-                <target><![CDATA[I agree with <a href="%tosUrl%">Terms of sales</a>]]></target>
-            </trans-unit>
             <trans-unit id="6">
                 <source>text.test</source>
                 <target>!!! Warning, Credits are still under test, they will not be valid, payment will not be debited !!!</target>
@@ -35,16 +31,8 @@
                 <target>I can find below all my transactions on the site in "crd"</target>
             </trans-unit>
             <trans-unit id="9">
-                <source>text.number_credits</source>
-                <target><![CDATA[I have <strong>%credits% crd</strong>]]></target>
-            </trans-unit>
-            <trans-unit id="10">
-                <source>label.mandatory_field</source>
-                <target>* Mandatory field</target>
-            </trans-unit>
-            <trans-unit id="11">
-                <source>label.terms_of_sales_filename</source>
-                <target>TermsOfSales</target>
+                <source>label.number_credits</source>
+                <target>Number of Credits</target>
             </trans-unit>
             <trans-unit id="12">
                 <source>label.purchased_credits</source>

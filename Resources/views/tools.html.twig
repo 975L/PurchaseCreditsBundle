@@ -2,7 +2,7 @@
 
 {% spaceless %}
 {# Dashboard #}
-{{ toolbar_button(path('purchasecredits_dashboard'), 'dashboard', 'label.purchasecredits'|trans) }}
+{{ toolbar_button(path('purchasecredits_dashboard'), 'dashboard', 'md', 'label.purchasecredits'|trans) }}
 
 {# Purchase Credits #}
 {% if type != 'transactions' %}
@@ -12,6 +12,11 @@
 {# Transactions #}
 {% if type != 'purchase' %}
     {{ toolbar_button(path('purchasecredits_purchase'), 'credits') }}
+{% endif %}
+
+{# Configuration #}
+{% if is_granted(config('c975LPurchaseCredits.roleNeeded')) %}
+    {{ toolbar_button(path('purchasecredits_config'), 'config') }}
 {% endif %}
 
 {# Signout #}

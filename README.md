@@ -17,6 +17,8 @@ As the Terms of sales MUST be sent to the user with the Gift-Voucher, you MUST p
 
 [PurchaseCreditsBundle dedicated web page](https://975l.com/en/pages/purchase-credits-bundle).
 
+[PurchaseCreditsBundle API documentation](https://975l.com/apidoc/c975L/PurchaseCreditsBundle.html).
+
 Bundle installation
 ===================
 
@@ -27,8 +29,8 @@ Use [Composer](https://getcomposer.org) to install the library
     composer require c975l/purchasecredits-bundle
 ```
 
-Step 2: Enable the Bundles
---------------------------
+Step 2: Enable the Bundle
+-------------------------
 Then, enable the bundles by adding them to the list of registered bundles in the `app/AppKernel.php` file of your project:
 
 ```php
@@ -39,8 +41,6 @@ class AppKernel extends Kernel
     {
         $bundles = [
             // ...
-            new c975L\EmailBundle\c975LEmailBundle(),
-            new c975L\PaymentBundle\c975LPaymentBundle(),
             new c975L\PurchaseCreditsBundle\c975LPurchaseCreditsBundle(),
         ];
     }
@@ -49,30 +49,16 @@ class AppKernel extends Kernel
 
 Step 3: Configure the Bundle
 ----------------------------
-Check [c975LEmailBundle](https://github.com/975L/EmailBundle) and [c975LPaymentBundle](https://github.com/975L/PaymentBundle) for their specific configuration.
-In the `app/config.yml` file of your project, define the following:
+Check dependencies for their configuration:
+- [Doctrine](https://github.com/doctrine/DoctrineBundle)
+- [KnpPaginatorBundle](https://github.com/KnpLabs/KnpPaginatorBundle)
+- [c975LPaymentBundle](https://github.com/975L/PaymentBundle)
+- [c975LEmailBundle](https://github.com/975L/EmailBundle)
+- [Stripe PHP Library](https://github.com/stripe/stripe-php)
 
-```yml
-c975_l_purchase_credits:
-    #The number of credits you want to sell
-    creditsNumber: [1, 5, 10, 100]
-    #The corresponding price of the credits you want to sell
-    creditsPrice: [1, 5, 8, 70]
-    #The currency code on 3 letters
-    currency: 'EUR' #'EUR'(default)
-    #(Optional) Your VAT rate without % i.e. 5.5 for 5.5%, or 20 for 20%
-    vat: 5.5 #null(default)
-    #The entity used for your User
-    userEntity: 'AppBundle\Entity\User'
-    #The role needed to create/modify/use a PurchaseCredits
-    roleNeeded: 'ROLE_ADMIN'
-    #If your purchase credits are live or in test
-    live: true #Default false
-    #The location of your Terms of sales to be displayed to user, it can be a Route with parameters or an absolute url
-    tosUrl: "pageedit_display, {page: terms-of-sales}"
-    #The location of your Terms of sales, in PDF, to be sent to user, it can be a Route with parameters or an absolute url
-    tosPdf: 'pageedit_pdf, {page: terms-of-sales}'
-```
+v2.0+ of c975LPurchaseCreditsBundle uses [c975L/ConfigBundle](https://github.com/975L/ConfigBundle) to manage configuration parameters. Use the Route "/purchase-credits/config" with the proper user role to modify them.
+
+**Upgrading from v1.x? Check [UPGRADE.md](UPGRADE.md).**
 
 Step 4: Enable the Routes
 -------------------------
@@ -110,6 +96,9 @@ class User
 {
 //...
     /**
+     * Number of credits for User
+     * @var int
+     *
      * @ORM\Column(name="credits", type="integer", nullable=true)
      */
     protected $credits;
@@ -117,9 +106,7 @@ class User
 //...
     /**
      * Set credits
-     *
-     * @param integer $credits
-     *
+     * @param int
      * @return User
      */
     public function setCredits($credits)
@@ -131,8 +118,7 @@ class User
 
     /**
      * Get credits
-     *
-     * @return integer
+     * @return int
      */
     public function getCredits()
     {
@@ -140,10 +126,8 @@ class User
     }
 
     /**
-     * Add credits
-     *
-     * @param integer $credits
-     *
+     * Add credits (or subtracts if $credits is negative)
+     * @param int
      * @return User
      */
     public function addCredits($credits)
@@ -180,14 +164,21 @@ All the process for purchase and payment is managed via the bundle. All you have
 ```php
 <?php
 //In your controller file
-use c975L\PurchaseCreditsBundle\Service\TransactionService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use c975L\PurchaseCreditsBundle\Service\TransactionServiceInterface;
 
+class PaymentController extends Controller
+{
     /**
      * @Route("/YOUR_ROUTE",
      *      name="YOUR_ROUTE_NAME")
      * @Method({"GET", "HEAD"})
      */
-    public function YOUR_METHOD_NAME(Request $request, TransactionService $transactionService)
+    public function YOUR_METHOD_NAME(Request $request, TransactionServiceInterface $transactionService)
     {
         //Your stuff...
 
@@ -206,6 +197,8 @@ use c975L\PurchaseCreditsBundle\Service\TransactionService;
 
         //You need to flush DB as $transaction and $user are persisted but not flushed
         $em->flush();
+    }
+}
 ```
 
 Routes
@@ -251,3 +244,5 @@ $(document).ready(function() {
 });
 ```
 Have a look at it to see the properties covered.
+
+**If this project help you to reduce time to develop, you can [buy me a coffee](https://www.buymeacoffee.com/LaurentMarquet) :)**

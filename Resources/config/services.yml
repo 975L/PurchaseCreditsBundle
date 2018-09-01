@@ -7,10 +7,11 @@ services:
     c975L\PurchaseCreditsBundle\Controller\:
         resource: '../../Controller/*'
 
+    c975L\PurchaseCreditsBundle\Form\:
+        resource: '../../Form/*'
+
     c975L\PurchaseCreditsBundle\Security\:
         resource: '../../Security/*'
-        bind:
-            $roleNeeded: '%c975_l_purchase_credits.roleNeeded%'
 
     c975L\PurchaseCreditsBundle\Service\:
         resource: '../../Service/*'

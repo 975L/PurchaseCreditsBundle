@@ -1,0 +1,51 @@
+c975LPurchaseCredits:
+    roleNeeded:
+        type: string
+        required: true
+        default: ROLE_ADMIN
+        info: "User's role needed to enable access to data linked to ContactFormBundle: i.e. ROLE_ADMIN (default)"
+    live:
+        type: bool
+        required: false
+        default: false
+        info: "If your PurchaseCredits are live and will charge user's card (Default: false)"
+    gdpr:
+        type: bool
+        required: false
+        default: true
+        info: "If the checkbox related to GDPR rules should be displayed"
+    creditsNumber:
+        type: array
+        required: true
+        default: null
+        info: "The number of credits you want to sell: i.e. [1, 5, 10, 100] (Default null)"
+    creditsPrice:
+        type: array
+        required: true
+        default: null
+        info: "The corresponding price of the credits you want to sell: i.e. [1, 5, 8, 70] (Default null)"
+    userEntity:
+        type: string
+        required: true
+        default: null
+        info: "The entity used for your User: i.e. AppBundle\\Entity\\User (Default null)"
+    currency:
+        type: string
+        required: true
+        default: EUR
+        info: "Your default currency three letters code: i.e. EUR (Default: EUR)"
+    vat:
+        type: float
+        required: false
+        default: null
+        info: "Your VAT rate without %: i.e. 5.5 for 5.5%, or 20 for 20% (Default: null)"
+    tosUrl:
+        type: string
+        required: true
+        default: null
+        info: "The location of your Terms of sales to be displayed to user, it can be a Route with parameters or an absolute url: i.e. pageedit_display, {page: terms-of-sales}"
+    tosPdf:
+        type: string
+        required: true
+        default: null
+        info: "The location of your Terms of sales, in PDF, to be sent to user, it can be a Route with parameters or an absolute url: i.e. pageedit_pdf, {page: terms-of-sales}"

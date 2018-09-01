@@ -10,25 +10,48 @@ namespace c975L\PurchaseCreditsBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * PurchaseCredits FormType
+ * @author Laurent Marquet <laurent.marquet@laposte.net>
+ * @copyright 2018 975L <contact@975l.com>
+ */
 class PurchaseCreditsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $credits = $options['data']->getCredits();
-
         $builder
             ->add('credits', ChoiceType::class, array(
                 'expanded' => true,
                 'multiple' => false,
-                'label' => false,
+                'label' => 'label.number_credits',
                 'required' => true,
-                'data' => $credits,
-                'choices' => $options['prices']
+                'data' => $options['config']['credits'],
+                'choices' => $options['config']['pricesChoice']
                 ))
+            ->add('userIp', TextType::class, array(
+                'label' => 'label.ip',
+                'translation_domain' => 'services',
+                'required' => true,
+                'attr' => array(
+                    'readonly' => true,
+                )))
         ;
+        //GDPR
+        if ($options['config']['gdpr']) {
+            $builder
+                ->add('gdpr', CheckboxType::class, array(
+                    'label' => 'text.gdpr',
+                    'translation_domain' => 'services',
+                    'required' => true,
+                    'mapped' => false,
+                    ))
+            ;
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -38,6 +61,6 @@ class PurchaseCreditsType extends AbstractType
             'translation_domain' => 'purchaseCredits',
         ));
 
-        $resolver->setRequired('prices');
+        $resolver->setRequired('config');
     }
 }

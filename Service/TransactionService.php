@@ -9,26 +9,53 @@
 
 namespace c975L\PurchaseCreditsBundle\Service;
 
+use Symfony\Component\HttpFoundation\RequestStack;
+use Doctrine\ORM\EntityManagerInterface;
+use c975L\ConfigBundle\Service\ConfigServiceInterface;
+use c975L\PaymentBundle\Entity\Payment;
 use c975L\PurchaseCreditsBundle\Entity\Transaction;
+use c975L\PurchaseCreditsBundle\Service\TransactionServiceInterface;
 
-class TransactionService
+/**
+ * TransactionService class
+ * @author Laurent Marquet <laurent.marquet@laposte.net>
+ * @copyright 2017 975L <contact@975l.com>
+ */
+class TransactionService implements TransactionServiceInterface
 {
-    private $container;
-    private $request;
+    /**
+     * Stores ConfigServiceInterface
+     * @var ConfigServiceInterface
+     */
+    private $configService;
+
+    /**
+     * Stores EntityManagerInterface
+     * @var EntityManagerInterface
+     */
     private $em;
 
+    /**
+     * Stores current Request
+     * @var RequestStack
+     */
+    private $request;
+
     public function __construct(
-        \Symfony\Component\DependencyInjection\ContainerInterface $container,
-        \Symfony\Component\HttpFoundation\RequestStack $requestStack,
-        \Doctrine\ORM\EntityManager $em
-    ) {
-        $this->container = $container;
-        $this->request = $requestStack->getCurrentRequest();
+        ConfigServiceInterface $configService,
+        EntityManagerInterface $em,
+        RequestStack $requestStack
+    )
+    {
+        $this->configService = $configService;
         $this->em = $em;
+        $this->request = $requestStack->getCurrentRequest();
     }
 
-    //Adds Transaction
-    public function add($payment, $credits, $user)
+    /**
+     * {@inheritdoc}
+     */
+    public function add(Payment $payment, $credits, $user)
     {
         $transaction = $this->create('pmt' . $payment->getOrderId());
         $transaction
@@ -39,7 +66,9 @@ class TransactionService
         $this->persist($transaction, $user);
     }
 
-    //Creates Transaction
+    /**
+     * {@inheritdoc}
+     */
     public function create($orderId = null)
     {
         $transaction = new Transaction();
@@ -58,8 +87,20 @@ class TransactionService
         return $transaction;
     }
 
-    //Persists Transaction + User's data
-    public function persist($transaction, $user)
+    /**
+     * {@inheritdoc}
+     */
+    public function getAll($user)
+    {
+        return $this->em
+            ->getRepository('c975L\PurchaseCreditsBundle\Entity\Transaction')
+            ->findByUserId($user->getId(), array('creation' => 'desc'));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function persist(Transaction $transaction, $user)
     {
         //Persists Transaction
         $transaction->setUserId($user->getId());
@@ -68,14 +109,14 @@ class TransactionService
         //Adds/Subtracts credits to user
         if (
             //Credits are live on site
-            true === $this->container->getParameter('c975_l_purchase_credits.live') &&
-            //Method addCredits() exists on user class
+            $this->configService->getParameter('c975LPurchaseCredits.live') &&
+            //AND Method addCredits() exists on user class
             method_exists(get_class($user), 'addCredits') &&
-            //Credits are used by user
+            //AND Credits are used by user
             (($transaction->getCredits() < 0 ||
-            //Payment is live on site
-            true === $this->container->getParameter('c975_l_payment.live') ||
-            //Transaction is not resulting from a test payment
+            //OR Payment is live on site
+            $this->configService->getParameter('c975LPayment.live') ||
+            //OR Transaction is not resulting from a test payment
             substr($transaction->getOrderId(), 0, 3) != 'pmt'))
         ) {
                 $user->addCredits($transaction->getCredits());
