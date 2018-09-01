@@ -4,6 +4,7 @@
 - Updated composer.json (01/09/2018)
 - Updated `README.md` (01/09/2018)
 - Added `bundle.yaml` (01/09/2018)
+- Added `UPGRADE.md` (01/09/2018)
 
 
 v1.x
