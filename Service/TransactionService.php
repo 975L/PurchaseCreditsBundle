@@ -9,9 +9,9 @@
 
 namespace c975L\PurchaseCreditsBundle\Service;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Doctrine\ORM\EntityManagerInterface;
+use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\PaymentBundle\Entity\Payment;
 use c975L\PurchaseCreditsBundle\Entity\Transaction;
 use c975L\PurchaseCreditsBundle\Service\TransactionServiceInterface;
@@ -24,10 +24,10 @@ use c975L\PurchaseCreditsBundle\Service\TransactionServiceInterface;
 class TransactionService implements TransactionServiceInterface
 {
     /**
-     * Stores ContainerInterface
-     * @var ContainerInterface
+     * Stores ConfigServiceInterface
+     * @var ConfigServiceInterface
      */
-    private $container;
+    private $configService;
 
     /**
      * Stores EntityManagerInterface
@@ -42,12 +42,12 @@ class TransactionService implements TransactionServiceInterface
     private $request;
 
     public function __construct(
-        ContainerInterface $container,
+        ConfigServiceInterface $configService,
         EntityManagerInterface $em,
         RequestStack $requestStack
     )
     {
-        $this->container = $container;
+        $this->configService = $configService;
         $this->em = $em;
         $this->request = $requestStack->getCurrentRequest();
     }
@@ -109,13 +109,13 @@ class TransactionService implements TransactionServiceInterface
         //Adds/Subtracts credits to user
         if (
             //Credits are live on site
-            $this->container->getParameter('c975_l_purchase_credits.live') &&
+            $this->configService->getParameter('c975LPurchaseCredits.live') &&
             //AND Method addCredits() exists on user class
             method_exists(get_class($user), 'addCredits') &&
             //AND Credits are used by user
             (($transaction->getCredits() < 0 ||
             //OR Payment is live on site
-            $this->container->getParameter('c975_l_payment.live') ||
+            $this->configService->getParameter('c975LPayment.live') ||
             //OR Transaction is not resulting from a test payment
             substr($transaction->getOrderId(), 0, 3) != 'pmt'))
         ) {

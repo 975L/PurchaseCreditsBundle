@@ -9,10 +9,10 @@
 
 namespace c975L\PurchaseCreditsBundle\Service\Email;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig_Environment;
+use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\EmailBundle\Service\EmailServiceInterface;
 use c975L\PaymentBundle\Entity\Payment;
 use c975L\ServicesBundle\Service\ServicePdfInterface;
@@ -25,6 +25,12 @@ use c975L\PurchaseCreditsBundle\Service\Email\PurchaseCreditsEmailInterface;
  */
 class PurchaseCreditsEmail implements PurchaseCreditsEmailInterface
 {
+    /**
+     * Stores ConfigServiceInterface
+     * @var ConfigServiceInterface
+     */
+    private $configService;
+
     /**
      * Stores ContainerInterface
      * @var ContainerInterface
@@ -62,7 +68,7 @@ class PurchaseCreditsEmail implements PurchaseCreditsEmailInterface
     private $translator;
 
     public function __construct(
-        ContainerInterface $container,
+        ConfigServiceInterface $configService,
         EmailServiceInterface $emailService,
         ServicePdfInterface $servicePdf,
         RequestStack $requestStack,
@@ -70,7 +76,7 @@ class PurchaseCreditsEmail implements PurchaseCreditsEmailInterface
         TranslatorInterface $translator
     )
     {
-        $this->container = $container;
+        $this->configService = $configService;
         $this->emailService = $emailService;
         $this->servicePdf = $servicePdf;
         $this->request = $requestStack->getCurrentRequest();
@@ -84,21 +90,21 @@ class PurchaseCreditsEmail implements PurchaseCreditsEmailInterface
     public function send(Payment $payment, int $credits, $user)
     {
         //Gets the PDF for Terms of sales
-        $tosPdf = $this->servicePdf->getPdfFile('label.terms_of_sales_filename', $this->container->getParameter('c975_l_purchase_credits.tosPdf'));
+        $tosPdf = $this->servicePdf->getPdfFile('label.terms_of_sales_filename', $this->configService->getParameter('c975LPurchaseCredits.tosPdf'));
 
         //Sends email
         $body = $this->templating->render('@c975LPurchaseCredits/emails/purchase.html.twig', array(
             'payment' => $payment,
             'credits' => $credits,
             'userCredits' => $user->getCredits(),
-            'live' => $this->container->getParameter('c975_l_purchase_credits.live'),
+            'live' => $this->configService->getParameter('c975LPurchaseCredits.live'),
              '_locale' => $this->request->getLocale(),
             ));
         $emailData = array(
-            'subject' => $this->container->get('translator')->trans('label.purchased_credits', array('%credits%' => $credits), 'purchaseCredits'),
-            'sentFrom' => $this->container->getParameter('c975_l_email.sentFrom'),
+            'subject' => $this->translator->trans('label.purchased_credits', array('%credits%' => $credits), 'purchaseCredits'),
+            'sentFrom' => $this->configService->getParameter('c975LEmail.sentFrom'),
             'sentTo' => $user->getEmail(),
-            'replyTo' => $this->container->getParameter('c975_l_email.sentFrom'),
+            'replyTo' => $this->configService->getParameter('c975LEmail.sentFrom'),
             'body' => $body,
             'attach' => array($tosPdf),
             'ip' => $this->request->getClientIp(),

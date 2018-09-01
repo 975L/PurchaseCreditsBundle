@@ -10,8 +10,8 @@
 namespace c975L\PurchaseCreditsBundle\Form;
 
 use Symfony\Component\Form\Form;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
 use c975L\PurchaseCreditsBundle\Form\PurchaseCreditsType;
 use c975L\PurchaseCreditsBundle\Form\PurchaseCreditsFormFactoryInterface;
@@ -24,17 +24,17 @@ use c975L\PurchaseCreditsBundle\Form\PurchaseCreditsFormFactoryInterface;
 class PurchaseCreditsFormFactory implements PurchaseCreditsFormFactoryInterface
 {
     /**
-     * Stores container
-     * @var ContainerInterface
+     * Stores ConfigServiceInterface
+     * @var ConfigServiceInterface
      */
-    private $container;
+    private $configService;
 
     public function __construct(
-        ContainerInterface $container,
+        ConfigServiceInterface $configService,
         FormFactoryInterface $formFactory
     )
     {
-        $this->container = $container;
+        $this->configService = $configService;
         $this->formFactory = $formFactory;
     }
 
@@ -46,9 +46,9 @@ class PurchaseCreditsFormFactory implements PurchaseCreditsFormFactoryInterface
         switch ($name) {
             case 'purchase':
                 $config = array(
-                    'credits' => in_array($credits, $this->container->getParameter('c975_l_purchase_credits.creditsNumber')) ? (int) $credits : 0,
+                    'credits' => in_array($credits, $this->configService->getParameter('c975LPurchaseCredits.creditsNumber')) ? (int) $credits : 0,
                     'pricesChoice' => $priceChoices,
-                    'gdpr' => $this->container->getParameter('c975_l_purchase_credits.gdpr'),
+                    'gdpr' => $this->configService->getParameter('c975LPurchaseCredits.gdpr'),
                     );
                 break;
             default:

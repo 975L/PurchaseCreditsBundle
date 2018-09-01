@@ -9,6 +9,7 @@
 
 namespace c975L\PurchaseCreditsBundle\Service;
 
+use Symfony\Component\OptionsResolver\Exception\InvalidArgumentException;
 use c975L\PaymentBundle\Entity\Payment;
 use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
 
@@ -34,6 +35,7 @@ interface PurchaseCreditsServiceInterface
     /**
      * Gets prices for credits
      * @return array
+     * @throws InvalidArgumentException
      */
     public function getPrices();
 

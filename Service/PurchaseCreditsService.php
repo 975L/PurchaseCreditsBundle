@@ -11,8 +11,9 @@ namespace c975L\PurchaseCreditsBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\OptionsResolver\Exception\InvalidArgumentException;
+use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\PaymentBundle\Entity\Payment;
 use c975L\ServicesBundle\Service\ServiceToolsInterface;
 use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
@@ -29,10 +30,10 @@ use c975L\PurchaseCreditsBundle\Service\Email\PurchaseCreditsEmailInterface;
 class PurchaseCreditsService implements PurchaseCreditsServiceInterface
 {
     /**
-     * Stores ContainerInterface
-     * @var ContainerInterface
+     * Stores ConfigServiceInterface
+     * @var ConfigServiceInterface
      */
-    private $container;
+    private $configService;
 
     /**
      * Stores EntityManagerInterface
@@ -77,7 +78,7 @@ class PurchaseCreditsService implements PurchaseCreditsServiceInterface
     private $translator;
 
     public function __construct(
-        ContainerInterface $container,
+        ConfigServiceInterface $configService,
         EntityManagerInterface $em,
         PurchaseCreditsEmailInterface $purchaseCreditsEmail,
         PurchaseCreditsFormFactoryInterface $purchaseCreditsFormFactory,
@@ -87,7 +88,7 @@ class PurchaseCreditsService implements PurchaseCreditsServiceInterface
         TranslatorInterface $translator
     )
     {
-        $this->container = $container;
+        $this->configService = $configService;
         $this->em = $em;
         $this->purchaseCreditsEmail = $purchaseCreditsEmail;
         $this->purchaseCreditsFormFactory = $purchaseCreditsFormFactory;
@@ -123,12 +124,18 @@ class PurchaseCreditsService implements PurchaseCreditsServiceInterface
      */
     public function getPrices()
     {
-        $prices = array();
-        foreach ($this->container->getParameter('c975_l_purchase_credits.creditsNumber') as $key => $value) {
-            $prices[$value] = $this->container->getParameter('c975_l_purchase_credits.creditsPrice')[$key];
+        $creditsNumber = $this->configService->getParameter('c975LPurchaseCredits.creditsNumber');
+        $creditsPrice = $this->configService->getParameter('c975LPurchaseCredits.creditsPrice');
+
+        if (is_array($creditsNumber) && is_array($creditsPrice)) {
+            $prices = array();
+            foreach ($creditsNumber as $key => $value) {
+                $prices[(int) $value] = (int) $creditsPrice[$key];
+            }
+            return $prices;
         }
 
-        return $prices;
+        throw new InvalidArgumentException('Either the parameter creditsNumber or creditsPrice is not set correctly');
     }
 
     /**
@@ -139,7 +146,7 @@ class PurchaseCreditsService implements PurchaseCreditsServiceInterface
         $prices = $this->getPrices();
         $pricesChoices = array();
         $creditReferencePrice = key($prices) / reset($prices);
-        $format = new \NumberFormatter('en_EN' . '@currency=' . $this->container->getParameter('c975_l_purchase_credits.currency'), \NumberFormatter::CURRENCY);
+        $format = new \NumberFormatter('en_EN' . '@currency=' . $this->configService->getParameter('c975LPurchaseCredits.currency'), \NumberFormatter::CURRENCY);
         $currencySymbol = $format->getSymbol(\NumberFormatter::CURRENCY_SYMBOL);
 
         foreach ($prices as $key => $value) {
@@ -160,7 +167,7 @@ class PurchaseCreditsService implements PurchaseCreditsServiceInterface
     {
         $purchaseCredits
             ->setAmount($this->getPrices()[$purchaseCredits->getCredits()] * 100)
-            ->setCurrency($this->container->getParameter('c975_l_purchase_credits.currency'))
+            ->setCurrency($this->configService->getParameter('c975LPurchaseCredits.currency'))
         ;
     }
 
@@ -174,7 +181,7 @@ class PurchaseCreditsService implements PurchaseCreditsServiceInterface
         if (array_key_exists('addCredits', $action)) {
             //Gets the user
             $user = $this->em
-                ->getRepository($this->container->getParameter('c975_l_purchase_credits.userEntity'))
+                ->getRepository($this->configService->getParameter('c975LPurchaseCredits.userEntity'))
                 ->findOneById($payment->getUserId());
 
             //Adds Transaction + user's credits
@@ -189,7 +196,7 @@ class PurchaseCreditsService implements PurchaseCreditsServiceInterface
             $this->purchaseCreditsEmail->send($payment, $action['addCredits'], $user);
 
             //Creates flash
-            $this->serviceTools->createFlash('purchasedCredits', 'text.credits_purchased', 'success', array('%credits%' => $action['addCredits']));
+            $this->serviceTools->createFlash('purchaseCredits', 'text.credits_purchased', 'success', array('%credits%' => $action['addCredits']));
 
             return true;
         }

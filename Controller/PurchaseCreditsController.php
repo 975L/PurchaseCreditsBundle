@@ -122,7 +122,7 @@ class PurchaseCreditsController extends Controller
      *      requirements={"credits": "([0-9]+)"})
      * @Method({"GET", "HEAD", "POST"})
      */
-    public function purchaseCredits(Request $request, $credits)
+    public function purchaseCredits(Request $request, ConfigServiceInterface $configService, $credits)
     {
         $purchaseCredits = $this->purchaseCreditsService->create();
         $this->denyAccessUnlessGranted('c975LPurchaseCredits-purchase', $purchaseCredits);
@@ -144,8 +144,8 @@ class PurchaseCreditsController extends Controller
         return $this->render('@c975LPurchaseCredits/forms/purchase.html.twig', array(
             'form' => $form->createView(),
             'user' => $this->getUser(),
-            'live' => $this->getParameter('c975_l_purchase_credits.live'),
-            'tosUrl' => $this->serviceTools->getUrl($this->getParameter('c975_l_purchase_credits.tosUrl')),
+            'live' => $configService->getParameter('c975LPurchaseCredits.live'),
+            'tosUrl' => $this->serviceTools->getUrl($configService->getParameter('c975LPurchaseCredits.tosUrl')),
         ));
     }
 }

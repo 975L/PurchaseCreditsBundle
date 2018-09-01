@@ -9,8 +9,8 @@
 
 namespace c975L\PurchaseCreditsBundle\Service\Payment;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\PaymentBundle\Service\PaymentServiceInterface;
 use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
 use c975L\PurchaseCreditsBundle\Service\Payment\PurchaseCreditsPaymentInterface;
@@ -23,10 +23,10 @@ use c975L\PurchaseCreditsBundle\Service\Payment\PurchaseCreditsPaymentInterface;
 class PurchaseCreditsPayment implements PurchaseCreditsPaymentInterface
 {
     /**
-     * Stores Container
-     * @var ContainerInterface
+     * Stores ConfigServiceInterface
+     * @var ConfigServiceInterface
      */
-    private $container;
+    private $configService;
 
     /**
      * Stores PaymentService
@@ -41,12 +41,12 @@ class PurchaseCreditsPayment implements PurchaseCreditsPaymentInterface
     private $translator;
 
     public function __construct(
-        ContainerInterface $container,
+        ConfigServiceInterface $configService,
         PaymentServiceInterface $paymentService,
         TranslatorInterface $translator
     )
     {
-        $this->container = $container;
+        $this->configService = $configService;
         $this->paymentService = $paymentService;
         $this->translator = $translator;
     }
@@ -63,9 +63,9 @@ class PurchaseCreditsPayment implements PurchaseCreditsPaymentInterface
             'description' => $this->translator->trans('label.purchase_credits', array(), 'purchaseCredits') . ' (' . $purchaseCredits->getCredits() . ')',
             'userId' => null !== $user ? $user->getId() : null,
             'userIp' => $purchaseCredits->getUserIp(),
-            'live' => $this->container->getParameter('c975_l_purchase_credits.live'),
+            'live' => $this->configService->getParameter('c975LPurchaseCredits.live'),
             'returnRoute' => 'purchasecredits_payment_done',
-            'vat' => $this->container->getParameter('c975_l_purchase_credits.vat'),
+            'vat' => $this->configService->getParameter('c975LPurchaseCredits.vat'),
             );
 
         $this->paymentService->create($paymentData);
