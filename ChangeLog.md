@@ -1,5 +1,8 @@
 # Changelog
 
+v2.0
+----
+**Upgrading from v1.x? Check UPGRADE.md**
 - Created branch 1.x (31/08/2018)
 - Updated composer.json (01/09/2018)
 - Updated `README.md` (01/09/2018)
