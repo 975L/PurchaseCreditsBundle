@@ -9,12 +9,13 @@
 
 namespace c975L\PurchaseCreditsBundle\Service;
 
-use Symfony\Component\HttpFoundation\RequestStack;
-use Doctrine\ORM\EntityManagerInterface;
 use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\PaymentBundle\Entity\Payment;
 use c975L\PurchaseCreditsBundle\Entity\Transaction;
-use c975L\PurchaseCreditsBundle\Service\TransactionServiceInterface;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * TransactionService class
@@ -37,7 +38,7 @@ class TransactionService implements TransactionServiceInterface
 
     /**
      * Stores current Request
-     * @var RequestStack
+     * @var Request
      */
     private $request;
 
@@ -74,13 +75,13 @@ class TransactionService implements TransactionServiceInterface
         $transaction = new Transaction();
 
         if (null === $orderId) {
-            $now = \DateTime::createFromFormat('U.u', microtime(true));
+            $now = DateTime::createFromFormat('U.u', microtime(true));
             $orderId = $now->format('Ymd-His-u');
         }
 
         $transaction
             ->setOrderId($orderId)
-            ->setCreation(new \DateTime())
+            ->setCreation(new DateTime())
             ->setUserIp($this->request->getClientIp())
         ;
 

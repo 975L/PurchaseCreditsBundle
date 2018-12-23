@@ -9,9 +9,10 @@
 
 namespace c975L\PurchaseCreditsBundle\Service;
 
-use Symfony\Component\OptionsResolver\Exception\InvalidArgumentException;
 use c975L\PaymentBundle\Entity\Payment;
 use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
+use Symfony\Component\Form\Form;
+use Symfony\Component\OptionsResolver\Exception\InvalidArgumentException;
 
 /**
  * Interface to be called for DI for PurchaseCreditsServiceInterface related services
@@ -49,6 +50,7 @@ interface PurchaseCreditsServiceInterface
      * Registers the PurchaseCredits
      */
     public function define(PurchaseCredits $purchaseCredits);
+
     /**
      * Validate the credits purchased
      * @return bool

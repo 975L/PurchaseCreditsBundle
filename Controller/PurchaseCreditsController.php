@@ -8,21 +8,18 @@
  */
 namespace c975L\PurchaseCreditsBundle\Controller;
 
+use c975L\ConfigBundle\Service\ConfigServiceInterface;
+use c975L\PaymentBundle\Entity\Payment;
+use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
+use c975L\PurchaseCreditsBundle\Service\Payment\PurchaseCreditsPaymentInterface;
+use c975L\PurchaseCreditsBundle\Service\PurchaseCreditsServiceInterface;
+use c975L\ServicesBundle\Service\ServiceToolsInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use c975L\ConfigBundle\Service\ConfigServiceInterface;
-use c975L\PaymentBundle\Entity\Payment;
-use c975L\ServicesBundle\Service\ServiceToolsInterface;
-use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
-use c975L\PurchaseCreditsBundle\Service\PurchaseCreditsServiceInterface;
-use c975L\PurchaseCreditsBundle\Service\Payment\PurchaseCreditsPaymentInterface;
 /**
  * PurchaseCredits Controller class
  * @author Laurent Marquet <laurent.marquet@laposte.net>
@@ -60,6 +57,7 @@ class PurchaseCreditsController extends Controller
     }
 
 //DASHBOARD
+
     /**
      * Displays the dashboard for PurchaseCredits
      * @return Response
@@ -78,6 +76,7 @@ class PurchaseCreditsController extends Controller
     }
 
 //CONFIG
+
     /**
      * Displays the configuration
      * @return Response
@@ -111,6 +110,7 @@ class PurchaseCreditsController extends Controller
     }
 
 //PURCHASE CREDITS
+
     /**
      * Displays the form to purchase credits
      * @return Response

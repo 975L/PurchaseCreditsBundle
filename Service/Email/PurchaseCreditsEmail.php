@@ -9,14 +9,14 @@
 
 namespace c975L\PurchaseCreditsBundle\Service\Email;
 
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Twig_Environment;
 use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\EmailBundle\Service\EmailServiceInterface;
 use c975L\PaymentBundle\Entity\Payment;
 use c975L\ServicesBundle\Service\ServicePdfInterface;
-use c975L\PurchaseCreditsBundle\Service\Email\PurchaseCreditsEmailInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Translation\TranslatorInterface;
+use Twig_Environment;
 
 /**
  * Services related to PurchaseCredits Email
@@ -51,7 +51,7 @@ class PurchaseCreditsEmail implements PurchaseCreditsEmailInterface
 
     /**
      * Stores current Request
-     * @var RequestStack
+     * @var Request
      */
     private $request;
 

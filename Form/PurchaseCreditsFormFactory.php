@@ -9,12 +9,9 @@
 
 namespace c975L\PurchaseCreditsBundle\Form;
 
-use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormFactoryInterface;
 use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
-use c975L\PurchaseCreditsBundle\Form\PurchaseCreditsType;
-use c975L\PurchaseCreditsBundle\Form\PurchaseCreditsFormFactoryInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * PurchaseCreditsFormFactory class

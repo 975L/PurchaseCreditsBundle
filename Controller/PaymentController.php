@@ -8,16 +8,13 @@
  */
 namespace c975L\PurchaseCreditsBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use c975L\PaymentBundle\Entity\Payment;
 use c975L\PaymentBundle\Service\PaymentServiceInterface;
 use c975L\PurchaseCreditsBundle\Service\PurchaseCreditsServiceInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Payment Controller class
@@ -27,6 +24,7 @@ use c975L\PurchaseCreditsBundle\Service\PurchaseCreditsServiceInterface;
 class PaymentController extends Controller
 {
 //PAYMENT DONE
+
     /**
      * Return Route after having done payment
      * @return Redirect

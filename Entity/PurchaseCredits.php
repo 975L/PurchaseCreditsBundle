@@ -42,7 +42,7 @@ class PurchaseCredits
     /**
      * Set credits
      * @param int
-     * @return PurchasedCredits
+     * @return PurchaseCredits
      */
     public function setCredits($credits)
     {
@@ -63,7 +63,7 @@ class PurchaseCredits
     /**
      * Set amount
      * @param int
-     * @return PurchasedCredits
+     * @return PurchaseCredits
      */
     public function setAmount($amount)
     {
@@ -84,7 +84,7 @@ class PurchaseCredits
     /**
      * Set currency
      * @param string
-     * @return PurchasedCredits
+     * @return PurchaseCredits
      */
     public function setCurrency($currency)
     {

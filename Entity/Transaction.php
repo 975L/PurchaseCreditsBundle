@@ -8,6 +8,7 @@
  */
 namespace c975L\PurchaseCreditsBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -72,7 +73,7 @@ class Transaction
 
     /**
      * DateTime creation for the Transaction
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="creation", type="datetime", nullable=true)
      */
@@ -194,7 +195,7 @@ class Transaction
 
     /**
      * Set creation
-     * @param \DateTime
+     * @param DateTime
      * @return Transaction
      */
     public function setCreation($creation)
@@ -206,7 +207,7 @@ class Transaction
 
     /**
      * Get creation
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCreation()
     {

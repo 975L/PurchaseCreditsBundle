@@ -9,18 +9,18 @@
 
 namespace c975L\PurchaseCreditsBundle\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\OptionsResolver\Exception\InvalidArgumentException;
 use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\PaymentBundle\Entity\Payment;
-use c975L\ServicesBundle\Service\ServiceToolsInterface;
 use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
 use c975L\PurchaseCreditsBundle\Form\PurchaseCreditsFormFactoryInterface;
-use c975L\PurchaseCreditsBundle\Service\TransactionServiceInterface;
-use c975L\PurchaseCreditsBundle\Service\PurchaseCreditsServiceInterface;
 use c975L\PurchaseCreditsBundle\Service\Email\PurchaseCreditsEmailInterface;
+use c975L\ServicesBundle\Service\ServiceToolsInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use NumberFormatter;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\OptionsResolver\Exception\InvalidArgumentException;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * PurchaseCreditsService class
@@ -61,7 +61,7 @@ class PurchaseCreditsService implements PurchaseCreditsServiceInterface
 
     /**
      * Stores current Request
-     * @var RequestStack
+     * @var Request
      */
     private $request;
 
@@ -146,8 +146,8 @@ class PurchaseCreditsService implements PurchaseCreditsServiceInterface
         $prices = $this->getPrices();
         $pricesChoices = array();
         $creditReferencePrice = key($prices) / reset($prices);
-        $format = new \NumberFormatter('en_EN' . '@currency=' . $this->configService->getParameter('c975LPurchaseCredits.currency'), \NumberFormatter::CURRENCY);
-        $currencySymbol = $format->getSymbol(\NumberFormatter::CURRENCY_SYMBOL);
+        $format = new NumberFormatter('en_EN' . '@currency=' . $this->configService->getParameter('c975LPurchaseCredits.currency'), NumberFormatter::CURRENCY);
+        $currencySymbol = $format->getSymbol(NumberFormatter::CURRENCY_SYMBOL);
 
         foreach ($prices as $key => $value) {
             //Calculates the discount (if one) based on the ratio of the first $price entry

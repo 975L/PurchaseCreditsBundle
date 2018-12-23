@@ -9,11 +9,10 @@
 
 namespace c975L\PurchaseCreditsBundle\Service\Payment;
 
-use Symfony\Component\Translation\TranslatorInterface;
 use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\PaymentBundle\Service\PaymentServiceInterface;
 use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
-use c975L\PurchaseCreditsBundle\Service\Payment\PurchaseCreditsPaymentInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Services related to PurchaseCredits Payment

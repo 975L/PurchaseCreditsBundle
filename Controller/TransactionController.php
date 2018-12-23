@@ -8,17 +8,15 @@
  */
 namespace c975L\PurchaseCreditsBundle\Controller;
 
+use c975L\PurchaseCreditsBundle\Entity\Transaction;
+use c975L\PurchaseCreditsBundle\Service\TransactionServiceInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Knp\Component\Pager\PaginatorInterface;
-use c975L\PurchaseCreditsBundle\Entity\Transaction;
-use c975L\PurchaseCreditsBundle\Service\TransactionServiceInterface;
 
 /**
  * Transaction Controller class
@@ -28,6 +26,7 @@ use c975L\PurchaseCreditsBundle\Service\TransactionServiceInterface;
 class TransactionController extends Controller
 {
 //ALL
+
     /**
      * Displays all the transactions
      * @return Response
@@ -53,6 +52,7 @@ class TransactionController extends Controller
     }
 
 //DISPLAY
+
     /**
      * Displays the specific Transaction using its orderId
      * @return Response
