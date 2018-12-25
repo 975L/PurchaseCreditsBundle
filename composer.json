@@ -28,9 +28,9 @@
         "doctrine/doctrine-bundle": "^1",
         "doctrine/orm": "^2",
         "knplabs/knp-paginator-bundle": "^2",
-        "symfony/form": "^4.2",
-        "symfony/security": "^4.2",
-        "symfony/translation": "^4.2"
+        "symfony/form": "*",
+        "symfony/security": "*",
+        "symfony/translation": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.3@dev",
