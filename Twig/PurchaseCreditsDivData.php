@@ -10,6 +10,7 @@
 namespace c975L\PurchaseCreditsBundle\Twig;
 use Twig_Environment;
 use Twig_Extension;
+use Twig_SimpleFunction;
 
 /**
  * Twig extension to display a "<div data-...></div>" that contains informations related to credits using `purchasecredits_divData()`

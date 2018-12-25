@@ -9,6 +9,7 @@
 
 namespace c975L\PurchaseCreditsBundle\Twig;
 use Twig_Extension;
+use Twig_SimpleFilter;
 
 /**
  * Twig extension to display the formatted number of credits using `|purchasecredits_format`
