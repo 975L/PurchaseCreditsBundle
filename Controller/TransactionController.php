@@ -11,9 +11,8 @@ namespace c975L\PurchaseCreditsBundle\Controller;
 use c975L\PurchaseCreditsBundle\Entity\Transaction;
 use c975L\PurchaseCreditsBundle\Service\TransactionServiceInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -23,7 +22,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  * @author Laurent Marquet <laurent.marquet@laposte.net>
  * @copyright 2018 975L <contact@975l.com>
  */
-class TransactionController extends Controller
+class TransactionController extends AbstractController
 {
 //ALL
 
@@ -33,8 +32,8 @@ class TransactionController extends Controller
      * @throws AccessDeniedException
      *
      * @Route("/purchase-credits/transactions",
-     *      name="purchasecredits_transactions")
-     * @Method({"GET", "HEAD"})
+     *    name="purchasecredits_transactions",
+     *    methods={"HEAD", "GET"})
      */
     public function all(Request $request, PaginatorInterface $paginator, TransactionServiceInterface $transactionService)
     {
@@ -58,8 +57,8 @@ class TransactionController extends Controller
      * @return Response
      *
      * @Route("/purchase-credits/transaction/{orderId}",
-     *      name="purchasecredits_transaction_display")
-     * @Method({"GET", "HEAD"})
+     *    name="purchasecredits_transaction_display",
+     *    methods={"HEAD", "GET"})
      */
     public function display(Transaction $transaction)
     {

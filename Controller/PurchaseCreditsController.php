@@ -14,9 +14,8 @@ use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
 use c975L\PurchaseCreditsBundle\Service\Payment\PurchaseCreditsPaymentInterface;
 use c975L\PurchaseCreditsBundle\Service\PurchaseCreditsServiceInterface;
 use c975L\ServicesBundle\Service\ServiceToolsInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -25,7 +24,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  * @author Laurent Marquet <laurent.marquet@laposte.net>
  * @copyright 2018 975L <contact@975l.com>
  */
-class PurchaseCreditsController extends Controller
+class PurchaseCreditsController extends AbstractController
 {
     /**
      * Stores PurchaseCreditsPaymentInterface
@@ -64,8 +63,8 @@ class PurchaseCreditsController extends Controller
      * @throws AccessDeniedException
      *
      * @Route("/purchase-credits/dashboard",
-     *      name="purchasecredits_dashboard")
-     * @Method({"GET", "HEAD"})
+     *    name="purchasecredits_dashboard",
+     *    methods={"HEAD", "GET"})
      */
     public function dashboard()
     {
@@ -83,8 +82,8 @@ class PurchaseCreditsController extends Controller
      * @throws AccessDeniedException
      *
      * @Route("/purchase-credits/config",
-     *      name="purchasecredits_config")
-     * @Method({"GET", "HEAD", "POST"})
+     *    name="purchasecredits_config",
+     *    methods={"HEAD", "GET", "POST"})
      */
     public function config(Request $request, ConfigServiceInterface $configService)
     {
@@ -117,10 +116,10 @@ class PurchaseCreditsController extends Controller
      * @throws AccessDeniedException
      *
      * @Route("/purchase-credits/{credits}",
-     *      name="purchasecredits_purchase",
-     *      defaults={"credits": "0"},
-     *      requirements={"credits": "([0-9]+)"})
-     * @Method({"GET", "HEAD", "POST"})
+     *    name="purchasecredits_purchase",
+     *    defaults={"credits": "0"},
+     *    requirements={"credits": "([0-9]+)"},
+     *    methods={"HEAD", "GET", "POST"})
      */
     public function purchaseCredits(Request $request, ConfigServiceInterface $configService, $credits)
     {

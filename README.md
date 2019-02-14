@@ -164,19 +164,18 @@ All the process for purchase and payment is managed via the bundle. All you have
 ```php
 <?php
 //In your controller file
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use c975L\PurchaseCreditsBundle\Service\TransactionServiceInterface;
 
-class PaymentController extends Controller
+class PaymentController extends AbstractController
 {
     /**
      * @Route("/YOUR_ROUTE",
-     *      name="YOUR_ROUTE_NAME")
-     * @Method({"GET", "HEAD"})
+     *    name="YOUR_ROUTE_NAME",
+     *    methods={"HEAD", "GET"})
      */
     public function YOUR_METHOD_NAME(Request $request, TransactionServiceInterface $transactionService)
     {

@@ -11,9 +11,8 @@ namespace c975L\PurchaseCreditsBundle\Controller;
 use c975L\PaymentBundle\Entity\Payment;
 use c975L\PaymentBundle\Service\PaymentServiceInterface;
 use c975L\PurchaseCreditsBundle\Service\PurchaseCreditsServiceInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -21,7 +20,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @author Laurent Marquet <laurent.marquet@laposte.net>
  * @copyright 2018 975L <contact@975l.com>
  */
-class PaymentController extends Controller
+class PaymentController extends AbstractController
 {
 //PAYMENT DONE
 
@@ -31,8 +30,8 @@ class PaymentController extends Controller
      * @throws NotFoundHttpException
      *
      * @Route("/purchase-credits/payment-done/{orderId}",
-     *      name="purchasecredits_payment_done")
-     * @Method({"GET", "HEAD"})
+     *    name="purchasecredits_payment_done",
+     *    methods={"HEAD", "GET"})
      */
     public function paymentDone(PurchaseCreditsServiceInterface $purchaseCreditsService, PaymentServiceInterface $paymentService, Payment $payment)
     {
