@@ -35,7 +35,7 @@ class Transaction
      * OrdreId for the Transaction
      * @var string
      *
-     * @ORM\Column(name="order_id", type="string", nullable=true)
+     * @ORM\Column(name="order_id", type="string", length=48, nullable=true)
      */
     protected $orderId;
 
@@ -51,7 +51,7 @@ class Transaction
      * Description for the Transaction
      * @var string
      *
-     * @ORM\Column(name="description", type="string", nullable=true)
+     * @ORM\Column(name="description", type="string", length=512, nullable=true)
      */
     protected $description;
 
@@ -67,7 +67,7 @@ class Transaction
      * User IP address
      * @var string
      *
-     * @ORM\Column(name="user_ip", type="string", nullable=true)
+     * @ORM\Column(name="user_ip", type="string", length=48, nullable=true)
      */
     protected $userIp;
 
@@ -83,7 +83,7 @@ class Transaction
      * Get id
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -93,7 +93,7 @@ class Transaction
      * @param string
      * @return Transaction
      */
-    public function setOrderId($orderId)
+    public function setOrderId(?string $orderId)
     {
         $this->orderId = $orderId;
 
@@ -104,7 +104,7 @@ class Transaction
      * Get orderId
      * @return string
      */
-    public function getOrderId()
+    public function getOrderId(): ?string
     {
         return $this->orderId;
     }
@@ -114,7 +114,7 @@ class Transaction
      * @param int
      * @return Transaction
      */
-    public function setCredits($credits)
+    public function setCredits(?int $credits)
     {
         $this->credits = $credits;
 
@@ -125,7 +125,7 @@ class Transaction
      * Get credits
      * @return int
      */
-    public function getCredits()
+    public function getCredits(): int
     {
         return $this->credits;
     }
@@ -135,7 +135,7 @@ class Transaction
      * @param string
      * @return Transaction
      */
-    public function setDescription($description)
+    public function setDescription(?string $description)
     {
         $this->description = $description;
 
@@ -146,7 +146,7 @@ class Transaction
      * Get description
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -156,7 +156,7 @@ class Transaction
      * @param int
      * @return Transaction
      */
-    public function setUserId($userId)
+    public function setUserId(?int $userId)
     {
         $this->userId = $userId;
 
@@ -167,7 +167,7 @@ class Transaction
      * Get userId
      * @return int
      */
-    public function getUserId()
+    public function getUserId(): int
     {
         return $this->userId;
     }
@@ -177,7 +177,7 @@ class Transaction
      * @param string
      * @return Transaction
      */
-    public function setUserIp($userIp)
+    public function setUserIp(?string $userIp)
     {
         $this->userIp = $userIp;
 
@@ -188,7 +188,7 @@ class Transaction
      * Get userIp
      * @return string
      */
-    public function getUserIp()
+    public function getUserIp(): ?string
     {
         return $this->userIp;
     }
@@ -198,7 +198,7 @@ class Transaction
      * @param DateTime
      * @return Transaction
      */
-    public function setCreation($creation)
+    public function setCreation(?DateTime $creation)
     {
         $this->creation = $creation;
 
@@ -209,7 +209,7 @@ class Transaction
      * Get creation
      * @return DateTime
      */
-    public function getCreation()
+    public function getCreation(): DateTime
     {
         return $this->creation;
     }

@@ -44,7 +44,7 @@ class PurchaseCredits
      * @param int
      * @return PurchaseCredits
      */
-    public function setCredits($credits)
+    public function setCredits(?int $credits)
     {
         $this->credits = $credits;
 
@@ -55,7 +55,7 @@ class PurchaseCredits
      * Get credits
      * @return int
      */
-    public function getCredits()
+    public function getCredits(): ?int
     {
         return $this->credits;
     }
@@ -65,7 +65,7 @@ class PurchaseCredits
      * @param int
      * @return PurchaseCredits
      */
-    public function setAmount($amount)
+    public function setAmount(?int $amount)
     {
         $this->amount = $amount;
 
@@ -76,7 +76,7 @@ class PurchaseCredits
      * Get amount
      * @return int
      */
-    public function getAmount()
+    public function getAmount(): ?int
     {
         return $this->amount;
     }
@@ -86,7 +86,7 @@ class PurchaseCredits
      * @param string
      * @return PurchaseCredits
      */
-    public function setCurrency($currency)
+    public function setCurrency(?string $currency)
     {
         $this->currency = strtoupper($currency);
 
@@ -97,7 +97,7 @@ class PurchaseCredits
      * Get currency
      * @return string
      */
-    public function getCurrency()
+    public function getCurrency(): ?string
     {
         return strtoupper($this->currency);
     }
@@ -107,7 +107,7 @@ class PurchaseCredits
      * @param string
      * @return Transaction
      */
-    public function setUserIp($userIp)
+    public function setUserIp(?string $userIp)
     {
         $this->userIp = $userIp;
 
@@ -118,7 +118,7 @@ class PurchaseCredits
      * Get userIp
      * @return string
      */
-    public function getUserIp()
+    public function getUserIp(): ?string
     {
         return $this->userIp;
     }
