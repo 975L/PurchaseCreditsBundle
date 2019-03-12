@@ -11,10 +11,10 @@ namespace c975L\PurchaseCreditsBundle\Controller;
 use c975L\PurchaseCreditsBundle\Entity\Transaction;
 use c975L\PurchaseCreditsBundle\Service\TransactionServiceInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -25,7 +25,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class TransactionController extends AbstractController
 {
 //ALL
-
     /**
      * Displays all the transactions
      * @return Response
@@ -51,7 +50,6 @@ class TransactionController extends AbstractController
     }
 
 //DISPLAY
-
     /**
      * Displays the specific Transaction using its orderId
      * @return Response

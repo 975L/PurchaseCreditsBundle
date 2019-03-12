@@ -11,9 +11,9 @@ namespace c975L\PurchaseCreditsBundle\Controller;
 use c975L\PaymentBundle\Entity\Payment;
 use c975L\PaymentBundle\Service\PaymentServiceInterface;
 use c975L\PurchaseCreditsBundle\Service\PurchaseCreditsServiceInterface;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Payment Controller class
@@ -23,7 +23,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class PaymentController extends AbstractController
 {
 //PAYMENT DONE
-
     /**
      * Return Route after having done payment
      * @return Redirect

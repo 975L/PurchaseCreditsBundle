@@ -14,10 +14,10 @@ use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
 use c975L\PurchaseCreditsBundle\Service\Payment\PurchaseCreditsPaymentInterface;
 use c975L\PurchaseCreditsBundle\Service\PurchaseCreditsServiceInterface;
 use c975L\ServicesBundle\Service\ServiceToolsInterface;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 /**
  * PurchaseCredits Controller class
@@ -31,13 +31,11 @@ class PurchaseCreditsController extends AbstractController
      * @var PurchaseCreditsPaymentInterface
      */
     private $purchaseCreditsPayment;
-
     /**
      * Stores PurchaseCreditsServiceInterface
      * @var PurchaseCreditsServiceInterface
      */
     private $purchaseCreditsService;
-
     /**
      * Stores ServiceToolsInterface
      * @var ServiceToolsInterface
@@ -56,7 +54,6 @@ class PurchaseCreditsController extends AbstractController
     }
 
 //DASHBOARD
-
     /**
      * Displays the dashboard for PurchaseCredits
      * @return Response
@@ -75,7 +72,6 @@ class PurchaseCreditsController extends AbstractController
     }
 
 //CONFIG
-
     /**
      * Displays the configuration
      * @return Response
@@ -109,7 +105,6 @@ class PurchaseCreditsController extends AbstractController
     }
 
 //PURCHASE CREDITS
-
     /**
      * Displays the form to purchase credits
      * @return Response

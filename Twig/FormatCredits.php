@@ -8,20 +8,20 @@
  */
 
 namespace c975L\PurchaseCreditsBundle\Twig;
-use Twig_Extension;
-use Twig_SimpleFilter;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
 /**
  * Twig extension to display the formatted number of credits using `|purchasecredits_format`
  * @author Laurent Marquet <laurent.marquet@laposte.net>
  * @copyright 2018 975L <contact@975l.com>
  */
-class FormatCredits extends Twig_Extension
+class FormatCredits extends AbstractExtension
 {
     public function getFilters()
     {
         return array(
-            new Twig_SimpleFilter(
+            new TwigFilter(
                 'purchasecredits_format',
                 array($this, 'formatCredits'),
                 array('is_safe' => array('html'))

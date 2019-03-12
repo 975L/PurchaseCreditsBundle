@@ -1,5 +1,12 @@
 # Changelog
 
+v2.1.1
+------
+- Made use of Twig namespace (11/03/2019)
+- Added declaration of formFactory (11/03/2019)
+- Renamed declaration of servicePdf (11/03/2019)
+- Removed declaration of container as not used (11/03/2019)
+
 v2.1
 ----
 - Modified Entity to specify lengths for strings (15/02/2019)

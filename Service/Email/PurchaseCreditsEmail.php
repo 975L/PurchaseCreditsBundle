@@ -16,7 +16,7 @@ use c975L\ServicesBundle\Service\ServicePdfInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Translation\TranslatorInterface;
-use Twig_Environment;
+use Twig\Environment;
 
 /**
  * Services related to PurchaseCredits Email
@@ -32,12 +32,6 @@ class PurchaseCreditsEmail implements PurchaseCreditsEmailInterface
     private $configService;
 
     /**
-     * Stores ContainerInterface
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
      * Stores EmailServiceInterface
      * @var EmailServiceInterface
      */
@@ -47,7 +41,7 @@ class PurchaseCreditsEmail implements PurchaseCreditsEmailInterface
      * Stores ServicePdfInterface
      * @var ServicePdfInterface
      */
-    private $purchaseCreditsPdf;
+    private $servicePdf;
 
     /**
      * Stores current Request
@@ -56,10 +50,10 @@ class PurchaseCreditsEmail implements PurchaseCreditsEmailInterface
     private $request;
 
     /**
-     * Stores Twig_Environment
-     * @var Twig_Environment
+     * Stores Environment
+     * @var Environment
      */
-    private $templating;
+    private $environment;
 
     /**
      * Stores Translator
@@ -72,7 +66,7 @@ class PurchaseCreditsEmail implements PurchaseCreditsEmailInterface
         EmailServiceInterface $emailService,
         ServicePdfInterface $servicePdf,
         RequestStack $requestStack,
-        Twig_Environment $templating,
+        Environment $environment,
         TranslatorInterface $translator
     )
     {
@@ -80,7 +74,7 @@ class PurchaseCreditsEmail implements PurchaseCreditsEmailInterface
         $this->emailService = $emailService;
         $this->servicePdf = $servicePdf;
         $this->request = $requestStack->getCurrentRequest();
-        $this->templating = $templating;
+        $this->environment = $environment;
         $this->translator = $translator;
     }
 
@@ -93,7 +87,7 @@ class PurchaseCreditsEmail implements PurchaseCreditsEmailInterface
         $tosPdf = $this->servicePdf->getPdfFile('label.terms_of_sales_filename', $this->configService->getParameter('c975LPurchaseCredits.tosPdf'));
 
         //Sends email
-        $body = $this->templating->render('@c975LPurchaseCredits/emails/purchase.html.twig', array(
+        $body = $this->environment->render('@c975LPurchaseCredits/emails/purchase.html.twig', array(
             'payment' => $payment,
             'credits' => $credits,
             'userCredits' => $user->getCredits(),
