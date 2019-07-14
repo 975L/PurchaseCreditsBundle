@@ -81,7 +81,7 @@ Step 5: User entity
 Your User entity **MUST** have a property `credits` with proper and getter and setter, plus a `addCredits()` one, notice the `+=`, this method is used to add and subtract credits:
 ```php
 //Your entity file
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 //Example is made using Doctrine, as the common one, but you can use any entity manager
 use Doctrine\ORM\Mapping as ORM;

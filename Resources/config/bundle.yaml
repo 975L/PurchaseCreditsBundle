@@ -28,7 +28,7 @@ c975LPurchaseCredits:
         type: string
         required: true
         default: null
-        info: "The entity used for your User: i.e. AppBundle\\Entity\\User (Default null)"
+        info: "The entity used for your User: i.e. App\\Entity\\User (Default null)"
     currency:
         type: string
         required: true

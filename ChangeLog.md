@@ -1,6 +1,11 @@
 # Changelog
 
+v2.1.2.1
+--------
+- Removed Bundle from AppBundle (14/07/2019)
+
 v2.1.2
+------
 - Modified tools to include a button to UserBundle dashboard if installed (14/07/2019)
 - Modified creditsInformation template to use buttons instead of texts (14/07/2019)
 
