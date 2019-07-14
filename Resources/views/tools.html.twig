@@ -5,6 +5,11 @@
 {{ toolbar_button(path('purchasecredits_dashboard'), 'dashboard', 'md', 'label.purchasecredits'|trans) }}
 
 {# Purchase Credits #}
+{% if route_exists('user_dashboard') %}
+    {{ toolbar_button(path('user_dashboard'), 'user') }}
+{% endif %}
+
+{# Purchase Credits #}
 {% if type != 'transactions' %}
     {{ toolbar_button(path('purchasecredits_transactions'), 'transactions') }}
 {% endif %}
