@@ -1,5 +1,10 @@
 # Changelog
 
+v3.0.1
+------
+- Updated `PurchaseCreditsEmail` to use `getPdfFilePath()` that returns the url instead of the content (15/07/2019)
+- Added `c975LPayment.live` to add information about test (15/07/2019)
+
 v3.0
 ----
 - Made use of c975LEmailBundle v3 which use Symfony/Mailer (15/07/2019)

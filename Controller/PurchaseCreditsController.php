@@ -138,7 +138,7 @@ class PurchaseCreditsController extends AbstractController
         return $this->render('@c975LPurchaseCredits/forms/purchase.html.twig', array(
             'form' => $form->createView(),
             'user' => $this->getUser(),
-            'live' => $configService->getParameter('c975LPurchaseCredits.live'),
+            'live' => $configService->getParameter('c975LPurchaseCredits.live') && $configService->getParameter('c975LPayment.live'),
             'tosUrl' => $this->serviceTools->getUrl($configService->getParameter('c975LPurchaseCredits.tosUrl')),
         ));
     }

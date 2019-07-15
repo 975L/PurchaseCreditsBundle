@@ -12,11 +12,11 @@
     </p>
 {# Date #}
     <p>
-        {{ 'label.date'|trans }} : <strong>{{ payment.creation|localizeddate('medium', 'medium') }}</strong>
+        {{ 'label.date'|trans({}, 'payment') }} : <strong>{{ payment.creation|localizeddate('medium', 'medium') }}</strong>
     </p>
 {# Order Id #}
     <p>
-        {{ 'label.order_id'|trans }} : <strong>{{ payment.orderId }}</strong>
+        {{ 'label.order_id'|trans({}, 'payment') }} : <strong>{{ payment.orderId }}</strong>
     </p>
 {# Test #}
     {% if live == false %}

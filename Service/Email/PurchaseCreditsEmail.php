@@ -84,16 +84,16 @@ class PurchaseCreditsEmail implements PurchaseCreditsEmailInterface
     public function send(Payment $payment, int $credits, $user)
     {
         //Gets the PDF for Terms of sales
-        $tosPdf = $this->servicePdf->getPdfFile('label.terms_of_sales_filename', $this->configService->getParameter('c975LPurchaseCredits.tosPdf'));
+        $tosPdf = $this->servicePdf->getPdfFilePath('label.terms_of_sales_filename', $this->configService->getParameter('c975LPurchaseCredits.tosPdf'));
 
         //Sends email
         $body = $this->environment->render('@c975LPurchaseCredits/emails/purchase.html.twig', array(
             'payment' => $payment,
             'credits' => $credits,
             'userCredits' => $user->getCredits(),
-            'live' => $this->configService->getParameter('c975LPurchaseCredits.live'),
-             '_locale' => $this->request->getLocale(),
-            ));
+            'live' => $this->configService->getParameter('c975LPurchaseCredits.live') && $this->configService->getParameter('c975LPayment.live'),
+            'locale' => $this->request->getLocale(),
+        ));
         $emailData = array(
             'subject' => $this->translator->trans('label.purchased_credits', array('%credits%' => $credits), 'purchaseCredits'),
             'sentFrom' => $this->configService->getParameter('c975LEmail.sentFrom'),
@@ -102,7 +102,8 @@ class PurchaseCreditsEmail implements PurchaseCreditsEmailInterface
             'body' => $body,
             'attach' => array($tosPdf),
             'ip' => $this->request->getClientIp(),
-            );
+        );
+
         $this->emailService->send($emailData, true);
     }
 }
