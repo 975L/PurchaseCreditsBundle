@@ -152,7 +152,7 @@ class PurchaseCreditsService implements PurchaseCreditsServiceInterface
         foreach ($prices as $key => $value) {
             //Calculates the discount (if one) based on the ratio of the first $price entry
             $discount = (1 - ($value / ($key / $creditReferencePrice))) * 100;
-            $label = $key . ' ' . $this->translator->transChoice('label.credits', $key, array(), 'purchaseCredits') . ' - ' . $value . ' ' . $currencySymbol;
+            $label = $key . ' ' . $this->translator->trans('label.credits', array('%count%' => $key), 'purchaseCredits') . ' - ' . $value . ' ' . $currencySymbol;
             $label = $discount != 0 ? $label . ' (-' . $discount . ' %)' : $label;
             $pricesChoices[$label] = $key;
         }

@@ -1,5 +1,9 @@
 # Changelog
 
+v3.1.1
+------
+- Changed forgotten transchoice (05/08/2019)
+
 v3.1
 ----
 - Suppressed use of transchoice (05/08/2019)
