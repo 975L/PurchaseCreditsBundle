@@ -1,5 +1,10 @@
 # Changelog
 
+v3.1
+----
+- Suppressed use of transchoice (05/08/2019)
+- Made use of apply spaceless (05/08/2019)
+
 v3.0.1
 ------
 - Updated `PurchaseCreditsEmail` to use `getPdfFilePath()` that returns the url instead of the content (15/07/2019)

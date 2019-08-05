@@ -2,10 +2,10 @@
 
 {# Number of credits #}
 <h3>
-    {{ 'label.credits'|transchoice(2) }}
+    {{ 'label.credits'|trans({'%count%': 2}) }}
 </h3>
 <p>
-    {{ 'label.credits'|transchoice(app.user.credits) }} : {{ app.user.credits|purchasecredits_format }}&nbsp;
+    {{ 'label.credits'|trans({'%count%': app.user.credits}) }} : {{ app.user.credits|purchasecredits_format }}&nbsp;
 {# Transactions #}
     {{ toolbar_button_text(path('purchasecredits_transactions'), 'transactions') }}
 {# Purchase Credits #}

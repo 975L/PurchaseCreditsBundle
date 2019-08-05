@@ -1,6 +1,6 @@
 {% extends "@c975LPurchaseCredits/layout.html.twig" %}
 {% trans_default_domain 'purchaseCredits' %}
-{% set title = 'label.transactions'|transchoice(2) %}
+{% set title = 'label.transactions'|trans({'%count%': 2}) %}
 
 {% block purchaseCredits_content %}
 {# Toolbar #}
@@ -14,7 +14,7 @@
         {{ 'text.transactions_explanation'|trans }}
         <br />
 {# Credits #}
-        {{ 'label.credits'|transchoice(app.user.credits) }} : {{ app.user.credits|purchasecredits_format }}
+        {{ 'label.credits'|trans({'%count%': app.user.credits}) }} : {{ app.user.credits|purchasecredits_format }}
     </div>
 {# Table #}
     <table class="table table-condensed table-responsive striped">
@@ -34,7 +34,7 @@
                 </th>
 {# Credits #}
                 <th class="text-center">
-                    {{ knp_pagination_sortable(transactions, 'label.credits'|transchoice(2, {}, 'purchaseCredits'), 'credits') }}&nbsp;<span class="fas fa-sort"></span>
+                    {{ knp_pagination_sortable(transactions, 'label.credits'|trans({'%count%': 2}, 'purchaseCredits'), 'credits') }}&nbsp;<span class="fas fa-sort"></span>
                </th>
 {# Description #}
                 <th class="text-center">

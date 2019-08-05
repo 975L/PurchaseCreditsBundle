@@ -1,6 +1,6 @@
 {% trans_default_domain 'toolbar' %}
 
-{% spaceless %}
+{% apply spaceless %}
 {# Dashboard #}
 {{ toolbar_button(path('purchasecredits_dashboard'), 'dashboard', 'md', 'label.purchasecredits'|trans) }}
 
@@ -29,4 +29,4 @@
 
 {# Other dashboards #}
 {{ toolbar_dashboards('md') }}
-{% endspaceless %}
+{% endapply %}

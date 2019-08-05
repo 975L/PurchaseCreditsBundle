@@ -1,6 +1,6 @@
 {% extends "@c975LPurchaseCredits/layout.html.twig" %}
 {% trans_default_domain 'purchaseCredits' %}
-{% set title = 'label.transactions'|transchoice(1) ~ ': ' ~ transaction.orderId %}
+{% set title = 'label.transactions'|trans({'%count%': 1}) ~ ': ' ~ transaction.orderId %}
 
 {% block purchaseCredits_content %}
 {# Toolbar #}
@@ -15,7 +15,7 @@
     </p>
 {# Credits #}
     <p>
-        {{ 'label.credits'|transchoice(2) }}:
+        {{ 'label.credits'|trans({'%count%': 2}) }}:
         {{ transaction.credits|purchasecredits_format }}
     </p>
 {# Description #}

@@ -15,11 +15,11 @@
     {% endif %}
 {# Transactions #}
     <p class="text-center">
-        {{ toolbar_button_text(path('purchasecredits_transactions'), 'transactions', 'md', 'true', 'right', 'label.transactions'|transchoice(2)) }}
+        {{ toolbar_button_text(path('purchasecredits_transactions'), 'transactions', 'md', 'true', 'right', 'label.transactions'|trans({'%count%': 2}) }}
     </p>
 {# Purchase Credits #}
     <p class="text-center">
-        {{ toolbar_button_text(path('purchasecredits_purchase'), 'credits', 'md', 'true', 'right', 'label.purchase_credits'|transchoice(2)) }}
+        {{ toolbar_button_text(path('purchasecredits_purchase'), 'credits', 'md', 'true', 'right', 'label.purchase_credits'|trans({'%count%': 2})) }}
     </p>
 {# Not enough credits #}
     {% if app.user.credits <= 0 %}
