@@ -1,5 +1,9 @@
 # Changelog
 
+v3.2
+----
+- Changed the behaviour of TransactionService->add() to allow adding a transaction by providing credits and description (11/08/2019)
+
 v3.1.1
 ------
 - Changed forgotten transchoice (05/08/2019)

@@ -21,8 +21,15 @@ interface TransactionServiceInterface
 {
     /**
      * Adds Transaction + User's credits
+     * @return Transaction
      */
-    public function add(Payment $payment, $credits, $user);
+    public function add($orderId, $credits, $description, $user);
+
+    /**
+     * Adds a Pyment in Transaction
+     * @return Transaction
+     */
+    public function addPayment(Payment $payment, $credits, $user);
 
     /**
      * Creates Transaction

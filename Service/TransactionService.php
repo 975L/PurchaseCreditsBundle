@@ -56,15 +56,25 @@ class TransactionService implements TransactionServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function add(Payment $payment, $credits, $user)
+    public function add($orderId, $credits, $description, $user)
     {
-        $transaction = $this->create('pmt' . $payment->getOrderId());
+        $transaction = $this->create($orderId);
         $transaction
             ->setCredits($credits)
-            ->setDescription($payment->getDescription())
+            ->setDescription($description)
         ;
 
         $this->persist($transaction, $user);
+
+        return $transaction;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addPayment(Payment $payment, $credits, $user)
+    {
+        return $this->add('pmt' . $payment->getOrderId(), $credits, $payment->getDescription(), $user);
     }
 
     /**

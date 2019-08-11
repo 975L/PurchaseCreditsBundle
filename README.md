@@ -169,12 +169,7 @@ class PaymentController extends AbstractController
         //Adds transaction, to keep trace of it and for user to see it in its list of transactions
         //You can call create() without argument, TransactionService will add an orderId built on the same scheme as Payment's one
         //The only restriction is that your orderId MUST NOT start with 'pmt' as this string is added to the Payment orderId, to provide a link to the payment
-        $transaction = $transactionService->create('YOUR_OWN_ORDER_ID_OR_EMPTY');
-        $transaction
-            ->setCredits(+-CREDITS)
-            ->setDescription('YOUR_DESCRIPTION')
-        ;
-        $transactionService->persist($transaction, $this->getUser());
+        $transaction = $this->transactionService->add('YOUR_OWN_ORDER_ID_OR_NULL', +-CREDITS, $description(), $this->getUser());
 
         //You need to flush DB as $transaction and $user are persisted but not flushed
         $em->flush();

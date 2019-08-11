@@ -185,7 +185,7 @@ class PurchaseCreditsService implements PurchaseCreditsServiceInterface
                 ->findOneById($payment->getUserId());
 
             //Adds Transaction + user's credits
-            $this->transactionService->add($payment, $action['addCredits'], $user);
+            $this->transactionService->addPayment($payment, $action['addCredits'], $user);
 
             //Set payment as finished
             $payment->setFinished(true);
