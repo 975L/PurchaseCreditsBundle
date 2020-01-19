@@ -1,5 +1,9 @@
 # Changelog
 
+v3.3
+----
+- Changed doctrine-bundle version (19/01/2020)
+
 v3.2
 ----
 - Changed the behaviour of TransactionService->add() to allow adding a transaction by providing credits and description (11/08/2019)
