@@ -59,15 +59,13 @@ class TransactionVoter extends Voter
     public function __construct(
         ConfigServiceInterface $configService,
         AccessDecisionManagerInterface $decisionManager
-    )
-    {
+    ) {
         $this->configService = $configService;
         $this->decisionManager = $decisionManager;
     }
 
     /**
-     * Checks if attribute and subject are supported
-     * @return bool
+     * {@inheritdoc}
      */
     protected function supports($attribute, $subject)
     {
@@ -79,9 +77,7 @@ class TransactionVoter extends Voter
     }
 
     /**
-     * Votes if access is granted
-     * @return bool
-     * @throws LogicException
+     * {@inheritdoc}
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {

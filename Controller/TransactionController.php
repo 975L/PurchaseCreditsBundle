@@ -44,9 +44,11 @@ class TransactionController extends AbstractController
             $request->query->getInt('p', 1),
             25
         );
-        return $this->render('@c975LPurchaseCredits/pages/transactions.html.twig', array(
-            'transactions' => $transactions,
-        ));
+        return $this->render(
+            '@c975LPurchaseCredits/pages/transactions.html.twig',
+            array(
+                'transactions' => $transactions,
+            ));
     }
 
 //DISPLAY
@@ -63,8 +65,10 @@ class TransactionController extends AbstractController
         $this->denyAccessUnlessGranted('c975LPurchaseCredits-display', $transaction);
 
         //Renders the transaction
-        return $this->render('@c975LPurchaseCredits/pages/transaction.html.twig', array(
-            'transaction' => $transaction,
-        ));
+        return $this->render(
+            '@c975LPurchaseCredits/pages/transaction.html.twig',
+            array(
+                'transaction' => $transaction,
+            ));
     }
 }

@@ -46,8 +46,7 @@ class PurchaseCreditsController extends AbstractController
         PurchaseCreditsPaymentInterface $purchaseCreditsPayment,
         PurchaseCreditsServiceInterface $purchaseCreditsService,
         ServiceToolsInterface $serviceTools
-    )
-    {
+    ) {
         $this->purchaseCreditsPayment = $purchaseCreditsPayment;
         $this->purchaseCreditsService = $purchaseCreditsService;
         $this->serviceTools = $serviceTools;
@@ -98,10 +97,12 @@ class PurchaseCreditsController extends AbstractController
         }
 
         //Renders the config form
-        return $this->render('@c975LConfig/forms/config.html.twig', array(
-            'form' => $form->createView(),
-            'toolbar' => '@c975LPurchaseCredits',
-        ));
+        return $this->render(
+            '@c975LConfig/forms/config.html.twig',
+            array(
+                'form' => $form->createView(),
+                'toolbar' => '@c975LPurchaseCredits',
+            ));
     }
 
 //PURCHASE CREDITS
@@ -135,11 +136,13 @@ class PurchaseCreditsController extends AbstractController
         }
 
         //Renders the purchase credits form
-        return $this->render('@c975LPurchaseCredits/forms/purchase.html.twig', array(
-            'form' => $form->createView(),
-            'user' => $this->getUser(),
-            'live' => $configService->getParameter('c975LPurchaseCredits.live') && $configService->getParameter('c975LPayment.live'),
-            'tosUrl' => $this->serviceTools->getUrl($configService->getParameter('c975LPurchaseCredits.tosUrl')),
-        ));
+        return $this->render(
+            '@c975LPurchaseCredits/forms/purchase.html.twig',
+            array(
+                'form' => $form->createView(),
+                'user' => $this->getUser(),
+                'live' => $configService->getParameter('c975LPurchaseCredits.live') && $configService->getParameter('c975LPayment.live'),
+                'tosUrl' => $this->serviceTools->getUrl($configService->getParameter('c975LPurchaseCredits.tosUrl')),
+            ));
     }
 }

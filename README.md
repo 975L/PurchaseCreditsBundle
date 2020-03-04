@@ -1,5 +1,4 @@
-PurchaseCreditsBundle
-=====================
+# PurchaseCreditsBundle
 
 PurchaseCreditsBundle does the following:
 
@@ -19,20 +18,21 @@ As the Terms of sales MUST be sent to the user with the Gift-Voucher, you MUST p
 
 [PurchaseCreditsBundle API documentation](https://975l.com/apidoc/c975L/PurchaseCreditsBundle.html).
 
-Bundle installation
-===================
+## Bundle installation
 
-Step 1: Download the Bundle
----------------------------
+### Step 1: Download the Bundle
+
 **v3.x works with Symfony 4.x. Use v2.x for Symfony 3.x**
 Use [Composer](https://getcomposer.org) to install the library
+
 ```bash
     composer require c975l/purchasecredits-bundle
 ```
 
-Step 2: Configure the Bundle
-----------------------------
+### Step 2: Configure the Bundle
+
 Check dependencies for their configuration:
+
 - [Doctrine](https://github.com/doctrine/DoctrineBundle)
 - [KnpPaginatorBundle](https://github.com/KnpLabs/KnpPaginatorBundle)
 - [c975LPaymentBundle](https://github.com/975L/PaymentBundle)
@@ -41,8 +41,8 @@ Check dependencies for their configuration:
 
 c975LPurchaseCreditsBundle uses [c975L/ConfigBundle](https://github.com/975L/ConfigBundle) to manage configuration parameters. Use the Route "/purchase-credits/config" with the proper user role to modify them.
 
-Step 3: Enable the Routes
--------------------------
+### Step 3: Enable the Routes
+
 Then, enable the routes by adding them to the `/config/routes.yaml` file of your project:
 
 ```yml
@@ -57,9 +57,10 @@ c975_l_purchase_credits:
     #    _locale: en|fr|es
 ```
 
-Step 4: User entity
--------------------
+### Step 4: User entity
+
 Your User entity **MUST** have a property `credits` with proper and getter and setter, plus a `addCredits()` one, notice the `+=`, this method is used to add and subtract credits:
+
 ```php
 //Your entity file
 namespace App\Entity;
@@ -119,17 +120,18 @@ class User
     }
 ```
 
-Step 5: Create MySql tables
----------------------------
+### Step 5: Create MySql tables
+
 You can use `php bin/console make:migration` to create the migration file as documented in [Symfony's Doctrine docs](https://symfony.com/doc/current/doctrine.html) OR use Use `/Resources/sql/purchase-credits.sql` to create the table `user_transactions`. The `DROP TABLE` is commented to avoid dropping by mistake.
 
-Step 6: Override templates
---------------------------
+### Step 6: Override templates
+
 It is strongly recommended to use the [Override Templates from Third-Party Bundles feature](http://symfony.com/doc/current/templating/overriding.html) to integrate fully with your site.
 
 For this, simply, create the following structure `/templates/bundles/c975LPurchaseCreditsBundle/` in your app and then duplicate the file `layout.html.twig` in it, to override the existing Bundle file.
 
 In `layout.html.twig`, it will mainly consist to extend your layout and define specific variables, i.e. :
+
 ```twig
 {% extends 'layout.html.twig' %}
 
@@ -139,8 +141,8 @@ In `layout.html.twig`, it will mainly consist to extend your layout and define s
 {% endblock %}
 ```
 
-How to use
-----------
+### How to use
+
 All the process for purchase and payment is managed via the bundle. All you have to implement on your side is the use of credits. You can do so with the following code:
 
 ```php
@@ -177,48 +179,55 @@ class PaymentController extends AbstractController
 }
 ```
 
-Routes
-------
+### Routes
+
 The different Routes (naming self-explanatory) available are:
+
 - purchasecredits_dashboard
 - purchasecredits_purchase
 - purchasecredits_transactions
 
-Twig access
------------
+### Twig access
+
 You can access user's credits in Twig via
+
 ```twig
 {{ app.user.credits }}
 ```
 
-Credits information
--------------------
+### Credits information
+
 If you want to display information about credits to user, you can add, in your Twig template, the following code. It will display, on one line, the number of credits, a link to transactions, a link to purchase and a warning when credits are <= 0.
+
 ```twig
 {% include('@c975LPurchaseCredits/fragments/creditsInformation.html.twig') %}
 ```
 
-Transaction display
--------------------
+### Transaction display
+
 The display of the list of transactions is done via the bundle, but in case you want to link to a specific transaction, you can do so with the following:
+
 ```twig
 {{ path('purchasecredits_transaction_display', {'orderId': 'TRANSACTION_ORDER_ID'}) }}
 ```
 
-Credits Div data for javascript use
------------------------------------
+### Credits Div data for javascript use
+
 If you want to insert a div containing the user's credits, to be used by javascript, you can do it via the Twig extension:
-```
+
+```twig
 {# Credits DivData #}
 {{ purchasecredits_divData() }}
 ```
 
 Then you can access it via
+
 ```javascript
 $(document).ready(function() {
     var credits = $('#userCredits').data('credits');
 });
 ```
+
 Have a look at it to see the properties covered.
 
-**If this project help you to reduce time to develop, you can [buy me a coffee](https://www.buymeacoffee.com/LaurentMarquet) :)**
+If this project **help you to reduce time to develop**, you can sponsor me via the "Sponsor" button at the top :)

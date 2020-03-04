@@ -1,92 +1,94 @@
 # Changelog
 
-v3.4
-----
+## v3.4.1
+
+- Cosmetic changes due to Codacy review (04/03/2020)
+
+## v3.4
+
 - Removed use of symplify/easy-coding-standard as abandonned (19/02/2020)
 
-v3.3
-----
+## v3.3
+
 - Changed doctrine-bundle version (19/01/2020)
 
-v3.2
-----
+## v3.2
+
 - Changed the behaviour of TransactionService->add() to allow adding a transaction by providing credits and description (11/08/2019)
 
-v3.1.1
-------
+## v3.1.1
+
 - Changed forgotten transchoice (05/08/2019)
 
-v3.1
-----
+## v3.1
+
 - Suppressed use of transchoice (05/08/2019)
 - Made use of apply spaceless (05/08/2019)
 
-v3.0.1
-------
+## v3.0.1
+
 - Updated `PurchaseCreditsEmail` to use `getPdfFilePath()` that returns the url instead of the content (15/07/2019)
 - Added `c975LPayment.live` to add information about test (15/07/2019)
 
-v3.0
-----
+## v3.0
+
 - Made use of c975LEmailBundle v3 which use Symfony/Mailer (15/07/2019)
 - Made use of c975LPaymentBundle v3 (15/07/2019)
 - Made use of KnpPagnigatorBundle v4 (15/07/2019)
 - Drop support of Symfony 3.x (15/07/2019)
 
+Upgrading from v1.x? **Check UPGRADE.md**
 
+## v2.x
 
-v2.x
-====
+## v2.1.2.1
 
-v2.1.2.1
---------
 - Removed Bundle from AppBundle (14/07/2019)
 
-v2.1.2
-------
+## v2.1.2
+
 - Modified tools to include a button to UserBundle dashboard if installed (14/07/2019)
 - Modified creditsInformation template to use buttons instead of texts (14/07/2019)
 
-v2.1.1.1
---------
+## v2.1.1.1
+
 - Changed Github's author reference url (08/04/2019)
 
-v2.1.1
-------
+## v2.1.1
+
 - Made use of Twig namespace (11/03/2019)
 - Added declaration of formFactory (11/03/2019)
 - Renamed declaration of servicePdf (11/03/2019)
 - Removed declaration of container as not used (11/03/2019)
 
-v2.1
-----
+## v2.1
+
 - Modified Entity to specify lengths for strings (15/02/2019)
 - Modified Entity to use typehint (15/02/2019)
 - Documented the possibility to use `php bin/console make:migration` (15/02/2019)
 
-v2.0.4
-------
+## v2.0.4
+
 - Removed deprecations for @Method (13/02/2019)
 - Implemented AstractController instead of Controller (13/02/2019)
 - Modified Dependencyinjection rootNode to be not empty (13/02/2019)
 
-v2.0.3
-------
+## v2.0.3
+
 - Modified required versions in `composer.json` (25/12/2018)
 
-v2.0.2
-------
+## v2.0.2
+
 - Added missing use (25/12/2018)
 
-v2.0.1
-------
+## v2.0.1
+
 - Corrected `UPGRADE.md` for `php bin/console config:create` (03/12/2018)
 - Added rector to composer dev part (23/12/2018)
 - Modified required versions in composer (23/12/2018)
 
-v2.0
-----
-**Upgrading from v1.x? Check UPGRADE.md**
+## v2.0
+
 - Created branch 1.x (31/08/2018)
 - Updated composer.json (01/09/2018)
 - Updated `README.md` (01/09/2018)
@@ -96,22 +98,22 @@ v2.0
 - Added Route `purchasecredits_config` (01/09/2018)
 - Removed calls of `$container->getParameter()` (01/09/2018)
 
+Upgrading from v1.x? **Check UPGRADE.md**
 
-v1.x
-====
+## v1.x
 
-v1.6.2
-------
+## v1.6.2
+
 - Fixed Voter constants (31/08/2018)
 
-v1.6.1
-------
+## v1.6.1
+
 - Used a `switch()` for the FormFactory more readable (27/08/2018)
 - Renamed "purchaseCreditsConfig" to "config" in `PurchaseCreditsType` (27/08/2018)
 - Changed the FormFactory to the right version and made use of it (27/08/2018)
 
-v1.6
-----
+## v1.6
+
 - Replaced links in dashboard (transactions) by buttons (25/08/2018)
 - Removed left 'Action' in Controllers method (25/08/2018)
 - Made controller skinny (25/08/2018)
@@ -129,28 +131,28 @@ v1.6
 - Added dependency on "c975l/config-bundle" and "c975l/services-bundle" (26/08/2018)
 - Deleted un-needed translations (26/08/2018)
 
-v1.5.1
-------
+## v1.5.1
+
 - Added missing breaks (03/08/2018)
 
-v1.5
-----
+## v1.5
+
 - Made use of Voters for access rights (01/08/2018)
 
-v1.4.5.1
---------
+## v1.4.5.1
+
 - Corrected `TransactionService` (30/07/2018)
 
-v1.4.5
-------
+## v1.4.5
+
 - Injected `AuthorizationCheckerInterface` in Controllers to avoid use of `$this->get()` (30/07/2018)
 - Made use of ParamConverter (30/07/2018)
 - Moved `PurchaseCreditsService` > `addTransaction()` to `TransactionService` > `add()` (30/07/2018)
 - Corrected `README.md` (30/07/2018)
 - Added test to check if `addCredits()` method exists in User Class (30/07/2018)
 
-v1.4.4
-------
+## v1.4.4
+
 - Removed required in composer.json (22/05/2018)
 - Removed 'Action' in Controllers method as not requested anymore (29/07/2018)
 - Use of Yoda-style (29/07/2018)
@@ -160,65 +162,65 @@ v1.4.4
 - Made Controller more SOLID compliant (29/07/2018)
 - Added `_locale` variable in sendMail (29/07/2018)
 
-v1.4.3
-------
+## v1.4.3
+
 - Corrected missing `$transaction` return when created (17/05/2018)
 
-v1.4.2
-------
+## v1.4.2
+
 - Modified toolbars calls due to modification of c975LToolbarBundle (13/05/2018)
 - Modified display for credit amount in transactions (13/05/2018)
 
-v1.4.1
-------
+## v1.4.1
+
 - Added missing `createAccessDeniedException()` for transactions view (14/04/2018)
 
-v1.4
-----
+## v1.4
+
 - Added TransactionService to simplify creation of Transaction [BC-Break] (04/04/2018)
 
-v1.3.3
-------
+## v1.3.3
+
 - Changed "you" to 'I' in translations (01/04/2018)
 
-v1.3.2
-------
+## v1.3.2
+
 - Added color display for remaining credits (27/03/2018)
 - Added info about Twig access in `README.md` (28/03/2018)
 
-v1.3.1.2
---------
+## v1.3.1.2
+
 - Corrected credits type in sql file (26/03/2018)
 - Corrected french translation (26/03/2018)
 
-v1.3.1.1
---------
+## v1.3.1.1
+
 - Corrected `README.md` (26/03/2018)
 
-v1.3.1
-------
+## v1.3.1
+
 - Added `Resources/views/fragments/divData.html.twig` to display user's credits to be use by javascript (26/03/2018)
 
-v1.3
-----
+## v1.3
+
 - Added Route to display transaction + example in `README.md` (26/03/2018)
 - Added field payment order in transactions list (26/03/2018)
 
-v1.2
-----
+## v1.2
+
 - Added send email when purchasing credits (21/03/2018)
 - Added VAT config value (21/03/2018)
 - Replaced text `not_enough_credits` by `no_credits` because having 0 credits may be enough on websites to have free services (26/03/2018)
 
-v1.1.1
-------
+## v1.1.1
+
 - Modified label for Terms of Sales acceptance (21/03/2018)
 - Added mandatory field (21/03/2018)
 
-v1.1
-----
+## v1.1
+
 - Added core system files (21/03/2018)
 
-v1.0
-----
+## v1.0
+
 - Creation of bundle (16/03/2018)
