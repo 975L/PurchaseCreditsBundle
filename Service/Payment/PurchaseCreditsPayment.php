@@ -12,7 +12,7 @@ namespace c975L\PurchaseCreditsBundle\Service\Payment;
 use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\PaymentBundle\Service\PaymentServiceInterface;
 use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Services related to PurchaseCredits Payment
