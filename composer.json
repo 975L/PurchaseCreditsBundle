@@ -18,24 +18,24 @@
         }
     ],
     "require": {
-        "php": "^7",
+        "php": "*",
         "c975l/config-bundle": "^2",
         "c975l/email-bundle": "^3",
         "c975l/includelibrary-bundle": "^1",
         "c975l/payment-bundle": "^3",
         "c975l/services-bundle": "^1",
         "c975l/toolbar-bundle": "^1",
-        "doctrine/doctrine-bundle": "^2",
-        "doctrine/orm": "^2",
-        "knplabs/knp-paginator-bundle": "^4",
+        "doctrine/doctrine-bundle": "*",
+        "doctrine/orm": "*",
+        "knplabs/knp-paginator-bundle": "*",
         "symfony/form": "*",
         "symfony/security": "*",
         "symfony/translation": "*"
     },
     "require-dev": {
-        "phpstan/phpstan": "^0",
-        "phpunit/phpunit": "^7",
-        "rector/rector": "^0"
+        "phpstan/phpstan": "*",
+        "phpunit/phpunit": "*",
+        "rector/rector": "*"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
