@@ -1,5 +1,9 @@
 # UPGRADE
 
+## v3.x > v4.x
+
+Changed `localizeddate` to `format_datetime`
+
 ## v2.x > v3.x
 
 `c975LEmailBundle` now use `Symfony\Component\Mailer\MailerInterface`and `Symfony\Component\Mime\Email` which are NOT compatible with Symfony 3.x.

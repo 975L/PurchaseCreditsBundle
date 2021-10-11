@@ -20,9 +20,9 @@
     "require": {
         "php": "*",
         "c975l/config-bundle": "^2",
-        "c975l/email-bundle": "^3",
+        "c975l/email-bundle": "^4",
         "c975l/includelibrary-bundle": "^1",
-        "c975l/payment-bundle": "^3",
+        "c975l/payment-bundle": "^4",
         "c975l/services-bundle": "^1",
         "c975l/toolbar-bundle": "^1",
         "doctrine/doctrine-bundle": "*",
@@ -30,7 +30,8 @@
         "knplabs/knp-paginator-bundle": "*",
         "symfony/form": "*",
         "symfony/security": "*",
-        "symfony/translation": "*"
+        "symfony/translation": "*",
+        "twig/intl-extra": "*"
     },
     "require-dev": {
         "phpstan/phpstan": "*",

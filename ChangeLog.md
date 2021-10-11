@@ -1,5 +1,11 @@
 # Changelog
 
+## v4.0
+
+- Changed `localizeddate` to `format_datetime` (11/10/2021)
+
+Upgrading from v3.x? **Check UPGRADE.md**
+
 ## v3.6
 
 - Changed `Symfony\Component\Translation\TranslatorInterface` to `Symfony\Contracts\Translation\TranslatorInterface` (03/09/2021)

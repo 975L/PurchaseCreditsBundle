@@ -48,7 +48,7 @@
                 <tr>
 {# Date #}
                     <td class="text-center">
-                        {{ transaction.creation|localizeddate('long', 'short') }}
+                        {{ transaction.creation|format_datetime('long', 'short') }}
                     </td>
 {# OrderId #}
                     <td class="text-center">
