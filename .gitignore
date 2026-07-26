@@ -2,3 +2,11 @@
 .php_cs_cache
 composer.lock
 vendor
+
+### Outillage local (IA / IDE) ###
+/.claude/
+/.idea/
+/.vscode/*
+!/.vscode/settings.json
+!/.vscode/extensions.json
+.github/instructions/codacy.instructions.md
