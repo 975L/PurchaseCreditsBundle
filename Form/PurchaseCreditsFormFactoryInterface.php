@@ -1,4 +1,5 @@
 <?php
+
 /*
  * (c) 2018: 975L <contact@975l.com>
  * (c) 2018: Laurent Marquet <laurent.marquet@laposte.net>
@@ -13,14 +14,16 @@ use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
 use Symfony\Component\Form\Form;
 
 /**
- * Interface to be called for DI for PurchaseCreditsFormFactoryInterface related services
+ * Interface to be called for DI for PurchaseCreditsFormFactoryInterface related services.
+ *
  * @author Laurent Marquet <laurent.marquet@laposte.net>
  * @copyright 2018 975L <contact@975l.com>
  */
 interface PurchaseCreditsFormFactoryInterface
 {
     /**
-     * Returns the defined form
+     * Returns the defined form.
+     *
      * @return Form
      */
     public function create(string $name, PurchaseCredits $purchaseCredits, int $credits, array $priceChoices);

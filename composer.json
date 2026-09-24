@@ -1,7 +1,7 @@
 {
     "name": "c975l/purchasecredits-bundle",
     "type": "symfony-bundle",
-    "description": "Bundle to purchase and use credits within a website",
+    "description": "Legacy Symfony bundle to purchase and spend credits within a website — predates the current c975L architecture and is kept for existing sites only.",
     "keywords": ["symfony", "bundle", "gift", "voucher"],
     "homepage": "https://github.com/975L/PurchaseCreditsBundle",
     "license": "MIT",

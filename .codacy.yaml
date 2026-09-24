@@ -1,0 +1,15 @@
+---
+# Syntaxe glob Java : "**/" impose un séparateur avant le dossier, donc il ne couvre
+# jamais la racine du dépôt - chaque dossier exclu demande ses deux formes
+exclude_paths:
+  - "public/**"
+  - "**/public/**"
+  - "tests/**"
+  - "**/tests/**"
+  - "vendor/**"
+  - "**/vendor/**"
+  - ".phpunit.cache/**"
+  - "**.min.js"
+  - "**.min.css"
+  - "**.map"
+  - "**.tpl.php"

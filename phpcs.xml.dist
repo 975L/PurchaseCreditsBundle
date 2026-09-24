@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<ruleset name="c975L">
+    <description>PSR-12 coding standard for the c975L bundles</description>
+
+    <!-- This bundle predates the src/ layout, its classes sit at the root -->
+    <file>.</file>
+
+    <!-- Generated, third-party and non-PHP template files are not ours to lint -->
+    <exclude-pattern>*/public/*</exclude-pattern>
+    <exclude-pattern>*/Resources/*</exclude-pattern>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*.tpl.php</exclude-pattern>
+
+    <rule ref="PSR12">
+        <!-- PSR-12 states the line length as a recommendation, not a requirement -->
+        <exclude name="Generic.Files.LineLength"/>
+    </rule>
+
+    <!-- Packagist requires the c975L vendor prefix, which is not PascalCase -->
+    <rule ref="Squiz.Classes.ValidClassName.NotPascalCase">
+        <exclude-pattern>*c975L*</exclude-pattern>
+    </rule>
+
+    <!-- Test doubles stay in the file of the test case that uses them -->
+    <rule ref="PSR1.Classes.ClassDeclaration.MultipleClasses">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+    <!-- A test case may pull in a fixture the tests' PSR-4 autoloader cannot reach -->
+    <rule ref="PSR1.Files.SideEffects">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+    <!-- What phpmd used to report before its parser was left behind by PHP 8.4: a debug call or an exit() forgotten in the code. Stated here rather than left to phpmd's own DevelopmentCodeFragment, which reads a function image together with its namespace and therefore never matched a single call in namespaced code -->
+    <rule ref="Generic.PHP.ForbiddenFunctions">
+        <properties>
+            <property name="forbiddenFunctions" type="array">
+                <element key="var_dump" value="null"/>
+                <element key="print_r" value="null"/>
+                <element key="debug_zval_dump" value="null"/>
+                <element key="debug_print_backtrace" value="null"/>
+                <element key="exit" value="null"/>
+                <element key="die" value="null"/>
+            </property>
+        </properties>
+    </rule>
+
+    <!-- eval() needs its own sniff, being a construct and not a function ForbiddenFunctions could name -->
+    <rule ref="Squiz.PHP.Eval"/>
+</ruleset>

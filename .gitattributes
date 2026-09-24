@@ -1,0 +1,6 @@
+# Dev-only paths, kept out of the Composer dist archive: the zip Composer downloads is built by
+# "git archive", which honours export-ignore. The repository and what GitHub displays are unchanged.
+# UPGRADE.md and README.md stay in, both being read from vendor/ and shown on Packagist.
+/.gitattributes export-ignore
+/.github export-ignore
+/.gitignore export-ignore

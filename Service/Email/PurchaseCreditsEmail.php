@@ -1,4 +1,5 @@
 <?php
+
 /*
  * (c) 2018: 975L <contact@975l.com>
  * (c) 2018: Laurent Marquet <laurent.marquet@laposte.net>
@@ -19,44 +20,51 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 /**
- * Services related to PurchaseCredits Email
+ * Services related to PurchaseCredits Email.
+ *
  * @author Laurent Marquet <laurent.marquet@laposte.net>
  * @copyright 2018 975L <contact@975l.com>
  */
 class PurchaseCreditsEmail implements PurchaseCreditsEmailInterface
 {
     /**
-     * Stores ConfigServiceInterface
+     * Stores ConfigServiceInterface.
+     *
      * @var ConfigServiceInterface
      */
     private $configService;
 
     /**
-     * Stores EmailServiceInterface
+     * Stores EmailServiceInterface.
+     *
      * @var EmailServiceInterface
      */
     private $emailService;
 
     /**
-     * Stores ServicePdfInterface
+     * Stores ServicePdfInterface.
+     *
      * @var ServicePdfInterface
      */
     private $servicePdf;
 
     /**
-     * Stores current Request
+     * Stores current Request.
+     *
      * @var Request
      */
     private $request;
 
     /**
-     * Stores Environment
+     * Stores Environment.
+     *
      * @var Environment
      */
     private $environment;
 
     /**
-     * Stores Translator
+     * Stores Translator.
+     *
      * @var TranslatorInterface
      */
     private $translator;
@@ -67,9 +75,8 @@ class PurchaseCreditsEmail implements PurchaseCreditsEmailInterface
         ServicePdfInterface $servicePdf,
         RequestStack $requestStack,
         Environment $environment,
-        TranslatorInterface $translator
-    )
-    {
+        TranslatorInterface $translator,
+    ) {
         $this->configService = $configService;
         $this->emailService = $emailService;
         $this->servicePdf = $servicePdf;
@@ -78,31 +85,28 @@ class PurchaseCreditsEmail implements PurchaseCreditsEmailInterface
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function send(Payment $payment, int $credits, $user)
     {
-        //Gets the PDF for Terms of sales
+        // Gets the PDF for Terms of sales
         $tosPdf = $this->servicePdf->getPdfFilePath('label.terms_of_sales_filename', $this->configService->getParameter('c975LPurchaseCredits.tosPdf'));
 
-        //Sends email
-        $body = $this->environment->render('@c975LPurchaseCredits/emails/purchase.html.twig', array(
+        // Sends email
+        $body = $this->environment->render('@c975LPurchaseCredits/emails/purchase.html.twig', [
             'payment' => $payment,
             'credits' => $credits,
             'userCredits' => $user->getCredits(),
             'live' => $this->configService->getParameter('c975LPurchaseCredits.live') && $this->configService->getParameter('c975LPayment.live'),
             'locale' => $this->request->getLocale(),
-        ));
-        $emailData = array(
-            'subject' => $this->translator->trans('label.purchased_credits', array('%credits%' => $credits), 'purchaseCredits'),
+        ]);
+        $emailData = [
+            'subject' => $this->translator->trans('label.purchased_credits', ['%credits%' => $credits], 'purchaseCredits'),
             'sentFrom' => $this->configService->getParameter('c975LEmail.sentFrom'),
             'sentTo' => $user->getEmail(),
             'replyTo' => $this->configService->getParameter('c975LEmail.sentFrom'),
             'body' => $body,
-            'attach' => array($tosPdf),
+            'attach' => [$tosPdf],
             'ip' => $this->request->getClientIp(),
-        );
+        ];
 
         $this->emailService->send($emailData, true);
     }

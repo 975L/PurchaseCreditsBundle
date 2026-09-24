@@ -1,4 +1,5 @@
 <?php
+
 /*
  * (c) 2018: 975L <contact@975l.com>
  * (c) 2018: Laurent Marquet <laurent.marquet@laposte.net>
@@ -14,51 +15,50 @@ use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
- * PurchaseCreditsFormFactory class
+ * PurchaseCreditsFormFactory class.
+ *
  * @author Laurent Marquet <laurent.marquet@laposte.net>
  * @copyright 2018 975L <contact@975l.com>
  */
 class PurchaseCreditsFormFactory implements PurchaseCreditsFormFactoryInterface
 {
     /**
-     * Stores ConfigServiceInterface
+     * Stores ConfigServiceInterface.
+     *
      * @var ConfigServiceInterface
      */
     private $configService;
 
     /**
-     * Stores FormFactoryInterface
+     * Stores FormFactoryInterface.
+     *
      * @var FormFactoryInterface
      */
     private $formFactory;
 
     public function __construct(
         ConfigServiceInterface $configService,
-        FormFactoryInterface $formFactory
-    )
-    {
+        FormFactoryInterface $formFactory,
+    ) {
         $this->configService = $configService;
         $this->formFactory = $formFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function create(string $name, PurchaseCredits $purchaseCredits, int $credits, array $priceChoices)
     {
         switch ($name) {
             case 'purchase':
-                $config = array(
+                $config = [
                     'credits' => in_array($credits, $this->configService->getParameter('c975LPurchaseCredits.creditsNumber')) ? (int) $credits : 0,
                     'pricesChoice' => $priceChoices,
                     'gdpr' => $this->configService->getParameter('c975LPurchaseCredits.gdpr'),
-                    );
+                ];
                 break;
             default:
-                $config = array();
+                $config = [];
                 break;
         }
 
-        return $this->formFactory->create(PurchaseCreditsType::class, $purchaseCredits, array('config' => $config));
+        return $this->formFactory->create(PurchaseCreditsType::class, $purchaseCredits, ['config' => $config]);
     }
 }

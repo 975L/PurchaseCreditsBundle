@@ -1,4 +1,5 @@
 <?php
+
 /*
  * (c) 2018: 975L <contact@975l.com>
  * (c) 2018: Laurent Marquet <laurent.marquet@laposte.net>
@@ -12,32 +13,35 @@ namespace c975L\PurchaseCreditsBundle\Service;
 use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\PaymentBundle\Entity\Payment;
 use c975L\PurchaseCreditsBundle\Entity\Transaction;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * TransactionService class
+ * TransactionService class.
+ *
  * @author Laurent Marquet <laurent.marquet@laposte.net>
  * @copyright 2017 975L <contact@975l.com>
  */
 class TransactionService implements TransactionServiceInterface
 {
     /**
-     * Stores ConfigServiceInterface
+     * Stores ConfigServiceInterface.
+     *
      * @var ConfigServiceInterface
      */
     private $configService;
 
     /**
-     * Stores EntityManagerInterface
+     * Stores EntityManagerInterface.
+     *
      * @var EntityManagerInterface
      */
     private $em;
 
     /**
-     * Stores current Request
+     * Stores current Request.
+     *
      * @var Request
      */
     private $request;
@@ -45,17 +49,13 @@ class TransactionService implements TransactionServiceInterface
     public function __construct(
         ConfigServiceInterface $configService,
         EntityManagerInterface $em,
-        RequestStack $requestStack
-    )
-    {
+        RequestStack $requestStack,
+    ) {
         $this->configService = $configService;
         $this->em = $em;
         $this->request = $requestStack->getCurrentRequest();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function add($orderId, $credits, $description, $user)
     {
         $transaction = $this->create($orderId);
@@ -69,69 +69,57 @@ class TransactionService implements TransactionServiceInterface
         return $transaction;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addPayment(Payment $payment, $credits, $user)
     {
         return $this->add('pmt' . $payment->getOrderId(), $credits, $payment->getDescription(), $user);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function create($orderId = null)
     {
         $transaction = new Transaction();
 
         if (null === $orderId) {
-            $now = DateTime::createFromFormat('U.u', microtime(true));
+            $now = \DateTime::createFromFormat('U.u', microtime(true));
             $orderId = $now->format('Ymd-His-u');
         }
 
         $transaction
             ->setOrderId($orderId)
-            ->setCreation(new DateTime())
+            ->setCreation(new \DateTime())
             ->setUserIp($this->request->getClientIp())
         ;
 
         return $transaction;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAll($user)
     {
         return $this->em
             ->getRepository('c975L\PurchaseCreditsBundle\Entity\Transaction')
-            ->findByUserId($user->getId(), array('creation' => 'desc'));
+            ->findByUserId($user->getId(), ['creation' => 'desc']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function persist(Transaction $transaction, $user)
     {
-        //Persists Transaction
+        // Persists Transaction
         $transaction->setUserId($user->getId());
         $this->em->persist($transaction);
 
-        //Adds/Subtracts credits to user
+        // Adds/Subtracts credits to user
         if (
-            //Credits are live on site
-            $this->configService->getParameter('c975LPurchaseCredits.live') &&
-            //AND Method addCredits() exists on user class
-            method_exists(get_class($user), 'addCredits') &&
-            //AND Credits are used by user
-            (($transaction->getCredits() < 0 ||
-            //OR Payment is live on site
-            $this->configService->getParameter('c975LPayment.live') ||
-            //OR Transaction is not resulting from a test payment
-            substr($transaction->getOrderId(), 0, 3) != 'pmt'))
+            // Credits are live on site
+            $this->configService->getParameter('c975LPurchaseCredits.live')
+            // AND Method addCredits() exists on user class
+            && method_exists(get_class($user), 'addCredits')
+            // AND Credits are used by user
+            && ($transaction->getCredits() < 0
+            // OR Payment is live on site
+            || $this->configService->getParameter('c975LPayment.live')
+            // OR Transaction is not resulting from a test payment
+            || 'pmt' != substr($transaction->getOrderId(), 0, 3))
         ) {
-                $user->addCredits($transaction->getCredits());
-                $this->em->persist($user);
+            $user->addCredits($transaction->getCredits());
+            $this->em->persist($user);
         }
     }
 }

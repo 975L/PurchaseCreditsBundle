@@ -1,4 +1,5 @@
 <?php
+
 /*
  * (c) 2018: 975L <contact@975l.com>
  * (c) 2018: Laurent Marquet <laurent.marquet@laposte.net>
@@ -6,6 +7,7 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
+
 namespace c975L\PurchaseCreditsBundle\Controller;
 
 use c975L\PaymentBundle\Entity\Payment;
@@ -16,16 +18,19 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Payment Controller class
+ * Payment Controller class.
+ *
  * @author Laurent Marquet <laurent.marquet@laposte.net>
  * @copyright 2018 975L <contact@975l.com>
  */
 class PaymentController extends AbstractController
 {
-//PAYMENT DONE
+    // PAYMENT DONE
     /**
-     * Return Route after having done payment
+     * Return Route after having done payment.
+     *
      * @return Redirect
+     *
      * @throws NotFoundHttpException
      *
      * @Route("/purchase-credits/payment-done/{orderId}",
@@ -36,16 +41,16 @@ class PaymentController extends AbstractController
     {
         $validation = $purchaseCreditsService->validate($payment);
 
-        //Redirects to the display of payment
+        // Redirects to the display of payment
         if ($validation) {
-            return $this->redirectToRoute('payment_display', array(
+            return $this->redirectToRoute('payment_display', [
                 'orderId' => $payment->getOrderId(),
-            ));
+            ]);
         }
 
-        //Payment has been done but Credits were not added
+        // Payment has been done but Credits were not added
         $paymentService->error($payment);
 
-        return $this->redirectToRoute('payment_display', array('orderId' => $payment->getOrderId()));
+        return $this->redirectToRoute('payment_display', ['orderId' => $payment->getOrderId()]);
     }
 }

@@ -1,5 +1,13 @@
 # Changelog
 
+## v4.0.1
+
+Apply PSR-12 and add the coding standards tooling
+
+- Added `.codacy.yaml` and `phpcs.xml.dist` (30/07/2026)
+- Applied PSR-12 to the codebase (30/07/2026)
+- Added `.php-cs-fixer.dist.php`, applying the Symfony coding standards (30/07/2026)
+
 ## v4.0
 
 - Changed `localizeddate` to `format_datetime` (11/10/2021)

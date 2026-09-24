@@ -18,6 +18,15 @@ As the Terms of sales MUST be sent to the user with the Gift-Voucher, you MUST p
 
 [PurchaseCreditsBundle API documentation](https://975l.com/apidoc/c975L/PurchaseCreditsBundle.html).
 
+---
+
+> **TL;DR** — Lets users buy and spend credits on your site, with Stripe payment handled through c975LPaymentBundle and a confirmation email carrying your Terms of sale as a PDF. Legacy architecture (no `src/`, annotations, no EasyAdmin) — don't take it as a model for new c975L code.
+
+## Contents
+
+- **Setup** — [download](#step-1-download-the-bundle) · [configure](#step-2-configure-the-bundle) · [routes](#step-3-enable-the-routes) · [User entity](#step-4-user-entity) · [tables](#step-5-create-mysql-tables) · [override templates](#step-6-override-templates)
+- **Using it** — [how to use](#how-to-use) · [routes](#routes) · [Twig access](#twig-access) · [credits information](#credits-information) · [transaction display](#transaction-display) · [credits div for JS](#credits-div-data-for-javascript-use)
+
 ## Bundle installation
 
 ### Step 1: Download the Bundle

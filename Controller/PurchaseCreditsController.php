@@ -1,4 +1,5 @@
 <?php
+
 /*
  * (c) 2018: 975L <contact@975l.com>
  * (c) 2018: Laurent Marquet <laurent.marquet@laposte.net>
@@ -6,6 +7,7 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
+
 namespace c975L\PurchaseCreditsBundle\Controller;
 
 use c975L\ConfigBundle\Service\ConfigServiceInterface;
@@ -19,25 +21,30 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
 /**
- * PurchaseCredits Controller class
+ * PurchaseCredits Controller class.
+ *
  * @author Laurent Marquet <laurent.marquet@laposte.net>
  * @copyright 2018 975L <contact@975l.com>
  */
 class PurchaseCreditsController extends AbstractController
 {
     /**
-     * Stores PurchaseCreditsPaymentInterface
+     * Stores PurchaseCreditsPaymentInterface.
+     *
      * @var PurchaseCreditsPaymentInterface
      */
     private $purchaseCreditsPayment;
     /**
-     * Stores PurchaseCreditsServiceInterface
+     * Stores PurchaseCreditsServiceInterface.
+     *
      * @var PurchaseCreditsServiceInterface
      */
     private $purchaseCreditsService;
     /**
-     * Stores ServiceToolsInterface
+     * Stores ServiceToolsInterface.
+     *
      * @var ServiceToolsInterface
      */
     private $serviceTools;
@@ -45,17 +52,19 @@ class PurchaseCreditsController extends AbstractController
     public function __construct(
         PurchaseCreditsPaymentInterface $purchaseCreditsPayment,
         PurchaseCreditsServiceInterface $purchaseCreditsService,
-        ServiceToolsInterface $serviceTools
+        ServiceToolsInterface $serviceTools,
     ) {
         $this->purchaseCreditsPayment = $purchaseCreditsPayment;
         $this->purchaseCreditsService = $purchaseCreditsService;
         $this->serviceTools = $serviceTools;
     }
 
-//DASHBOARD
+    // DASHBOARD
     /**
-     * Displays the dashboard for PurchaseCredits
+     * Displays the dashboard for PurchaseCredits.
+     *
      * @return Response
+     *
      * @throws AccessDeniedException
      *
      * @Route("/purchase-credits/dashboard",
@@ -66,14 +75,16 @@ class PurchaseCreditsController extends AbstractController
     {
         $this->denyAccessUnlessGranted('c975LPurchaseCredits-dashboard', null);
 
-        //Renders the dashboard
+        // Renders the dashboard
         return $this->render('@c975LPurchaseCredits/pages/dashboard.html.twig');
     }
 
-//CONFIG
+    // CONFIG
     /**
-     * Displays the configuration
+     * Displays the configuration.
+     *
      * @return Response
+     *
      * @throws AccessDeniedException
      *
      * @Route("/purchase-credits/config",
@@ -84,31 +95,34 @@ class PurchaseCreditsController extends AbstractController
     {
         $this->denyAccessUnlessGranted('c975LPurchaseCredits-config', null);
 
-        //Defines form
+        // Defines form
         $form = $configService->createForm('c975l/purchasecredits-bundle');
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //Validates config
+            // Validates config
             $configService->setConfig($form);
 
-            //Redirects
+            // Redirects
             return $this->redirectToRoute('purchasecredits_dashboard');
         }
 
-        //Renders the config form
+        // Renders the config form
         return $this->render(
             '@c975LConfig/forms/config.html.twig',
-            array(
+            [
                 'form' => $form->createView(),
                 'toolbar' => '@c975LPurchaseCredits',
-            ));
+            ]
+        );
     }
 
-//PURCHASE CREDITS
+    // PURCHASE CREDITS
     /**
-     * Displays the form to purchase credits
+     * Displays the form to purchase credits.
+     *
      * @return Response
+     *
      * @throws AccessDeniedException
      *
      * @Route("/purchase-credits/{credits}",
@@ -122,27 +136,29 @@ class PurchaseCreditsController extends AbstractController
         $purchaseCredits = $this->purchaseCreditsService->create();
         $this->denyAccessUnlessGranted('c975LPurchaseCredits-purchase', $purchaseCredits);
 
-        //Defines form
+        // Defines form
         $form = $this->purchaseCreditsService->createForm('purchase', $purchaseCredits, $credits, $this->purchaseCreditsService->getPricesChoice());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //Defines the PurchaseCredits
+            // Defines the PurchaseCredits
             $this->purchaseCreditsService->define($purchaseCredits);
 
-            //Redirects to the payment
+            // Redirects to the payment
             $this->purchaseCreditsPayment->payment($purchaseCredits, $this->getUser());
+
             return $this->redirectToRoute('payment_form');
         }
 
-        //Renders the purchase credits form
+        // Renders the purchase credits form
         return $this->render(
             '@c975LPurchaseCredits/forms/purchase.html.twig',
-            array(
+            [
                 'form' => $form->createView(),
                 'user' => $this->getUser(),
                 'live' => $configService->getParameter('c975LPurchaseCredits.live') && $configService->getParameter('c975LPayment.live'),
                 'tosUrl' => $this->serviceTools->getUrl($configService->getParameter('c975LPurchaseCredits.tosUrl')),
-            ));
+            ]
+        );
     }
 }

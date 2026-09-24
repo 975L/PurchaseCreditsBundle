@@ -1,4 +1,5 @@
 <?php
+
 /*
  * (c) 2018: 975L <contact@975l.com>
  * (c) 2018: Laurent Marquet <laurent.marquet@laposte.net>
@@ -15,26 +16,30 @@ use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Services related to PurchaseCredits Payment
+ * Services related to PurchaseCredits Payment.
+ *
  * @author Laurent Marquet <laurent.marquet@laposte.net>
  * @copyright 2018 975L <contact@975l.com>
  */
 class PurchaseCreditsPayment implements PurchaseCreditsPaymentInterface
 {
     /**
-     * Stores ConfigServiceInterface
+     * Stores ConfigServiceInterface.
+     *
      * @var ConfigServiceInterface
      */
     private $configService;
 
     /**
-     * Stores PaymentService
+     * Stores PaymentService.
+     *
      * @var PaymentServiceInterface
      */
     private $paymentService;
 
     /**
-     * Stores Translator
+     * Stores Translator.
+     *
      * @var TranslatorInterface
      */
     private $translator;
@@ -42,30 +47,26 @@ class PurchaseCreditsPayment implements PurchaseCreditsPaymentInterface
     public function __construct(
         ConfigServiceInterface $configService,
         PaymentServiceInterface $paymentService,
-        TranslatorInterface $translator
-    )
-    {
+        TranslatorInterface $translator,
+    ) {
         $this->configService = $configService;
         $this->paymentService = $paymentService;
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function payment(PurchaseCredits $purchaseCredits, $user)
     {
-        $paymentData = array(
+        $paymentData = [
             'amount' => $purchaseCredits->getAmount(),
             'currency' => $purchaseCredits->getCurrency(),
-            'action' => json_encode(array('addCredits' => $purchaseCredits->getCredits())),
-            'description' => $this->translator->trans('label.purchase_credits', array(), 'purchaseCredits') . ' (' . $purchaseCredits->getCredits() . ')',
+            'action' => json_encode(['addCredits' => $purchaseCredits->getCredits()]),
+            'description' => $this->translator->trans('label.purchase_credits', [], 'purchaseCredits') . ' (' . $purchaseCredits->getCredits() . ')',
             'userId' => null !== $user ? $user->getId() : null,
             'userIp' => $purchaseCredits->getUserIp(),
             'live' => $this->configService->getParameter('c975LPurchaseCredits.live'),
             'returnRoute' => 'purchasecredits_payment_done',
             'vat' => $this->configService->getParameter('c975LPurchaseCredits.vat'),
-            );
+        ];
 
         $this->paymentService->create($paymentData);
     }

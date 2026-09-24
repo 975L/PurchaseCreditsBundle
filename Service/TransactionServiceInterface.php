@@ -1,4 +1,5 @@
 <?php
+
 /*
  * (c) 2018: 975L <contact@975l.com>
  * (c) 2018: Laurent Marquet <laurent.marquet@laposte.net>
@@ -13,38 +14,37 @@ use c975L\PaymentBundle\Entity\Payment;
 use c975L\PurchaseCreditsBundle\Entity\Transaction;
 
 /**
- * Interface to be called for DI for TransactionServiceInterface related services
+ * Interface to be called for DI for TransactionServiceInterface related services.
+ *
  * @author Laurent Marquet <laurent.marquet@laposte.net>
  * @copyright 2018 975L <contact@975l.com>
  */
 interface TransactionServiceInterface
 {
     /**
-     * Adds Transaction + User's credits
+     * Adds Transaction + User's credits.
+     *
      * @return Transaction
      */
     public function add($orderId, $credits, $description, $user);
 
     /**
-     * Adds a Pyment in Transaction
+     * Adds a Pyment in Transaction.
+     *
      * @return Transaction
      */
     public function addPayment(Payment $payment, $credits, $user);
 
     /**
-     * Creates Transaction
+     * Creates Transaction.
+     *
      * @return Transaction
      */
     public function create($orderId = null);
 
-    /**
-     * Gets all the Transaction for the user
-     * @return mixed
-     */
+    // Gets all the Transaction for the user.
     public function getAll($user);
 
-    /**
-     * Persists Transaction + User's data
-     */
+    // Persists Transaction + User's data.
     public function persist(Transaction $transaction, $user);
 }

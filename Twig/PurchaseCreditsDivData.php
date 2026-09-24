@@ -1,4 +1,5 @@
 <?php
+
 /*
  * (c) 2018: 975L <contact@975l.com>
  * (c) 2018: Laurent Marquet <laurent.marquet@laposte.net>
@@ -8,12 +9,14 @@
  */
 
 namespace c975L\PurchaseCreditsBundle\Twig;
+
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 /**
- * Twig extension to display a "<div data-...></div>" that contains informations related to credits using `purchasecredits_divData()`
+ * Twig extension to display a "<div data-...></div>" that contains informations related to credits using `purchasecredits_divData()`.
+ *
  * @author Laurent Marquet <laurent.marquet@laposte.net>
  * @copyright 2018 975L <contact@975l.com>
  */
@@ -21,26 +24,27 @@ class PurchaseCreditsDivData extends AbstractExtension
 {
     public function getFunctions()
     {
-        return array(
+        return [
             new TwigFunction(
                 'purchasecredits_divData',
-                array($this, 'divData'),
-                array(
+                [$this, 'divData'],
+                [
                     'needs_environment' => true,
-                    'is_safe' => array('html'),
-                )
+                    'is_safe' => ['html'],
+                ]
             ),
-        );
+        ];
     }
 
     /**
-     * Returns the xhtml code for "<div data-...></div>" formatted
+     * Returns the xhtml code for "<div data-...></div>" formatted.
+     *
      * @return string
      */
     public function divData(Environment $environment)
     {
         $render = $environment->render('@c975LPurchaseCredits/fragments/divData.html.twig');
 
-        return str_replace(array("\n", '    ', '   ', '  '), ' ', $render);
+        return str_replace(["\n", '    ', '   ', '  '], ' ', $render);
     }
 }

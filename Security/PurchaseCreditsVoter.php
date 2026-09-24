@@ -1,4 +1,5 @@
 <?php
+
 /*
  * (c) 2018: 975L <contact@975l.com>
  * (c) 2018: Laurent Marquet <laurent.marquet@laposte.net>
@@ -11,69 +12,72 @@ namespace c975L\PurchaseCreditsBundle\Security;
 
 use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\PurchaseCreditsBundle\Entity\PurchaseCredits;
-use LogicException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * Voter for PurchaseCredits access
+ * Voter for PurchaseCredits access.
+ *
  * @author Laurent Marquet <laurent.marquet@laposte.net>
  * @copyright 2018 975L <contact@975l.com>
  */
 class PurchaseCreditsVoter extends Voter
 {
     /**
-     * Stores ConfigServiceInterface
+     * Stores ConfigServiceInterface.
+     *
      * @var ConfigServiceInterface
      */
     private $configService;
 
     /**
-     * Stores AccessDecisionManagerInterface
+     * Stores AccessDecisionManagerInterface.
+     *
      * @var AccessDecisionManagerInterface
      */
     private $decisionManager;
 
     /**
-     * Used for access to config
+     * Used for access to config.
+     *
      * @var string
      */
     public const CONFIG = 'c975LPurchaseCredits-config';
 
     /**
-     * Used for access to dashboard
+     * Used for access to dashboard.
+     *
      * @var string
      */
     public const DASHBOARD = 'c975LPurchaseCredits-dashboard';
 
     /**
-     * Used for access to purchase
+     * Used for access to purchase.
+     *
      * @var string
      */
     public const PURCHASE = 'c975LPurchaseCredits-purchase';
 
     /**
-     * Contains all the available attributes to check with in supports()
+     * Contains all the available attributes to check with in supports().
+     *
      * @var array
      */
-    private const ATTRIBUTES = array(
+    private const ATTRIBUTES = [
         self::CONFIG,
         self::DASHBOARD,
         self::PURCHASE,
-    );
+    ];
 
     public function __construct(
         ConfigServiceInterface $configService,
-        AccessDecisionManagerInterface $decisionManager
+        AccessDecisionManagerInterface $decisionManager,
     ) {
         $this->configService = $configService;
         $this->decisionManager = $decisionManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function supports($attribute, $subject)
     {
         if (null !== $subject) {
@@ -83,22 +87,19 @@ class PurchaseCreditsVoter extends Voter
         return in_array($attribute, self::ATTRIBUTES);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        //Defines access rights
+        // Defines access rights
         switch ($attribute) {
             case self::CONFIG:
-                return $this->decisionManager->decide($token, array($this->configService->getParameter('c975LPurchaseCredits.roleNeeded', 'c975l/purchasecredits-bundle')));
+                return $this->decisionManager->decide($token, [$this->configService->getParameter('c975LPurchaseCredits.roleNeeded', 'c975l/purchasecredits-bundle')]);
                 break;
             case self::DASHBOARD:
             case self::PURCHASE:
-                return $this->decisionManager->decide($token, array('ROLE_USER'));
+                return $this->decisionManager->decide($token, ['ROLE_USER']);
                 break;
         }
 
-        throw new LogicException('Invalid attribute: ' . $attribute);
+        throw new \LogicException('Invalid attribute: ' . $attribute);
     }
 }
