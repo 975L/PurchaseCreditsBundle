@@ -1,233 +1,177 @@
 # PurchaseCreditsBundle
 
-PurchaseCreditsBundle does the following:
+Symfony bundle for prepaid credits on the c975L core — credit packs sold through the basket, a per-user ledger and a spending API the site's own services call. Checkout is delegated to [c975L/PaymentBundle](https://github.com/975L/PaymentBundle).
 
-- Allows to purchase and use credits within your website,
-- Interfaces with Stripe via [c975LPaymentBundle](https://github.com/975L/PaymentBundle) for its payment,
-- Integrates with [c975LToolbarBundle](https://github.com/975L/ToolbarBundle),
-- Emails the user about purchased credits and joins your Terms of sales as PDF to the email,
+[![GitHub](https://img.shields.io/github/license/975L/PurchaseCreditsBundle)](https://github.com/975L/PurchaseCreditsBundle/blob/main/LICENSE)
+[![Packagist Version](https://img.shields.io/packagist/v/c975l/purchasecredits-bundle)](https://packagist.org/packages/c975l/purchasecredits-bundle)
+[![PHP Version](https://img.shields.io/packagist/php-v/c975l/purchasecredits-bundle)](https://packagist.org/packages/c975l/purchasecredits-bundle)
+[![Codacy Grade](https://app.codacy.com/project/badge/Grade/566b313db5fe4cedbf11368f298f320a)](https://app.codacy.com/gh/975L/PurchaseCreditsBundle/dashboard)
 
-This Bundle relies on the use of [c975LPaymentBundle](https://github.com/975L/PaymentBundle), [Stripe](https://stripe.com/) and its [PHP Library](https://github.com/stripe/stripe-php).
-**So you MUST have a Stripe account.**
+> **BUNDLE UNDER DEVELOPMENT — USE AT YOUR OWN RISK**
 
-It is also recomended to use this with a SSL certificat to reassure the user.
+---
 
-As the Terms of sales MUST be sent to the user with the Gift-Voucher, you MUST provide a Route or url for this PDF file. If you don't have such, you may consider using [c975LSiteBundle](https://github.com/975L/SiteBundle) for its pre-defined models and [c975LPageEditBundle](https://github.com/975L/PageEditBundle) for its ability to create a PDF.
+## Why PurchaseCreditsBundle
 
-[PurchaseCreditsBundle dedicated web page](https://975l.com/en/pages/purchase-credits-bundle).
+![PurchaseCreditsBundle](.github/images/PurchaseCreditsBundle.svg)
 
-[PurchaseCreditsBundle API documentation](https://975l.com/apidoc/c975L/PurchaseCreditsBundle.html).
+Add PurchaseCreditsBundle on top of the shared [CoreBundle](https://github.com/975L/CoreBundle) foundation to sell credits and let the site spend them. The purchase flows through [PaymentBundle](https://github.com/975L/PaymentBundle)'s Basket/checkout engine (`BasketItemProviderInterface`) instead of duplicating one; what a credit buys is the site's own business, decided by its own services.
 
-## Bundle installation
+---
 
-### Step 1: Download the Bundle
+> **TL;DR** — Credit packs sold through PaymentBundle's basket, a ledger per user whose sum is the balance, and `CreditServiceInterface::spend()` for the site's services. No route, no config key, no email of its own.
 
-**v3.x works with Symfony 4.x. Use v2.x for Symfony 3.x**
-Use [Composer](https://getcomposer.org) to install the library
+## Contents
+
+- **Setup** — [requirements](#requirements) · [installation](#installation)
+- **Using it** — [selling credits](#selling-credits) · [spending credits](#spending-credits) · [twig](#twig) · [translations](#translations) · [what it does not contribute](#what-this-bundle-deliberately-does-not-contribute) · [AI agent skills](#ai-agent-skills) · [upgrading from v4](#upgrading-from-v4)
+
+## Features
+
+- Credit packs — a number of credits at a price and a VAT rate — managed in the back office and sold through PaymentBundle's basket
+- A ledger per user: every movement (purchase, gift, spending) is a line, and the balance is their sum — never a counter stored beside them
+- A spending API, `CreditServiceInterface`, that locks the account while it reads the balance and writes, so two spendings at once cannot both pass on the same credits
+- A payment delivered twice credited once: a purchase line answers to the basket number and the pack
+- The `purchasecredits_packs` block, placed on any composed page, with the reader's balance and a "Buy" button per pack
+- Two back-office screens contributed to the EasyAdmin dashboard (`MenuProviderInterface`): the packs, and the ledger, which only ever adds lines
+- Two guided projects (`GuidedProjectProviderInterface`): putting a pack on sale, and giving or taking credits by hand
+- Its own `purchasecredits` translation catalogue, in English, French and Spanish
+- **A skill for coding agents**, shipped in the package and read straight from `vendor/` — see [AI agent skills](#ai-agent-skills)
+
+---
+
+## Requirements
+
+- PHP >= 8.4, Symfony 8
+- [c975L/CoreBundle](https://github.com/975L/CoreBundle) — ConfigBundle and UiBundle in one package: user accounts, the dashboard, the blocks
+- [c975L/PaymentBundle](https://github.com/975L/PaymentBundle) — owns the Basket/checkout engine, installed and configured (payment provider keys, `shop-currency`)
+
+---
+
+## Installation
+
+### Download
 
 ```bash
-    composer require c975l/purchasecredits-bundle
+composer require c975l/purchasecredits-bundle
 ```
 
-### Step 2: Configure the Bundle
+### Run migrations
 
-Check dependencies for their configuration:
-
-- [Doctrine](https://github.com/doctrine/DoctrineBundle)
-- [KnpPaginatorBundle](https://github.com/KnpLabs/KnpPaginatorBundle)
-- [c975LPaymentBundle](https://github.com/975L/PaymentBundle)
-- [c975LEmailBundle](https://github.com/975L/EmailBundle)
-- [Stripe PHP Library](https://github.com/stripe/stripe-php)
-
-c975LPurchaseCreditsBundle uses [c975L/ConfigBundle](https://github.com/975L/ConfigBundle) to manage configuration parameters. Use the Route "/purchase-credits/config" with the proper user role to modify them.
-
-### Step 3: Enable the Routes
-
-Then, enable the routes by adding them to the `/config/routes.yaml` file of your project:
-
-```yml
-c975_l_purchase_credits:
-    resource: "@c975LPurchaseCreditsBundle/Controller/"
-    type: annotation
-    prefix: /
-    #Multilingual website use the following
-    #prefix: /{_locale}
-    #defaults:   { _locale: '%locale%' }
-    #requirements:
-    #    _locale: en|fr|es
+```bash
+php bin/console doctrine:migrations:diff
+php bin/console doctrine:migrations:migrate
 ```
 
-### Step 4: User entity
+Two tables: `credit_pack` and `credit_transaction`, whose lines go with the account they belong to (`ON DELETE CASCADE`).
 
-Your User entity **MUST** have a property `credits` with proper and getter and setter, plus a `addCredits()` one, notice the `+=`, this method is used to add and subtract credits:
+### Nothing to register by hand
+
+No route to import, no config key to load, no asset to install: the menu entries, the block kind, the basket provider and the Twig functions are picked up by autoconfiguration. The block's "Buy" button is PaymentBundle's own `basket` Stimulus controller, registered by that bundle.
+
+---
+
+## Selling credits
+
+1. In the back office, **Credits > Credit packs**: create the packs (credits, price in the shop's currency, VAT).
+2. Place the **Credit packs** block on a page. A signed-in visitor sees their balance and a "Buy" button per pack; a visitor is asked to sign in, credits landing on an account.
+3. Once the basket is paid, `CreditBasketItemProvider::onBasketPaid()` writes one ledger line per pack, with the number of credits frozen in the basket when it was filled — what the customer agreed to is what is credited, whatever the pack becomes before the payment.
+
+A pack withdrawn from sale is refused at the checkout too, a basket living several days in the session. A basket filled before signing in is bound to the account signed in at the checkout.
+
+---
+
+## Spending credits
 
 ```php
-//Your entity file
-namespace App\Entity;
+use c975L\PurchaseCreditsBundle\Exception\InsufficientCreditsException;
+use c975L\PurchaseCreditsBundle\Service\CreditServiceInterface;
 
-//Example is made using Doctrine, as the common one, but you can use any entity manager
-use Doctrine\ORM\Mapping as ORM;
+public function __construct(private readonly CreditServiceInterface $creditService) {}
 
-/**
- * User
- *
- * @ORM\Table(name="user")
- * @ORM\Entity
- */
-class User
-{
-//...
-    /**
-     * Number of credits for User
-     * @var int
-     *
-     * @ORM\Column(name="credits", type="integer", nullable=true)
-     */
-    protected $credits;
+// What is left
+$balance = $this->creditService->getBalance($user);
 
-//...
-    /**
-     * Set credits
-     * @param int
-     * @return User
-     */
-    public function setCredits($credits)
-    {
-        $this->credits = $credits;
-
-        return $this;
-    }
-
-    /**
-     * Get credits
-     * @return int
-     */
-    public function getCredits()
-    {
-        return $this->credits;
-    }
-
-    /**
-     * Add credits (or subtracts if $credits is negative)
-     * @param int
-     * @return User
-     */
-    public function addCredits($credits)
-    {
-        $this->credits += $credits;
-
-        return $this;
-    }
-```
-
-### Step 5: Create MySql tables
-
-You can use `php bin/console make:migration` to create the migration file as documented in [Symfony's Doctrine docs](https://symfony.com/doc/current/doctrine.html) OR use Use `/Resources/sql/purchase-credits.sql` to create the table `user_transactions`. The `DROP TABLE` is commented to avoid dropping by mistake.
-
-### Step 6: Override templates
-
-It is strongly recommended to use the [Override Templates from Third-Party Bundles feature](http://symfony.com/doc/current/templating/overriding.html) to integrate fully with your site.
-
-For this, simply, create the following structure `/templates/bundles/c975LPurchaseCreditsBundle/` in your app and then duplicate the file `layout.html.twig` in it, to override the existing Bundle file.
-
-In `layout.html.twig`, it will mainly consist to extend your layout and define specific variables, i.e. :
-
-```twig
-{% extends 'layout.html.twig' %}
-
-{% block content %}
-    {% block purchaseCredits_content %}
-    {% endblock %}
-{% endblock %}
-```
-
-### How to use
-
-All the process for purchase and payment is managed via the bundle. All you have to implement on your side is the use of credits. You can do so with the following code:
-
-```php
-<?php
-//In your controller file
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use c975L\PurchaseCreditsBundle\Service\TransactionServiceInterface;
-
-class PaymentController extends AbstractController
-{
-    /**
-     * @Route("/YOUR_ROUTE",
-     *    name="YOUR_ROUTE_NAME",
-     *    methods={"HEAD", "GET"})
-     */
-    public function YOUR_METHOD_NAME(Request $request, TransactionServiceInterface $transactionService)
-    {
-        //Your stuff...
-
-        //Gets the manager
-        $em = $this->getDoctrine()->getManager();
-
-        //Adds transaction, to keep trace of it and for user to see it in its list of transactions
-        //You can call create() without argument, TransactionService will add an orderId built on the same scheme as Payment's one
-        //The only restriction is that your orderId MUST NOT start with 'pmt' as this string is added to the Payment orderId, to provide a link to the payment
-        $transaction = $this->transactionService->add('YOUR_OWN_ORDER_ID_OR_NULL', +-CREDITS, $description(), $this->getUser());
-
-        //You need to flush DB as $transaction and $user are persisted but not flushed
-        $em->flush();
-    }
+// Takes credits, or writes nothing at all
+try {
+    $this->creditService->spend($user, 5, 'Short link /abc', (string) $shortcut->getId());
+} catch (InsufficientCreditsException $exception) {
+    // $exception->balance, $exception->amount
 }
+
+// Gives credits: a sign-up bonus from the site's own registration code, a gift
+$this->creditService->grant($user, 3, 'Welcome credits', 'signup');
 ```
 
-### Routes
+`spend()` locks the user's row while it reads the balance and writes the line, so two spendings at once cannot both pass on the same credits. Never read `getBalance()` and then write a line yourself. `InsufficientCreditsException` is thrown once the transaction is over, so the EntityManager stays open and the caller carries on.
 
-The different Routes (naming self-explanatory) available are:
+The ledger is the only truth: never store a balance beside it. A line is never edited nor deleted — **Credits > Credit movements** only adds lines, a mistake being corrected by the reversing line.
 
-- purchasecredits_dashboard
-- purchasecredits_purchase
-- purchasecredits_transactions
+---
 
-### Twig access
+## Twig
 
-You can access user's credits in Twig via
+| Function | Returns |
+| --- | --- |
+| `purchasecredits_packs()` | the published packs, in the back office order |
+| `purchasecredits_balance()` | the signed-in user's balance, `null` for a visitor |
 
-```twig
-{{ app.user.credits }}
+The block is never cached: the balance shown next to the packs belongs to whoever reads the page. Override `templates/bundles/c975LPurchaseCreditsBundle/blocks/Packs.html.twig` in the app to change its markup.
+
+---
+
+## Translations
+
+The bundle ships `translations/purchasecredits.{en,fr,es}.xlf` and resolves every label in its own **`purchasecredits`** domain — the spoken narrations of its guided projects in **`purchasecredits_narration`** — including the anchor and background fields UiBundle's traits add to the block's form. The one word it borrows — the "added!" confirmation of the basket — is PaymentBundle's.
+
+A pack carries no free text to translate: its title, "%count% credits", comes from the catalogue, in the reader's language. A ledger line's description is written in the language of the basket it answers to.
+
+---
+
+## What this bundle deliberately does not contribute
+
+ConfigBundle and UiBundle expose a long list of contribution points, and not branching one is a valid answer — it is only worth writing down:
+
+| Point | Why not |
+| --- | --- |
+| Config keys (`configs.json`) | it reads only its dependencies' — `shop-currency` of PaymentBundle, `site-role-admin` of the core |
+| Emails | the purchase is confirmed by PaymentBundle's own order email, like any basket |
+| Sign-up bonus | registration is the application's own code (scaffolded), which calls `grant()` |
+| Content translation | a pack has no free text: its title is "%count% credits", from the translation catalogue |
+| "What's new", procedures | to be written once the bundle runs on a site |
+| Stylesheet, scripts | the block is drawn with UiBundle's section and card classes, and its button is PaymentBundle's `basket` controller |
+| Sitemap, linkable routes | no public page of its own: the packs are a block placed on the site's pages |
+| Health check, status `extra` | nothing here calls for an action a maintainer takes |
+| Import / export | a ledger is not a catalogue |
+
+---
+
+## AI agent skills
+
+The package ships a skill of its own, `skills/c975l-purchasecredits/SKILL.md`, written for the coding agent of the site installing this bundle rather than for someone modifying it. Point your agent at it:
+
+```text
+vendor/c975l/purchasecredits-bundle/skills/
 ```
 
-### Credits information
+It holds what an agent gets wrong when left to its own habits — a `credits` column added on the user, a balance read and then written in two steps, a ledger line edited — alongside the services, entities and Twig functions, each named as it actually is in the sources.
 
-If you want to display information about credits to user, you can add, in your Twig template, the following code. It will display, on one line, the number of credits, a link to transactions, a link to purchase and a warning when credits are <= 0.
+Nothing is installed, nothing is copied into your project: the file sits in `vendor/` like any other part of the package and follows it at each `composer update`. A user of Claude Code wanting it to load by itself symlinks it into their own skills directory:
 
-```twig
-{% include('@c975LPurchaseCredits/fragments/creditsInformation.html.twig') %}
+```bash
+ln -s ../../vendor/c975l/purchasecredits-bundle/skills/c975l-purchasecredits .claude/skills/c975l-purchasecredits
 ```
 
-### Transaction display
+`Tests\SkillsTest` keeps the file honest: every path, class member, Twig function and block kind it quotes is checked against the sources, so renaming any of them fails the build rather than leaving an agent confidently wrong.
 
-The display of the list of transactions is done via the bundle, but in case you want to link to a specific transaction, you can do so with the following:
+---
 
-```twig
-{{ path('purchasecredits_transaction_display', {'orderId': 'TRANSACTION_ORDER_ID'}) }}
-```
+## Upgrading from v4
 
-### Credits Div data for javascript use
+v5 is a rewrite on the c975L core; nothing of v4's API survives. v4 (Symfony 4, legacy architecture) lives on the [`4.x`](https://github.com/975L/PurchaseCreditsBundle/tree/4.x) branch, and [UPGRADE.md](UPGRADE.md) gives the mapping and the SQL that takes over a v4 ledger.
 
-If you want to insert a div containing the user's credits, to be used by javascript, you can do it via the Twig extension:
+---
 
-```twig
-{# Credits DivData #}
-{{ purchasecredits_divData() }}
-```
+## License
 
-Then you can access it via
-
-```javascript
-$(document).ready(function() {
-    var credits = $('#userCredits').data('credits');
-});
-```
-
-Have a look at it to see the properties covered.
-
-If this project **help you to reduce time to develop**, you can sponsor me via the "Sponsor" button at the top :)
+MIT — see [LICENSE](LICENSE).

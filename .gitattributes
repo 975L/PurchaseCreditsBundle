@@ -1,0 +1,18 @@
+# Dev-only paths, kept out of the Composer dist archive: the zip Composer downloads is built by
+# "git archive", which honours export-ignore. The repository and what GitHub displays are unchanged.
+# UPGRADE.md and README.md stay in, both being read from vendor/ and shown on Packagist.
+/.codacy export-ignore
+/.codacy.yaml export-ignore
+/.gitattributes export-ignore
+/.github export-ignore
+/.gitignore export-ignore
+/.markdownlint.json export-ignore
+/.php-cs-fixer.dist.php export-ignore
+/.stylelintrc.json export-ignore
+/bin export-ignore
+/eslint.config.mjs export-ignore
+/phpcs.xml.dist export-ignore
+/phpstan.dist.neon export-ignore
+/phpunit.xml.dist export-ignore
+/rector.php export-ignore
+/tests export-ignore

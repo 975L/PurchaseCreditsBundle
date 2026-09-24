@@ -1,5 +1,22 @@
 # Changelog
 
+## v5.0.0
+
+Rewrite the bundle on the c975L core
+
+- Rewrote the bundle on the c975L core (Symfony 8, `c975l/core-bundle`, `c975l/payment-bundle` v6): credit packs sold through the basket, a per-user ledger and `CreditServiceInterface` (24/09/2026)
+- Added the `purchasecredits_packs` block and the `purchasecredits_packs()` / `purchasecredits_balance()` Twig functions (24/09/2026)
+- Added the back-office screens for packs and credit movements (24/09/2026)
+- Added the menu descriptions at the top of both back-office listings (24/09/2026)
+- Added the guided projects for putting a pack on sale and giving credits by hand (24/09/2026)
+- Added the anchor and background labels UiBundle's traits bring to the block's form (24/09/2026)
+- Added the tests of the menu, the guided projects, the block form, the Twig functions, the entities, the repositories' bindings and the translation domain (24/09/2026)
+- Added the bundle's logo and README banner (24/09/2026)
+- Renamed the default branch `master` to `main`: `dev-master` becomes `dev-main` (24/09/2026)
+- v4 is kept on the `4.x` branch
+
+Upgrading from v4.x? **Check UPGRADE.md**
+
 ## v4.0
 
 - Changed `localizeddate` to `format_datetime` (11/10/2021)

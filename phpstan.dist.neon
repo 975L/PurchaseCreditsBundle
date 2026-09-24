@@ -1,0 +1,27 @@
+includes:
+    # Reports any call to what a library marks @deprecated, which the test suite only sees when that code runs
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+
+parameters:
+    level: 5
+
+    # The ignored patterns below are shared by every c975L bundle, so not all of them apply to each one
+    reportUnmatchedIgnoredErrors: false
+
+    paths:
+        - src
+
+    excludePaths:
+        # The skeleton templates get their variables from the maker at generation time
+        - src/Resources/skeleton/*
+
+    ignoreErrors:
+        # Doctrine assigns the identifier by reflection, which static analysis cannot see
+        - '#Property .*::\$id \(int\|null\) is never assigned int#'
+
+        # EasyAdmin declares its fluent setters on the concrete fields, not on FieldInterface
+        - '#Call to an undefined method EasyCorp\\Bundle\\EasyAdminBundle\\Contracts\\Field\\FieldInterface::#'
+
+        # The only reader of a HasBlocksInterface entity's $blocks is UiBundle's HasBlocksTrait, analysed with its own package and not with this one
+        - '#Property .*::\$blocks is never read, only written#'
+

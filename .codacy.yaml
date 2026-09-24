@@ -1,0 +1,14 @@
+---
+# Java glob syntax: "**/" requires a separator before the folder, so it never covers the repository root - each excluded folder needs both forms
+exclude_paths:
+  - "public/**"
+  - "**/public/**"
+  - "tests/**"
+  - "**/tests/**"
+  - "vendor/**"
+  - "**/vendor/**"
+  - ".phpunit.cache/**"
+  - "**.min.js"
+  - "**.min.css"
+  - "**.map"
+  - "**.tpl.php"

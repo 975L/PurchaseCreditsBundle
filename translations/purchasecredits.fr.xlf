@@ -1,0 +1,271 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" target-language="fr" datatype="plaintext" original="purchasecredits.en.xlf">
+        <body>
+            <trans-unit id="E5ZDi8B">
+                <source>description.guided_project_purchasecredits_gift</source>
+                <target>Ajoutez à la main une ligne au grand livre d'un compte : un cadeau, un geste, une correction.</target>
+            </trans-unit>
+            <trans-unit id="owJnUNH">
+                <source>description.guided_project_purchasecredits_pack</source>
+                <target>Créez le pack que les visiteurs pourront acheter : un nombre de crédits et son prix.</target>
+            </trans-unit>
+            <trans-unit id="VIvla8o">
+                <source>description.guided_step_purchasecredits_gift_amount</source>
+                <target>Positif pour offrir, négatif pour retirer.</target>
+            </trans-unit>
+            <trans-unit id="lnRnE4x">
+                <source>description.guided_step_purchasecredits_gift_description</source>
+                <target>Le motif, tel que le compte le lira dans son historique.</target>
+            </trans-unit>
+            <trans-unit id="5k3rqz1">
+                <source>description.guided_step_purchasecredits_gift_done</source>
+                <target>Enregistrez. Une ligne ne se modifie plus : une erreur se corrige par la ligne inverse.</target>
+            </trans-unit>
+            <trans-unit id="kVmy8kU">
+                <source>description.guided_step_purchasecredits_gift_new</source>
+                <target>Cliquez sur le bouton de création.</target>
+            </trans-unit>
+            <trans-unit id="TS0rwyQ">
+                <source>description.guided_step_purchasecredits_gift_open</source>
+                <target>Le grand livre : chaque mouvement de crédits, compte par compte.</target>
+            </trans-unit>
+            <trans-unit id="4gpgxZm">
+                <source>description.guided_step_purchasecredits_gift_user</source>
+                <target>Le compte qui reçoit ou perd les crédits.</target>
+            </trans-unit>
+            <trans-unit id="rhKuF5V">
+                <source>description.guided_step_purchasecredits_pack_credits</source>
+                <target>Le nombre de crédits que le pack apporte.</target>
+            </trans-unit>
+            <trans-unit id="t1cpZuZ">
+                <source>description.guided_step_purchasecredits_pack_done</source>
+                <target>Enregistrez : le pack est en vente sur toute page portant le bloc des packs.</target>
+            </trans-unit>
+            <trans-unit id="JIu0UPJ">
+                <source>description.guided_step_purchasecredits_pack_new</source>
+                <target>Cliquez sur le bouton de création.</target>
+            </trans-unit>
+            <trans-unit id=".xeAG0e">
+                <source>description.guided_step_purchasecredits_pack_open</source>
+                <target>Cette liste tient les packs de crédits proposés aux visiteurs.</target>
+            </trans-unit>
+            <trans-unit id="7Lo38OR">
+                <source>description.guided_step_purchasecredits_pack_price</source>
+                <target>Le prix payé pour ces crédits, TVA comprise.</target>
+            </trans-unit>
+            <trans-unit id="FIrLIhh">
+                <source>description.guided_step_purchasecredits_pack_published</source>
+                <target>Cochez pour que le pack apparaisse dans le bloc des packs.</target>
+            </trans-unit>
+            <trans-unit id="67tP88.">
+                <source>help.transaction_amount</source>
+                <target>Positif pour offrir des crédits, négatif pour en retirer. Une ligne ne se modifie jamais : une erreur se corrige par la ligne inverse.</target>
+            </trans-unit>
+            <trans-unit id="PmT6SQr">
+                <source>label.anchor</source>
+                <target>Ancre</target>
+            </trans-unit>
+            <trans-unit id="ufovuez">
+                <source>label.anchor_help</source>
+                <target>Identifiant court pour lier le menu à cette section (ex. "credits"). Vide = déduit du titre.</target>
+            </trans-unit>
+            <trans-unit id="T8.rAB6">
+                <source>label.balance</source>
+                <target>]-Inf,0]Vous n'avez plus de crédits|{1}Vous avez 1 crédit|]1,Inf[Vous avez %count% crédits</target>
+            </trans-unit>
+            <trans-unit id="diEBoLH">
+                <source>label.block_content</source>
+                <target>Introduction</target>
+            </trans-unit>
+            <trans-unit id="uj2tosz">
+                <source>label.block_packs</source>
+                <target>Packs de crédits</target>
+            </trans-unit>
+            <trans-unit id="vwTRDK9">
+                <source>label.block_packs_description</source>
+                <target>Les packs de crédits en vente, avec le solde du visiteur connecté.</target>
+            </trans-unit>
+            <trans-unit id="t9d9.Qz">
+                <source>label.block_title</source>
+                <target>Titre</target>
+            </trans-unit>
+            <trans-unit id="MJfK172">
+                <source>label.buy</source>
+                <target>Acheter</target>
+            </trans-unit>
+            <trans-unit id="_.MKMcC">
+                <source>label.category_purchasecredits</source>
+                <target>Crédits</target>
+            </trans-unit>
+            <trans-unit id="efSspGE">
+                <source>label.credits</source>
+                <target>Crédits</target>
+            </trans-unit>
+            <trans-unit id="0UCLfFW">
+                <source>label.guided_project_purchasecredits_gift</source>
+                <target>Offrir ou retirer des crédits</target>
+            </trans-unit>
+            <trans-unit id="LOJdWeu">
+                <source>label.guided_project_purchasecredits_pack</source>
+                <target>Mettre un pack de crédits en vente</target>
+            </trans-unit>
+            <trans-unit id="q0sQHPP">
+                <source>label.guided_step_purchasecredits_gift_amount</source>
+                <target>Crédits</target>
+            </trans-unit>
+            <trans-unit id="cB7i6Tu">
+                <source>label.guided_step_purchasecredits_gift_description</source>
+                <target>Description</target>
+            </trans-unit>
+            <trans-unit id="bo7fUht">
+                <source>label.guided_step_purchasecredits_gift_done</source>
+                <target>Enregistrer</target>
+            </trans-unit>
+            <trans-unit id="ed9SCs3">
+                <source>label.guided_step_purchasecredits_gift_new</source>
+                <target>Nouvelle ligne</target>
+            </trans-unit>
+            <trans-unit id="ZN7X0vf">
+                <source>label.guided_step_purchasecredits_gift_open</source>
+                <target>Les transactions</target>
+            </trans-unit>
+            <trans-unit id="J5gM9Fp">
+                <source>label.guided_step_purchasecredits_gift_user</source>
+                <target>Compte</target>
+            </trans-unit>
+            <trans-unit id="rXlF5Zs">
+                <source>label.guided_step_purchasecredits_pack_credits</source>
+                <target>Crédits</target>
+            </trans-unit>
+            <trans-unit id="JhNyF6q">
+                <source>label.guided_step_purchasecredits_pack_done</source>
+                <target>Enregistrer</target>
+            </trans-unit>
+            <trans-unit id="9XHwIDb">
+                <source>label.guided_step_purchasecredits_pack_new</source>
+                <target>Nouveau pack</target>
+            </trans-unit>
+            <trans-unit id="skv4oH_">
+                <source>label.guided_step_purchasecredits_pack_open</source>
+                <target>Les packs</target>
+            </trans-unit>
+            <trans-unit id="RYcX0JY">
+                <source>label.guided_step_purchasecredits_pack_price</source>
+                <target>Prix</target>
+            </trans-unit>
+            <trans-unit id="UtzNRfL">
+                <source>label.guided_step_purchasecredits_pack_published</source>
+                <target>En vente</target>
+            </trans-unit>
+            <trans-unit id="8NW7Cas">
+                <source>label.info_packs</source>
+                <target>Les packs de crédits que les visiteurs peuvent acheter, et leurs prix.</target>
+            </trans-unit>
+            <trans-unit id="UMtV5ro">
+                <source>label.info_transactions</source>
+                <target>Tous les mouvements de crédits, compte par compte : achats, cadeaux et dépenses.</target>
+            </trans-unit>
+            <trans-unit id="J_Qb4yB">
+                <source>label.pack</source>
+                <target>Pack de crédits</target>
+            </trans-unit>
+            <trans-unit id="u9sqlFG">
+                <source>label.pack_credits</source>
+                <target>Crédits</target>
+            </trans-unit>
+            <trans-unit id="wSlwXd.">
+                <source>label.pack_position</source>
+                <target>Position</target>
+            </trans-unit>
+            <trans-unit id="I_nHMR9">
+                <source>label.pack_price</source>
+                <target>Prix</target>
+            </trans-unit>
+            <trans-unit id="U1W5bAc">
+                <source>label.pack_published</source>
+                <target>En vente</target>
+            </trans-unit>
+            <trans-unit id="iCgDwAT">
+                <source>label.pack_title</source>
+                <target>{1}1 crédit|]1,Inf[%count% crédits</target>
+            </trans-unit>
+            <trans-unit id="mmHVtPO">
+                <source>label.pack_unavailable</source>
+                <target>Ce pack de crédits n'est plus en vente.</target>
+            </trans-unit>
+            <trans-unit id="92r2SN3">
+                <source>label.pack_vat</source>
+                <target>TVA (%)</target>
+            </trans-unit>
+            <trans-unit id="loOAxBg">
+                <source>label.packs</source>
+                <target>Packs de crédits</target>
+            </trans-unit>
+            <trans-unit id="LqQIe5o">
+                <source>label.section_background</source>
+                <target>Fond de la section</target>
+            </trans-unit>
+            <trans-unit id="S3aOJc1">
+                <source>label.section_background_dark</source>
+                <target>Foncé</target>
+            </trans-unit>
+            <trans-unit id="dG59CiC">
+                <source>label.section_background_help</source>
+                <target>Peint la section en aplat pleine largeur - les textes, filets et boutons qu'elle contient s'inversent automatiquement pour rester lisibles.</target>
+            </trans-unit>
+            <trans-unit id="gxWXTr3">
+                <source>label.section_background_muted</source>
+                <target>Gris clair</target>
+            </trans-unit>
+            <trans-unit id="UcA_IiR">
+                <source>label.section_background_none</source>
+                <target>Aucun (fond de page)</target>
+            </trans-unit>
+            <trans-unit id="r82HE3G">
+                <source>label.section_background_primary</source>
+                <target>Couleur principale</target>
+            </trans-unit>
+            <trans-unit id="yGOxphS">
+                <source>label.sign_in_required</source>
+                <target>Connectez-vous : les crédits sont ajoutés à votre compte.</target>
+            </trans-unit>
+            <trans-unit id="8wksH7c">
+                <source>label.sign_in_to_buy</source>
+                <target>Se connecter pour acheter des crédits</target>
+            </trans-unit>
+            <trans-unit id="zbz7WMY">
+                <source>label.transaction</source>
+                <target>Mouvement de crédits</target>
+            </trans-unit>
+            <trans-unit id="DUTB.aO">
+                <source>label.transaction_amount</source>
+                <target>Crédits</target>
+            </trans-unit>
+            <trans-unit id="9OoXFl5">
+                <source>label.transaction_date</source>
+                <target>Date</target>
+            </trans-unit>
+            <trans-unit id="jHppU4c">
+                <source>label.transaction_description</source>
+                <target>Description</target>
+            </trans-unit>
+            <trans-unit id="2cv8RWm">
+                <source>label.transaction_purchase</source>
+                <target>{1}Achat de 1 crédit|]1,Inf[Achat de %count% crédits</target>
+            </trans-unit>
+            <trans-unit id="0GvSbBh">
+                <source>label.transaction_reference</source>
+                <target>Référence</target>
+            </trans-unit>
+            <trans-unit id="JPsCOE1">
+                <source>label.transaction_user</source>
+                <target>Compte</target>
+            </trans-unit>
+            <trans-unit id="CL3j1Za">
+                <source>label.transactions</source>
+                <target>Mouvements de crédits</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" target-language="en" datatype="plaintext" original="purchasecredits_narration.en.xlf">
+        <body>
+            <trans-unit id="wl53xsr">
+                <source>narration.guided_step_purchasecredits_gift_amount</source>
+                <target>Enter the number of credits: positive to give some, negative to take some.</target>
+            </trans-unit>
+            <trans-unit id="MGM2Cj3">
+                <source>narration.guided_step_purchasecredits_gift_description</source>
+                <target>Write the reason: it is what the account will read in its history.</target>
+            </trans-unit>
+            <trans-unit id="T7zCmld">
+                <source>narration.guided_step_purchasecredits_gift_done</source>
+                <target>Save. The line is never edited afterwards: a mistake is corrected by adding the reversing line.</target>
+            </trans-unit>
+            <trans-unit id="Mhml5Z8">
+                <source>narration.guided_step_purchasecredits_gift_new</source>
+                <target>Click the create button, at the top right of the list.</target>
+            </trans-unit>
+            <trans-unit id="e985HX5">
+                <source>narration.guided_step_purchasecredits_gift_open</source>
+                <target>Open the Transactions menu, in the left-hand column: it is the ledger, every credit movement account by account.</target>
+            </trans-unit>
+            <trans-unit id="hfbOVoU">
+                <source>narration.guided_step_purchasecredits_gift_user</source>
+                <target>Choose the account receiving or losing the credits.</target>
+            </trans-unit>
+            <trans-unit id="RuAhLhS">
+                <source>narration.guided_step_purchasecredits_pack_credits</source>
+                <target>Enter the number of credits the pack gives whoever buys it.</target>
+            </trans-unit>
+            <trans-unit id="nO_IiK4">
+                <source>narration.guided_step_purchasecredits_pack_done</source>
+                <target>Save. The pack shows at once in the packs block, on every page carrying it, and goes through the basket like any other item.</target>
+            </trans-unit>
+            <trans-unit id="T1_oh.D">
+                <source>narration.guided_step_purchasecredits_pack_new</source>
+                <target>Click the create button, at the top right of the list.</target>
+            </trans-unit>
+            <trans-unit id="xT1SaNq">
+                <source>narration.guided_step_purchasecredits_pack_open</source>
+                <target>Open the Packs menu, in the left-hand column: it lists the credit packs visitors can buy.</target>
+            </trans-unit>
+            <trans-unit id="JXt8dd7">
+                <source>narration.guided_step_purchasecredits_pack_price</source>
+                <target>Enter the price of these credits, VAT included.</target>
+            </trans-unit>
+            <trans-unit id="jYFQlDo">
+                <source>narration.guided_step_purchasecredits_pack_published</source>
+                <target>Tick "On sale": without it, the pack stays saved but no visitor sees it.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

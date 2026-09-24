@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         cacheDirectory=".phpunit.cache"
+         failOnDeprecation="true"
+         failOnNotice="true"
+         failOnPhpunitNotice="true"
+>
+    <testsuites>
+        <testsuite name="c975LPurchaseCreditsBundle Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <php>
+        <!-- Doctrine emits its deprecations only when this is set: without it, failOnDeprecation never sees a single one -->
+        <env name="DOCTRINE_DEPRECATIONS" value="trigger" force="true" />
+    </php>
+
+    <source ignoreSuppressionOfDeprecations="true">
+        <include>
+            <directory>src</directory>
+        </include>
+
+        <deprecationTrigger>
+            <method>Doctrine\Deprecations\Deprecation::trigger</method>
+            <method>Doctrine\Deprecations\Deprecation::delegateTriggerToBackend</method>
+            <function>trigger_deprecation</function>
+        </deprecationTrigger>
+    </source>
+</phpunit>

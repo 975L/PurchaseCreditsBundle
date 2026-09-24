@@ -1,0 +1,27 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+
+    c975L\PurchaseCreditsBundle\:
+        resource: '../src/'
+        exclude: '../src/{Entity,Exception}'
+
+    c975L\PurchaseCreditsBundle\Service\CreditServiceInterface: '@c975L\PurchaseCreditsBundle\Service\CreditService'
+
+    # The packs on sale, placed on any page from the back office; never cached, the balance shown next to them belonging to whoever reads the page
+    purchasecredits.block.packs:
+        class: stdClass
+        tags:
+            - name: ui.block
+              kind: purchasecredits_packs
+              label: 'label.block_packs'
+              description: 'label.block_packs_description'
+              translation_domain: 'purchasecredits'
+              category: 'label.category_purchasecredits'
+              form: 'c975L\PurchaseCreditsBundle\Form\Block\PacksBlockType'
+              translatable: 'title, content'
+              template: '@c975LPurchaseCredits/blocks/Packs.html.twig'
+              pickable: true
+              cacheable: false

@@ -1,0 +1,89 @@
+name: CI
+
+# main only, as the Symfony ecosystem does: dev carries the same commit, so both branches ran twin jobs downloading the same dependencies from the same runner IP pool
+on:
+    push:
+        branches: [main]
+    pull_request:
+
+# Cancels a run the next push has superseded
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+# Otherwise GITHUB_TOKEN inherits the repository's default write permissions; only the checkout reads it, and the coverage upload goes through the Codacy secret
+permissions:
+    contents: read
+
+jobs:
+    quality:
+        runs-on: ubuntu-latest
+
+        # At job level rather than step level: a step's `env` context does not hold its own `env:` block
+        env:
+            CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+
+        steps:
+            - uses: actions/checkout@v5
+
+            # pcov measures the coverage, which the development machine does not have; the quality tools are installed here rather than in require-dev, so as not to weigh the bundle down with 17 transitive packages. PHPStan aside: its deprecation rules can only come through Composer, and they bring it along
+            - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+              with:
+                  php-version: '8.4'
+                  coverage: pcov
+                  tools: phpcs, php-cs-fixer, rector
+
+            # Composer decides where it keeps the downloaded archives; asking it beats hard-coding a path that depends on the runner image
+            - name: Répertoire de cache de Composer
+              id: composer-cache
+              run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+            # Archives are indexed on their own content, not on a lock file, so the cache costs nothing to composer.lock staying unversioned; without it every package was downloaded again, and codeload.github.com throttles per IP
+            - name: Cache des dépendances
+              uses: actions/cache@v6
+              with:
+                  path: ${{ steps.composer-cache.outputs.dir }}
+                  key: composer-${{ runner.os }}-php84-${{ hashFiles('composer.json') }}
+                  restore-keys: composer-${{ runner.os }}-php84-
+
+            # update rather than install: composer.lock is not versioned, and the bundles point at one another
+            - name: Dépendances
+              run: composer update --no-interaction --no-progress
+
+            # The steps below call composer.json's scripts, the list living in one place replayed by `composer qa` and bin/ci.sh, kept separate so the interface shows which one failed. The audit comes first, being the cheapest and bearing on the dependencies just resolved
+            - name: Avis de sécurité des dépendances
+              run: composer audit-deps
+
+            - name: PSR-12
+              run: composer cs
+
+            - name: Standard Symfony
+              run: composer fixer
+
+            - name: Analyse statique
+              run: composer stan
+
+            # Same rules as the applications run (see rector.php)
+            - name: Modernisation
+              run: composer rector
+
+            # Lizard is a Python tool, and it is pinned where the PHP ones take their latest release: its counting changed between versions and this is the one Codacy runs, which the thresholds composer.json hands it are read against
+            - uses: actions/setup-python@v5
+              with:
+                  python-version: '3.12'
+
+            - name: Complexité
+              run: |
+                  pip install lizard==1.17.31
+                  composer lizard
+
+            - name: Tests
+              run: composer test -- --coverage-clover clover.xml
+
+            # Without the secret, the upload is skipped rather than failing the CI
+            - name: Couverture vers Codacy
+              if: env.CODACY_PROJECT_TOKEN != ''
+              uses: codacy/codacy-coverage-reporter-action@89d6c85cfafaec52c72b6c5e8b2878d33104c699 # v1.3.0
+              with:
+                  project-token: ${{ env.CODACY_PROJECT_TOKEN }}
+                  coverage-reports: clover.xml

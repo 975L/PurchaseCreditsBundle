@@ -1,9 +1,8 @@
 {
     "name": "c975l/purchasecredits-bundle",
     "type": "symfony-bundle",
-    "description": "Bundle to purchase and use credits within a website",
-    "keywords": ["symfony", "bundle", "gift", "voucher"],
-    "homepage": "https://github.com/975L/PurchaseCreditsBundle",
+    "description": "Symfony bundle for prepaid credits on the c975L core — credit packs sold through the basket, a per-user ledger and a spending API the site's own services call. Checkout is delegated to c975l/payment-bundle.",
+    "keywords": ["symfony", "bundle", "credits", "prepaid"],
     "license": "MIT",
     "authors": [
         {
@@ -18,35 +17,72 @@
         }
     ],
     "require": {
-        "php": "*",
-        "c975l/config-bundle": "^2",
-        "c975l/email-bundle": "^4",
-        "c975l/includelibrary-bundle": "^1",
-        "c975l/payment-bundle": "^4",
-        "c975l/services-bundle": "^1",
-        "c975l/toolbar-bundle": "^1",
-        "doctrine/doctrine-bundle": "*",
-        "doctrine/orm": "*",
-        "knplabs/knp-paginator-bundle": "*",
-        "symfony/form": "*",
-        "symfony/security": "*",
-        "symfony/translation": "*",
-        "twig/intl-extra": "*"
+        "php": ">=8.4",
+        "c975l/core-bundle": "^1.33.1",
+        "c975l/payment-bundle": "^6.9",
+        "doctrine/dbal": "^4.4",
+        "doctrine/orm": "^3.7",
+        "easycorp/easyadmin-bundle": "^5.1",
+        "symfony/form": "^8.0",
+        "symfony/framework-bundle": "^8.0",
+        "symfony/routing": "^8.0",
+        "symfony/security-bundle": "^8.0",
+        "symfony/translation": "^8.0",
+        "symfony/twig-bridge": "^8.0",
+        "symfony/validator": "^8.0"
     },
     "require-dev": {
-        "phpstan/phpstan": "*",
-        "phpunit/phpunit": "*",
-        "rector/rector": "*"
+        "phpstan/phpstan": "^2.2",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "phpunit/phpunit": "^13.2"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "c975L\\PurchaseCreditsBundle\\": ""
+            "c975L\\PurchaseCreditsBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "c975L\\PurchaseCreditsBundle\\Tests\\": "tests/"
         }
     },
     "config": {
         "sort-packages": true
+    },
+    "scripts": {
+        "audit-deps": "composer audit --abandoned=report",
+        "cs": "phpcs -q",
+        "fixer": "php-cs-fixer check --diff",
+        "stan": "phpstan analyse --no-progress",
+        "rector": "rector process --dry-run",
+        "lizard-ccn": "lizard -l php -C 14 -w src",
+        "lizard-nloc": "find src -name '*.php' ! -name '*CrudController.php' ! -name '*Type.php' | xargs lizard -l php -T nloc=99 -C 999 -a 999 -w",
+        "lizard": [
+            "@lizard-ccn",
+            "@lizard-nloc"
+        ],
+        "test": "phpunit",
+        "qa": [
+            "@audit-deps",
+            "@cs",
+            "@fixer",
+            "@stan",
+            "@rector",
+            "@lizard",
+            "@test"
+        ]
+    },
+    "scripts-descriptions": {
+        "audit-deps": "Avis de sécurité Packagist sur les dépendances résolues (OWASP A06) - les paquets abandonnés sont signalés, sans faire échouer",
+        "cs": "PSR-12 (phpcs)",
+        "fixer": "Standard Symfony (php-cs-fixer)",
+        "stan": "Analyse statique du bundle, level 5",
+        "rector": "Modernisation du code, en simulation (rector)",
+        "lizard": "Complexité cyclomatique et longueur des méthodes (lizard)",
+        "test": "Suite PHPUnit",
+        "qa": "Tous les contrôles de la CI, dans l'ordre - voir bin/ci.sh pour les rejouer sur des dépendances fraîches"
     },
     "support": {
         "email": "contact@975l.com",
