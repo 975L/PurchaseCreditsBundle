@@ -1,0 +1,13 @@
+[
+    {
+        "label": "label.purchasecredits_test_mode",
+        "slug": "purchasecredits-test-mode",
+        "sensitive": false,
+        "restricted": false,
+        "value": "false",
+        "kind": "bool",
+        "group": "payment",
+        "severity": "warning",
+        "description": "description.purchasecredits_test_mode"
+    }
+]

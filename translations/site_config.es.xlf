@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" target-language="es" datatype="plaintext" original="site_config.en.xlf">
+        <body>
+            <trans-unit id="NzTnad6">
+                <source>description.purchasecredits_test_mode</source>
+                <target>Poner en true para avisar a cada visitante, encima de los packs, de que los créditos están en prueba: nada se vende de verdad y los créditos no tienen ningún valor</target>
+            </trans-unit>
+            <trans-unit id="RDdteQR">
+                <source>label.purchasecredits_test_mode</source>
+                <target>Modo de prueba de los créditos</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

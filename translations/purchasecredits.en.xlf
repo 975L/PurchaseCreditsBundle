@@ -58,6 +58,14 @@
                 <source>description.guided_step_purchasecredits_pack_published</source>
                 <target>Tick it for the pack to show in the packs block.</target>
             </trans-unit>
+            <trans-unit id="apPBW22">
+                <source>flash.purchasecredits_test_mode_disabled</source>
+                <target>Credits are out of test mode: the banner above the packs is gone.</target>
+            </trans-unit>
+            <trans-unit id="pTzBwwU">
+                <source>flash.purchasecredits_test_mode_enabled</source>
+                <target>Credits are in test mode: a banner above the packs warns that nothing is really sold.</target>
+            </trans-unit>
             <trans-unit id="67tP88.">
                 <source>help.transaction_amount</source>
                 <target>Positive to give credits, negative to take them back. A line is never edited: a mistake is corrected by the line that reverses it.</target>
@@ -202,6 +210,14 @@
                 <source>label.packs</source>
                 <target>Credit packs</target>
             </trans-unit>
+            <trans-unit id="5icF3x9">
+                <source>label.purchasecredits_test_mode_disable</source>
+                <target>Disable the credits test mode</target>
+            </trans-unit>
+            <trans-unit id="PaltlE_">
+                <source>label.purchasecredits_test_mode_enable</source>
+                <target>Enable the credits test mode</target>
+            </trans-unit>
             <trans-unit id="LqQIe5o">
                 <source>label.section_background</source>
                 <target>Section background</target>
@@ -233,6 +249,10 @@
             <trans-unit id="8wksH7c">
                 <source>label.sign_in_to_buy</source>
                 <target>Sign in to buy credits</target>
+            </trans-unit>
+            <trans-unit id="2nMDj1i">
+                <source>label.test_mode</source>
+                <target>These credits are in test: nothing is really sold, and the credits are worth nothing.</target>
             </trans-unit>
             <trans-unit id="zbz7WMY">
                 <source>label.transaction</source>

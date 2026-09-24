@@ -1,6 +1,6 @@
 ---
 name: c975l-purchasecredits
-description: "Use this skill when working with prepaid credits in a Symfony application built on the c975L ecosystem with c975l/purchasecredits-bundle. Covers the credit packs sold through PaymentBundle's basket, the per-user ledger, and the spending API a site's own services call. Triggers on: credits, prepaid credits, credit pack, buy credits, spend credits, balance, CreditPack, CreditTransaction, CreditServiceInterface, getBalance, grant, spend, InsufficientCreditsException, CreditBasketItemProvider, purchasecredits_packs, purchasecredits_balance, sign-up bonus, ledger."
+description: "Use this skill when working with prepaid credits in a Symfony application built on the c975L ecosystem with c975l/purchasecredits-bundle. Covers the credit packs sold through PaymentBundle's basket, the per-user ledger, and the spending API a site's own services call. Triggers on: credits, prepaid credits, credit pack, buy credits, spend credits, balance, CreditPack, CreditTransaction, CreditServiceInterface, getBalance, grant, spend, InsufficientCreditsException, CreditBasketItemProvider, purchasecredits_packs, purchasecredits_balance, sign-up bonus, ledger, purchasecredits-test-mode, test mode, PurchaseCreditsShortcutProvider, PurchaseCreditsDemoFixtureProvider, demo fixtures."
 ---
 
 # c975L PurchaseCreditsBundle
@@ -10,7 +10,7 @@ description: "Use this skill when working with prepaid credits in a Symfony appl
 **Package:** `c975l/purchasecredits-bundle` · **Namespace:** `c975L\PurchaseCreditsBundle\` · **Twig namespace:** `@c975LPurchaseCredits` · **Translation domain:** `purchasecredits`
 
 **Key source paths** (relative to the package root):
-`src/Entity/`, `src/Repository/`, `src/Service/`, `src/Exception/`, `src/Controller/Management/`, `src/Management/`, `src/Twig/Extension/`, `src/Form/Block/`, `templates/blocks/`, `templates/management/`, `config/services.yaml`
+`src/Entity/`, `src/Repository/`, `src/Service/`, `src/Exception/`, `src/Controller/Management/`, `src/Management/`, `src/Twig/Extension/`, `src/Form/Block/`, `templates/blocks/`, `templates/management/`, `config/services.yaml`, `config/configs.json`
 
 **Related documentation:** this package's `README.md` is the reference. The ecosystem's rules (configuration, blocks, management contributions) live in `c975l/core-bundle`, the basket in `c975l/payment-bundle`.
 
@@ -46,6 +46,12 @@ $this->creditService->grant($user, 3, 'Welcome credits', 'signup');
 - `spend()` locks the user's row while it reads the balance and writes: never read `getBalance()` then write a line yourself.
 - `InsufficientCreditsException` leaves the EntityManager open: catch it and carry on, no reset needed.
 - A pack is only sold to a signed-in user, credits landing on an account.
+- The price currency is PaymentBundle's `shop-currency`, falling back on `EUR` while it is not set.
+- The demo dataset (`PurchaseCreditsDemoFixtureProvider`) seeds three published packs and no ledger line: a site wanting a ledger to show writes it for the accounts it seeds itself.
+
+## Test mode
+
+`purchasecredits-test-mode` (bool, loaded by `c975l:config:load-all`) shows a warning banner above the packs: nothing is really sold. Admins flip it from a dashboard toggle tile (`PurchaseCreditsShortcutProvider`, route `management_purchasecredits_test_mode_toggle`). It is independent of PaymentBundle's own test mode, which is what actually keeps the charge fake.
 
 ## Front
 

@@ -89,6 +89,14 @@ class CreditBasketItemProviderTest extends TestCase
         $this->assertSame(Basket::CONTENT_FLAG_SERVICE, $this->provider(null)->getContentFlags($data));
     }
 
+    // A shop whose currency is not set yet - a demo, a site just installed - sells in euros, as the back office already assumes, rather than an empty currency the checkout cannot charge in
+    public function testBasketDataFallsBackOnEurosWhenTheShopCurrencyIsNotSet(): void
+    {
+        $data = $this->provider(null)->toBasketData($this->pack(), 1);
+
+        $this->assertSame('EUR', $data['item']['currency']);
+    }
+
     public function testCheckoutAttachesTheSignedInUserToAnAnonymousBasket(): void
     {
         $user = $this->createStub(UserInterface::class);

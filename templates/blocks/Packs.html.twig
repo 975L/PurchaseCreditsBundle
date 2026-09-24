@@ -13,6 +13,12 @@
                 <div class="purchasecredits-packs__intro">{{ content|raw }}</div>
             {% endif %}
             <twig:c975LPayment:Basket:Message/>
+            {# A site setting its credits up, or a showcase, says so above the packs - the charge itself being announced by PaymentBundle's own banner in the basket #}
+            {% if config('purchasecredits-test-mode') %}
+                <twig:c975LUi:Alert:Alert type="warning">
+                    {{ 'label.test_mode'|trans({}, 'purchasecredits') }}
+                </twig:c975LUi:Alert:Alert>
+            {% endif %}
             {% if balance is not null %}
                 <p class="purchasecredits-packs__balance">{{ 'label.balance'|trans({'%count%': balance}, 'purchasecredits') }}</p>
             {% endif %}
@@ -22,7 +28,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h3 class="card-title">{{ packTitle }}</h3>
-                            <p class="card-text lead">{{ (pack.price / 100)|format_currency(config('shop-currency')) }}</p>
+                            <p class="card-text lead">{{ (pack.price / 100)|format_currency(config('shop-currency')|default('EUR')) }}</p>
                             {% if balance is not null %}
                                 <button type="button"
                                         class="btn btn-primary"

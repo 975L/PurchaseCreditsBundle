@@ -19,7 +19,7 @@ Add PurchaseCreditsBundle on top of the shared [CoreBundle](https://github.com/9
 
 ---
 
-> **TL;DR** — Credit packs sold through PaymentBundle's basket, a ledger per user whose sum is the balance, and `CreditServiceInterface::spend()` for the site's services. No route, no config key, no email of its own.
+> **TL;DR** — Credit packs sold through PaymentBundle's basket, a ledger per user whose sum is the balance, and `CreditServiceInterface::spend()` for the site's services. No route, one config key (its test mode), no email of its own.
 
 ## Contents
 
@@ -36,6 +36,8 @@ Add PurchaseCreditsBundle on top of the shared [CoreBundle](https://github.com/9
 - Two back-office screens contributed to the EasyAdmin dashboard (`MenuProviderInterface`): the packs, and the ledger, which only ever adds lines
 - Two guided projects (`GuidedProjectProviderInterface`): putting a pack on sale, and giving or taking credits by hand
 - Its own `purchasecredits` translation catalogue, in English, French and Spanish
+- A test mode, `purchasecredits-test-mode`, switched from a dashboard tile (`ShortcutProviderInterface`): a banner above the packs says nothing is really sold
+- A demo dataset (UiBundle's `DemoFixtureProviderInterface`): three packs on sale, and no ledger — its lines name accounts, which are the site's own
 - **A skill for coding agents**, shipped in the package and read straight from `vendor/` — see [AI agent skills](#ai-agent-skills)
 
 ---
@@ -67,7 +69,7 @@ Two tables: `credit_pack` and `credit_transaction`, whose lines go with the acco
 
 ### Nothing to register by hand
 
-No route to import, no config key to load, no asset to install: the menu entries, the block kind, the basket provider and the Twig functions are picked up by autoconfiguration. The block's "Buy" button is PaymentBundle's own `basket` Stimulus controller, registered by that bundle.
+No route to import, no asset to install - and one config key, loaded with the others by `php bin/console c975l:config:load-all`: the menu entries, the block kind, the basket provider and the Twig functions are picked up by autoconfiguration. The block's "Buy" button is PaymentBundle's own `basket` Stimulus controller, registered by that bundle.
 
 ---
 
@@ -134,7 +136,6 @@ ConfigBundle and UiBundle expose a long list of contribution points, and not bra
 
 | Point | Why not |
 | --- | --- |
-| Config keys (`configs.json`) | it reads only its dependencies' — `shop-currency` of PaymentBundle, `site-role-admin` of the core |
 | Emails | the purchase is confirmed by PaymentBundle's own order email, like any basket |
 | Sign-up bonus | registration is the application's own code (scaffolded), which calls `grant()` |
 | Content translation | a pack has no free text: its title is "%count% credits", from the translation catalogue |

@@ -58,6 +58,14 @@
                 <source>description.guided_step_purchasecredits_pack_published</source>
                 <target>Márquelo para que el paquete aparezca en el bloque de paquetes.</target>
             </trans-unit>
+            <trans-unit id="apPBW22">
+                <source>flash.purchasecredits_test_mode_disabled</source>
+                <target>Los créditos han salido del modo de prueba: el aviso encima de los packs ha desaparecido.</target>
+            </trans-unit>
+            <trans-unit id="pTzBwwU">
+                <source>flash.purchasecredits_test_mode_enabled</source>
+                <target>Los créditos están en modo de prueba: un aviso encima de los packs advierte de que nada se vende de verdad.</target>
+            </trans-unit>
             <trans-unit id="67tP88.">
                 <source>help.transaction_amount</source>
                 <target>Positivo para regalar créditos, negativo para retirarlos. Una línea nunca se modifica: un error se corrige con la línea inversa.</target>
@@ -202,6 +210,14 @@
                 <source>label.packs</source>
                 <target>Paquetes de créditos</target>
             </trans-unit>
+            <trans-unit id="5icF3x9">
+                <source>label.purchasecredits_test_mode_disable</source>
+                <target>Desactivar el modo de prueba de los créditos</target>
+            </trans-unit>
+            <trans-unit id="PaltlE_">
+                <source>label.purchasecredits_test_mode_enable</source>
+                <target>Activar el modo de prueba de los créditos</target>
+            </trans-unit>
             <trans-unit id="LqQIe5o">
                 <source>label.section_background</source>
                 <target>Fondo de la sección</target>
@@ -233,6 +249,10 @@
             <trans-unit id="8wksH7c">
                 <source>label.sign_in_to_buy</source>
                 <target>Iniciar sesión para comprar créditos</target>
+            </trans-unit>
+            <trans-unit id="2nMDj1i">
+                <source>label.test_mode</source>
+                <target>Estos créditos están en prueba: nada se vende de verdad, y los créditos no tienen ningún valor.</target>
             </trans-unit>
             <trans-unit id="zbz7WMY">
                 <source>label.transaction</source>

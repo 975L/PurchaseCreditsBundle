@@ -100,7 +100,7 @@ class CreditBasketItemProvider implements BasketItemProviderInterface
                 // Frozen here: what the customer agreed to is what is credited, whatever the pack becomes before the payment
                 'credits' => $item->getCredits(),
                 'price' => $item->getPrice(),
-                'currency' => (string) $this->configService->get('shop-currency'),
+                'currency' => (string) ($this->configService->get('shop-currency') ?: 'EUR'),
                 'vat' => $item->getVat(),
                 'limitedQuantity' => 0,
                 'orderedQuantity' => 0,

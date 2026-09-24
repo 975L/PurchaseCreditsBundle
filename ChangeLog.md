@@ -1,5 +1,13 @@
 # Changelog
 
+## v5.1.0
+
+A test mode, and packs for a demo site
+
+- **`purchasecredits-test-mode`**, a dashboard toggle showing a test banner above the packs (24/09/2026) [Needs `c975l:config:load-all`]
+- `PurchaseCreditsDemoFixtureProvider`: three packs on sale for a demo site (24/09/2026)
+- The packs block and the basket fall back on euros while `shop-currency` is not set (24/09/2026)
+
 ## v5.0.0
 
 Rewrite the bundle on the c975L core

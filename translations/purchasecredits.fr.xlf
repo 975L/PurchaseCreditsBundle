@@ -58,6 +58,14 @@
                 <source>description.guided_step_purchasecredits_pack_published</source>
                 <target>Cochez pour que le pack apparaisse dans le bloc des packs.</target>
             </trans-unit>
+            <trans-unit id="apPBW22">
+                <source>flash.purchasecredits_test_mode_disabled</source>
+                <target>Les crédits sont sortis du mode test : le bandeau a disparu au-dessus des packs.</target>
+            </trans-unit>
+            <trans-unit id="pTzBwwU">
+                <source>flash.purchasecredits_test_mode_enabled</source>
+                <target>Les crédits sont en mode test : un bandeau prévient au-dessus des packs que rien n'est réellement vendu.</target>
+            </trans-unit>
             <trans-unit id="67tP88.">
                 <source>help.transaction_amount</source>
                 <target>Positif pour offrir des crédits, négatif pour en retirer. Une ligne ne se modifie jamais : une erreur se corrige par la ligne inverse.</target>
@@ -202,6 +210,14 @@
                 <source>label.packs</source>
                 <target>Packs de crédits</target>
             </trans-unit>
+            <trans-unit id="5icF3x9">
+                <source>label.purchasecredits_test_mode_disable</source>
+                <target>Désactiver le mode test des crédits</target>
+            </trans-unit>
+            <trans-unit id="PaltlE_">
+                <source>label.purchasecredits_test_mode_enable</source>
+                <target>Activer le mode test des crédits</target>
+            </trans-unit>
             <trans-unit id="LqQIe5o">
                 <source>label.section_background</source>
                 <target>Fond de la section</target>
@@ -233,6 +249,10 @@
             <trans-unit id="8wksH7c">
                 <source>label.sign_in_to_buy</source>
                 <target>Se connecter pour acheter des crédits</target>
+            </trans-unit>
+            <trans-unit id="2nMDj1i">
+                <source>label.test_mode</source>
+                <target>Ces crédits sont en test : rien n'est réellement vendu, et les crédits n'ont aucune valeur.</target>
             </trans-unit>
             <trans-unit id="zbz7WMY">
                 <source>label.transaction</source>
