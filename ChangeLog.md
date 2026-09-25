@@ -1,5 +1,11 @@
 # Changelog
 
+## v5.1.3
+
+Credit movements no longer count as an unused feature when empty
+
+- Marks the `purchasecredits_transaction` menu entry as not `creatable` (25/09/2026)
+
 ## v5.1.2
 
 Bump actions/setup-python to v6 in the CI

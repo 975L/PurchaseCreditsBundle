@@ -38,6 +38,8 @@ class MenuProvider implements MenuProviderInterface
             ],
             'purchasecredits_transaction' => [
                 'controller' => CreditTransactionCrudController::class,
+                // Lists what happened rather than what an admin makes: empty, it is no feature left unused (see UnusedFeatureBuilder)
+                'creatable' => false,
                 'label' => 'label.transactions',
                 'translation_domain' => 'purchasecredits',
                 'icon' => 'fas fa-list',
