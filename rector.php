@@ -9,7 +9,6 @@
  */
 
 use Rector\Config\RectorConfig;
-use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\Php80\Rector\ClassMethod\AddParamBasedOnParentClassMethodRector;
 use Rector\Php82\Rector\Class_\ReadOnlyClassRector;
 
@@ -23,9 +22,8 @@ return RectorConfig::configure()
     // The cache lives in the repository rather than in sys_get_temp_dir(), one directory shared by every repository on the machine: a run here no longer competes with, nor empties, the cache of the other repositories. bin/ci.sh keeps its cold cache by leaving this directory out of the copy
     ->withCache(cacheDirectory: __DIR__ . '/.rector.cache')
     ->withComposerBased(symfony: true, doctrine: true)
-    ->withSets([
-        DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES,
-    ])
+    // Symfony, Doctrine and Sensio annotations turned into attributes: withComposerBased() only brings the version upgrades, and without this set a @Route or an @Assert left in a docblock is a mere comment Symfony 8 ignores
+    ->withAttributesSets(symfony: true, doctrine: true, sensiolabs: true)
     // Two rules are dropped rather than followed: a readonly class can only be extended by another readonly one, which closes the door these bundles are built to leave open - a site overriding a service would have to make its own readonly too, and could then no longer hold state of its own; and copying a parent's parameters after a variadic $args does not compile, while that variadic is deliberate in the CrudControllers, where it absorbs EasyAdmin's signature changes without the bundle having to follow them
     ->withSkip([
         AddParamBasedOnParentClassMethodRector::class,

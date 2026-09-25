@@ -1,5 +1,12 @@
 # Changelog
 
+## v5.1.4
+
+The README links the tutorials, block kinds and demo
+
+- The README opens on its bundle page, tutorials, block kinds and live demo with its back-office (25/09/2026)
+- Rector: `withAttributesSets()` replaces the Doctrine-only annotations set (25/09/2026)
+
 ## v5.1.3
 
 Credit movements no longer count as an unused feature when empty

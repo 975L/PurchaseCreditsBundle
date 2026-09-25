@@ -7,6 +7,8 @@ Symfony bundle for prepaid credits on the c975L core — credit packs sold throu
 [![PHP Version](https://img.shields.io/packagist/php-v/c975l/purchasecredits-bundle)](https://packagist.org/packages/c975l/purchasecredits-bundle)
 [![Codacy Grade](https://app.codacy.com/project/badge/Grade/566b313db5fe4cedbf11368f298f320a)](https://app.codacy.com/gh/975L/PurchaseCreditsBundle/dashboard)
 
+**[Bundle page](https://bundles.975l.com/en/pages/purchasecredits-bundle) · [Tutorials](https://bundles.975l.com/en/tutoriels/purchasecredits-bundle) · [Block kinds](https://bundles.975l.com/en/pages/blocks/PurchaseCredits) · [Live demo](https://bundles.975l.com/demo/) · [Demo back-office](https://bundles.975l.com/demo/login)**
+
 > **BUNDLE UNDER DEVELOPMENT — USE AT YOUR OWN RISK**
 
 ---
