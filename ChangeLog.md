@@ -1,5 +1,11 @@
 # Changelog
 
+## v5.1.2
+
+Bump actions/setup-python to v6 in the CI
+
+- CI: `actions/setup-python` v5 → v6 (25/09/2026)
+
 ## v5.1.1
 
 Name the transaction's user by its identifier in the back office
