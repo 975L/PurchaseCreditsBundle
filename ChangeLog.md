@@ -1,5 +1,11 @@
 # Changelog
 
+## v5.1.1
+
+Name the transaction's user by its identifier in the back office
+
+- Credit movements screen shows and filters the user by `userIdentifier`, no `__toString()` required (25/09/2026)
+
 ## v5.1.0
 
 A test mode, and packs for a demo site

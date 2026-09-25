@@ -71,7 +71,8 @@ class CreditTransactionCrudController extends AbstractCrudController
     #[\Override]
     public function configureFilters(Filters $filters): Filters
     {
-        return $filters->add(EntityFilter::new('user', t('label.transaction_user', [], 'purchasecredits')));
+        return $filters->add(EntityFilter::new('user', t('label.transaction_user', [], 'purchasecredits'))
+            ->setFormTypeOption('value_type_options.choice_label', 'userIdentifier'));
     }
 
     #[\Override]
@@ -79,7 +80,11 @@ class CreditTransactionCrudController extends AbstractCrudController
     {
         yield DateTimeField::new('createdAt', t('label.transaction_date', [], 'purchasecredits'))->hideOnForm();
 
-        yield AssociationField::new('user', t('label.transaction_user', [], 'purchasecredits'));
+        // Named by its identifier: the application's User entity owes the bundle no __toString(), only what c975L's UserInterface guarantees
+        yield AssociationField::new('user', t('label.transaction_user', [], 'purchasecredits'))
+            ->setFormTypeOption('choice_label', 'userIdentifier')
+            ->formatValue(static fn (mixed $value, CreditTransaction $transaction): ?string => $transaction->getUser()?->getUserIdentifier())
+        ;
 
         yield IntegerField::new('amount', t('label.transaction_amount', [], 'purchasecredits'))
             ->setHelp(t('help.transaction_amount', [], 'purchasecredits'))
