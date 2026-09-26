@@ -1,0 +1,53 @@
+/*
+ * (c) 2026: 975L <contact@975l.com>
+ * (c) 2026: Laurent Marquet <laurent.marquet@laposte.net>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+/* PACKS */
+// The introduction is read before the packs, centered on a reading measure rather than stretched across the whole row
+.purchasecredits-packs__intro {
+    max-width: var(--reading-max-width, min(75ch, 90vw));
+    margin: 0 auto 1em auto;
+    text-align: center;
+}
+
+// Room between the introduction and the row of packs, which would otherwise touch
+.purchasecredits-packs .cards {
+    margin-top: 2em;
+}
+
+// Four packs to a row at UiBundle's portrait width, a card centered to be read at a glance, its button pinned under it by UiBundle's .card-data
+.purchasecredits-pack {
+    width: var(--card-width-portrait);
+    text-align: center;
+}
+
+.purchasecredits-pack .card-title {
+    margin-bottom: 0.25em;
+}
+
+.purchasecredits-pack__price {
+    font-family: var(--font-family-title);
+    font-size: 2rem;
+    margin: 0.25em 0;
+}
+
+.purchasecredits-pack .text-muted {
+    margin-top: 0;
+}
+
+// The pack a site puts forward (see the "pack_class" block): outlined in the primary color and lifted, its ribbon straddling the top border
+.purchasecredits-pack--featured {
+    border: 2px solid var(--primary);
+    box-shadow: var(--box-shadow);
+}
+
+.purchasecredits-pack__ribbon {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

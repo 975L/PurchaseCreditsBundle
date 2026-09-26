@@ -1,6 +1,6 @@
 ---
 name: c975l-purchasecredits
-description: "Use this skill when working with prepaid credits in a Symfony application built on the c975L ecosystem with c975l/purchasecredits-bundle. Covers the credit packs sold through PaymentBundle's basket, the per-user ledger, and the spending API a site's own services call. Triggers on: credits, prepaid credits, credit pack, buy credits, spend credits, balance, CreditPack, CreditTransaction, CreditServiceInterface, getBalance, grant, spend, InsufficientCreditsException, CreditBasketItemProvider, AccountBasketItemProviderInterface, sign in at checkout, purchasecredits_packs, purchasecredits_balance, sign-up bonus, ledger, purchasecredits-test-mode, test mode, PurchaseCreditsShortcutProvider, PurchaseCreditsDemoFixtureProvider, demo fixtures."
+description: "Use this skill when working with prepaid credits in a Symfony application built on the c975L ecosystem with c975l/purchasecredits-bundle. Covers the credit packs sold through PaymentBundle's basket, the per-user ledger, and the spending API a site's own services call. Triggers on: credits, prepaid credits, credit pack, buy credits, spend credits, balance, CreditPack, CreditTransaction, CreditServiceInterface, getBalance, grant, spend, InsufficientCreditsException, CreditBasketItemProvider, AccountBasketItemProviderInterface, sign in at checkout, purchasecredits_packs, purchasecredits_balance, packs_intro, pack_class, pack_top, pack_extra, featured pack, StylesheetProvider, sign-up bonus, ledger, purchasecredits-test-mode, test mode, PurchaseCreditsShortcutProvider, PurchaseCreditsDemoFixtureProvider, demo fixtures."
 ---
 
 # c975L PurchaseCreditsBundle
@@ -10,7 +10,7 @@ description: "Use this skill when working with prepaid credits in a Symfony appl
 **Package:** `c975l/purchasecredits-bundle` · **Namespace:** `c975L\PurchaseCreditsBundle\` · **Twig namespace:** `@c975LPurchaseCredits` · **Translation domain:** `purchasecredits`
 
 **Key source paths** (relative to the package root):
-`src/Entity/`, `src/Repository/`, `src/Service/`, `src/Exception/`, `src/Controller/Management/`, `src/Management/`, `src/Twig/Extension/`, `src/Form/Block/`, `templates/blocks/`, `templates/management/`, `config/services.yaml`, `config/configs.json`
+`src/Entity/`, `src/Repository/`, `src/Service/`, `src/Exception/`, `src/Controller/Management/`, `src/Management/`, `src/Twig/Extension/`, `src/Form/Block/`, `templates/blocks/`, `templates/management/`, `sass/`, `config/services.yaml`, `config/configs.json`
 
 **Related documentation:** this package's `README.md` is the reference. The ecosystem's rules (configuration, blocks, management contributions) live in `c975l/core-bundle`, the basket in `c975l/payment-bundle`.
 
@@ -56,3 +56,5 @@ $this->creditService->grant($user, 3, 'Welcome credits', 'signup');
 ## Front
 
 Place the `purchasecredits_packs` block on any page from the back office. Templates may also call `purchasecredits_packs()` and `purchasecredits_balance()` (null for a visitor).
+
+The block's styles ship in `sass/styles.scss`, added to every page by `StylesheetProvider`. A site extends `@c975LPurchaseCredits/blocks/Packs.html.twig` and fills its empty `packs_intro`, `pack_class`, `pack_top` and `pack_extra` blocks to say what a pack buys; `purchasecredits-pack--featured` (in `pack_class`) and `purchasecredits-pack__ribbon` (in `pack_top`) put a pack forward.

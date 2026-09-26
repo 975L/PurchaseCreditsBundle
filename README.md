@@ -34,7 +34,7 @@ Add PurchaseCreditsBundle on top of the shared [CoreBundle](https://github.com/9
 - A ledger per user: every movement (purchase, gift, spending) is a line, and the balance is their sum — never a counter stored beside them
 - A spending API, `CreditServiceInterface`, that locks the account while it reads the balance and writes, so two spendings at once cannot both pass on the same credits
 - A payment delivered twice credited once: a purchase line answers to the basket number and the pack
-- The `purchasecredits_packs` block, placed on any composed page, with the reader's balance and a "Buy" button per pack
+- The `purchasecredits_packs` block, placed on any composed page, with the reader's balance, each pack's price per credit and a "Buy" button per pack
 - Two back-office screens contributed to the EasyAdmin dashboard (`MenuProviderInterface`): the packs, and the ledger, which only ever adds lines
 - Two guided projects (`GuidedProjectProviderInterface`): putting a pack on sale, and giving or taking credits by hand
 - Its own `purchasecredits` translation catalogue, in English, French and Spanish
@@ -71,7 +71,7 @@ Two tables: `credit_pack` and `credit_transaction`, whose lines go with the acco
 
 ### Nothing to register by hand
 
-No route to import, no asset to install - and one config key, loaded with the others by `php bin/console c975l:config:load-all`: the menu entries, the block kind, the basket provider and the Twig functions are picked up by autoconfiguration. The block's "Buy" button is PaymentBundle's own `basket` Stimulus controller, registered by that bundle.
+No route to import, the stylesheet published by `php bin/console assets:install` - and one config key, loaded with the others by `php bin/console c975l:config:load-all`: the menu entries, the block kind, the basket provider, the stylesheet and the Twig functions are picked up by autoconfiguration. The block's "Buy" button is PaymentBundle's own `basket` Stimulus controller, registered by that bundle.
 
 ---
 
@@ -120,7 +120,7 @@ The ledger is the only truth: never store a balance beside it. A line is never e
 | `purchasecredits_packs()` | the published packs, in the back office order |
 | `purchasecredits_balance()` | the signed-in user's balance, `null` for a visitor |
 
-The block is never cached: the balance shown next to the packs belongs to whoever reads the page. Override `templates/bundles/c975LPurchaseCreditsBundle/blocks/Packs.html.twig` in the app to change its markup.
+The block is never cached: the balance shown next to the packs belongs to whoever reads the page. Override `templates/bundles/c975LPurchaseCreditsBundle/blocks/Packs.html.twig` in the app to change its markup — or extend it and fill its empty `packs_intro`, `pack_class`, `pack_top` and `pack_extra` blocks to say what a pack buys on the site (`purchasecredits-pack--featured` and `purchasecredits-pack__ribbon` put a pack forward).
 
 ---
 
@@ -142,7 +142,7 @@ ConfigBundle and UiBundle expose a long list of contribution points, and not bra
 | Sign-up bonus | registration is the application's own code (scaffolded), which calls `grant()` |
 | Content translation | a pack has no free text: its title is "%count% credits", from the translation catalogue |
 | "What's new", procedures | to be written once the bundle runs on a site |
-| Stylesheet, scripts | the block is drawn with UiBundle's section and card classes, and its button is PaymentBundle's `basket` controller |
+| Scripts | the block's button is PaymentBundle's `basket` controller |
 | Sitemap, linkable routes | no public page of its own: the packs are a block placed on the site's pages |
 | Health check, status `extra` | nothing here calls for an action a maintainer takes |
 | Import / export | a ledger is not a catalogue |

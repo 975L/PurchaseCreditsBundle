@@ -122,6 +122,19 @@ class SkillsTest extends TestCase
         return $this->matchesInSources("/'(c975l:[a-z0-9:-]+)'/");
     }
 
+    // The CSS classes the bundle's stylesheets declare, which a skill quotes for a site to put on its own markup
+    /** @return list<string> */
+    private function cssClasses(): array
+    {
+        $classes = [];
+        foreach (glob($this->root() . '/sass/*.scss') ?: [] as $file) {
+            preg_match_all('/\.([a-z][a-z0-9_-]*)/', (string) file_get_contents($file), $matches);
+            $classes = array_merge($classes, $matches[1]);
+        }
+
+        return $classes;
+    }
+
     // Whether a name this bundle doesn't declare itself is one the ecosystem does somewhere - a config slug of ConfigBundle's, a block context of UiBundle's, a Twig option a template passes. The installed vendor tree is what makes it visible, so a checkout without dependencies lets those through rather than failing on what it cannot see
     private function isDeclaredSomewhere(string $name): bool
     {
@@ -222,6 +235,9 @@ class SkillsTest extends TestCase
         // This bundle declares no config key of its own, which leaves the ecosystem's
         $configs = $this->root() . '/config/configs.json';
         $declared = is_file($configs) ? array_column(json_decode((string) file_get_contents($configs), true, 512, \JSON_THROW_ON_ERROR), 'slug') : [];
+
+        // A class of the bundle's stylesheets shares the slug's shape without being one
+        $declared = array_merge($declared, $this->cssClasses());
 
         foreach ($this->loadSkills() as $directory => $content) {
             foreach ($this->backtickedTokens($content, self::SLUG_PATTERN) as $slug) {

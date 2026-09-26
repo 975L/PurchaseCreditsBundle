@@ -286,6 +286,10 @@
                 <source>label.transactions</source>
                 <target>Mouvements de crédits</target>
             </trans-unit>
+            <trans-unit id="TCWL3G2">
+                <source>label.unit_price</source>
+                <target>soit %price% le crédit</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

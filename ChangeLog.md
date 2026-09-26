@@ -1,5 +1,17 @@
 # Changelog
 
+## v5.1.6
+
+The packs block gets its own stylesheet and override hooks
+
+- Adds `StylesheetProvider` and `sass/styles.scss` for the packs block (26/09/2026)
+- Packs block shows the price per credit (26/09/2026)
+- Packs block adds `packs_intro`, `pack_class`, `pack_top` and `pack_extra` Twig blocks (26/09/2026)
+- Adds `purchasecredits-pack--featured` and `purchasecredits-pack__ribbon` classes (26/09/2026)
+- Packs block aligns its "Buy" buttons in `.card-data` (26/09/2026)
+- Packs block discount badge uses `badge-primary` (26/09/2026)
+- Adds the `label.unit_price` translation (26/09/2026)
+
 ## v5.1.5
 
 A visitor fills the basket and signs in at the checkout

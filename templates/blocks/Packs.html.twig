@@ -1,7 +1,8 @@
-{# Adapter for the dynamic Block system - the packs and the balance are read live (see CreditsExtension), the block only storing its head #}
+{# Adapter for the dynamic Block system - the packs and the balance are read live (see CreditsExtension), the block only storing its head. The "packs_intro", "pack_class", "pack_top" and "pack_extra" blocks are empty hooks a site fills by extending this template, to say what a pack buys there #}
 {% set packs = purchasecredits_packs() %}
 {% if packs is not empty %}
     {% set balance = purchasecredits_balance() %}
+    {% set currency = config('shop-currency')|default('EUR') %}
     {# What a credit costs in the dearest pack, the reference the others are discounted from, whatever order the packs are placed in #}
     {% set creditPrice = max(packs|map(pack => pack.price / pack.credits)) %}
     {# Matched, not interpolated: the value comes from stored block data and must not write any class name #}
@@ -10,10 +11,12 @@
     <{{ tag }} class="block-section purchasecredits-packs{{ flat }}" id="{{ anchor_id }}">
         <div class="section-wrap">
             {{ include('@c975LUi/components/Section/_head.html.twig') }}
-            {# No nl2br: Trix already encodes its line breaks #}
-            {% if content|default('') %}
-                <div class="purchasecredits-packs__intro">{{ content|raw }}</div>
-            {% endif %}
+            {% block packs_intro %}
+                {# No nl2br: Trix already encodes its line breaks #}
+                {% if content|default('') %}
+                    <div class="purchasecredits-packs__intro">{{ content|raw }}</div>
+                {% endif %}
+            {% endblock %}
             {# A site setting its credits up, or a showcase, says so above the packs - the charge itself being announced by PaymentBundle's own banner in the basket #}
             {% if config('purchasecredits-test-mode') %}
                 <twig:c975LUi:Alert:Alert type="warning">
@@ -28,28 +31,37 @@
                 <div class="cards">
                     {% for pack in packs %}
                         {% set packTitle = 'label.pack_title'|trans({'%count%': pack.credits}, 'purchasecredits') %}
-                        <div class="card">
+                        {% set discount = (100 - pack.price * 100 / (pack.credits * creditPrice))|round %}
+                        <div class="card purchasecredits-pack{% block pack_class %}{% endblock %}">
                             <div class="card-body">
+                                {% block pack_top %}{% endblock %}
                                 <h3 class="card-title">{{ packTitle }}</h3>
-                                <p class="card-text lead">{{ (pack.price / 100)|format_currency(config('shop-currency')|default('EUR')) }}</p>
-                                {% set discount = (100 - pack.price * 100 / (pack.credits * creditPrice))|round %}
-                                {% if discount > 0 %}
-                                    <p><span class="badge badge-success">{{ 'label.discount'|trans({'%discount%': discount}, 'purchasecredits') }}</span></p>
+                                <p class="purchasecredits-pack__price">{{ (pack.price / 100)|format_currency(currency) }}</p>
+                                {# The price of one credit, what a buyer compares the packs on #}
+                                {% if pack.credits > 1 %}
+                                    <p class="text-muted">{{ 'label.unit_price'|trans({'%price%': (pack.price / pack.credits / 100)|format_currency(currency)}, 'purchasecredits') }}</p>
                                 {% endif %}
-                                {# Offered to a visitor too, the sign-in being asked at the checkout (see AccountBasketItemProviderInterface) #}
-                                <button type="button"
-                                        class="btn btn-primary"
-                                        data-action="click->basket#addItem"
-                                        data-item-id="{{ pack.id }}"
-                                        data-type="purchasecredits"
-                                        data-quantity="1"
-                                        data-limited="0"
-                                        data-ordered="0"
-                                        data-title="{{ packTitle }}"
-                                        data-text="{{ 'label.added'|trans({}, 'payment') }}"
-                                        data-alert="success">
-                                    {{ 'label.buy'|trans({}, 'purchasecredits') }}
-                                </button>
+                                {% if discount > 0 %}
+                                    <p><span class="badge badge-primary">{{ 'label.discount'|trans({'%discount%': discount}, 'purchasecredits') }}</span></p>
+                                {% endif %}
+                                {% block pack_extra %}{% endblock %}
+                                {# Pinned to the bottom and stretched across the card, so the buttons of a row line up whatever each card says above them (see UiBundle's .card-data) #}
+                                <div class="card-data">
+                                    {# Offered to a visitor too, the sign-in being asked at the checkout (see AccountBasketItemProviderInterface) #}
+                                    <button type="button"
+                                            class="btn btn-primary btn-large"
+                                            data-action="click->basket#addItem"
+                                            data-item-id="{{ pack.id }}"
+                                            data-type="purchasecredits"
+                                            data-quantity="1"
+                                            data-limited="0"
+                                            data-ordered="0"
+                                            data-title="{{ packTitle }}"
+                                            data-text="{{ 'label.added'|trans({}, 'payment') }}"
+                                            data-alert="success">
+                                        {{ 'label.buy'|trans({}, 'purchasecredits') }}
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
