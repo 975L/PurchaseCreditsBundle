@@ -2,6 +2,26 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" target-language="fr" datatype="plaintext" original="purchasecredits_narration.en.xlf">
         <body>
+            <trans-unit id="J8HN4Fj">
+                <source>narration.guided_step_purchasecredits_block_add</source>
+                <target>Ajoutez un bloc, à l'endroit où les packs doivent apparaître.</target>
+            </trans-unit>
+            <trans-unit id="R7T4zn4">
+                <source>narration.guided_step_purchasecredits_block_edit</source>
+                <target>Ouvrez la page qui présentera les packs.</target>
+            </trans-unit>
+            <trans-unit id="6T0UMZS">
+                <source>narration.guided_step_purchasecredits_block_kind</source>
+                <target>Choisissez le type Packs de crédits : les packs publiés s'y afficheront d'eux-mêmes.</target>
+            </trans-unit>
+            <trans-unit id="r707USJ">
+                <source>narration.guided_step_purchasecredits_block_open</source>
+                <target>Nous allons montrer les packs aux visiteurs. Le panneau vous emmène sur la liste des pages.</target>
+            </trans-unit>
+            <trans-unit id="dzOKw6N">
+                <source>narration.guided_step_purchasecredits_block_save</source>
+                <target>Enregistrez. Les packs apparaissent aussitôt sur la page, chacun avec son bouton d'achat.</target>
+            </trans-unit>
             <trans-unit id="wl53xsr">
                 <source>narration.guided_step_purchasecredits_gift_amount</source>
                 <target>Saisissez le nombre de crédits : positif pour en offrir, négatif pour en retirer.</target>

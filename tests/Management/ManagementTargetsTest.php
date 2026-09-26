@@ -14,8 +14,10 @@ use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\ConfigBundle\Test\ManagementTargetsTestCase;
 use c975L\PurchaseCreditsBundle\Management\MenuProvider;
 use c975L\PurchaseCreditsBundle\Management\PurchaseCreditsGuidedProjectProvider;
+use c975L\PurchaseCreditsBundle\Management\PurchaseCreditsShortcutProvider;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-// Every CRUD controller the menu names, checked against what the controllers declare (see ManagementTargetsTestCase)
+// Every CRUD controller the menu names and every route the shortcuts name, checked against what the controllers declare (see ManagementTargetsTestCase)
 class ManagementTargetsTest extends ManagementTargetsTestCase
 {
     protected function managementProviders(): iterable
@@ -24,6 +26,7 @@ class ManagementTargetsTest extends ManagementTargetsTestCase
             new MenuProvider(),
             // The guided projects generate their urls, so they take the recorder this test case reads them back from
             new PurchaseCreditsGuidedProjectProvider($this->adminUrlGenerator(), $this->createStub(ConfigServiceInterface::class)),
+            new PurchaseCreditsShortcutProvider($this->createStub(TranslatorInterface::class), $this->createStub(ConfigServiceInterface::class)),
         ];
     }
 

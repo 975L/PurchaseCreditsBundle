@@ -36,7 +36,7 @@ Add PurchaseCreditsBundle on top of the shared [CoreBundle](https://github.com/9
 - A payment delivered twice credited once: a purchase line answers to the basket number and the pack
 - The `purchasecredits_packs` block, placed on any composed page, with the reader's balance, each pack's price per credit and a "Buy" button per pack
 - Two back-office screens contributed to the EasyAdmin dashboard (`MenuProviderInterface`): the packs, and the ledger, which only ever adds lines
-- Two guided projects (`GuidedProjectProviderInterface`): putting a pack on sale, and giving or taking credits by hand
+- Guided projects (`GuidedProjectProviderInterface`): putting a pack on sale, giving or taking credits by hand, and — when SiteBundle is registered — placing the packs block on a page
 - Its own `purchasecredits` translation catalogue, in English, French and Spanish
 - A test mode, `purchasecredits-test-mode`, switched from a dashboard tile (`ShortcutProviderInterface`): a banner above the packs says nothing is really sold
 - A demo dataset (UiBundle's `DemoFixtureProviderInterface`): three packs on sale, and no ledger — its lines name accounts, which are the site's own
@@ -120,7 +120,7 @@ The ledger is the only truth: never store a balance beside it. A line is never e
 | `purchasecredits_packs()` | the published packs, in the back office order |
 | `purchasecredits_balance()` | the signed-in user's balance, `null` for a visitor |
 
-The block is never cached: the balance shown next to the packs belongs to whoever reads the page. Override `templates/bundles/c975LPurchaseCreditsBundle/blocks/Packs.html.twig` in the app to change its markup — or extend it and fill its empty `packs_intro`, `pack_class`, `pack_top` and `pack_extra` blocks to say what a pack buys on the site (`purchasecredits-pack--featured` and `purchasecredits-pack__ribbon` put a pack forward).
+The block is never cached: the balance shown next to the packs belongs to whoever reads the page. Override `templates/bundles/c975LPurchaseCreditsBundle/blocks/Packs.html.twig` in the app to change its markup — or extend it and fill its empty `packs_intro`, `pack_class`, `pack_top` and `pack_extra` blocks to say what a pack buys on the site (each pack is UiBundle's pricing card: ` card--featured` in `pack_class` and a `card-ribbon` badge in `pack_top` put a pack forward).
 
 ---
 

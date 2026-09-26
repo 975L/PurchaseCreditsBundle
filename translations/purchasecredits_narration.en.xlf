@@ -2,6 +2,26 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" target-language="en" datatype="plaintext" original="purchasecredits_narration.en.xlf">
         <body>
+            <trans-unit id="J8HN4Fj">
+                <source>narration.guided_step_purchasecredits_block_add</source>
+                <target>Add a block, where the packs should appear.</target>
+            </trans-unit>
+            <trans-unit id="R7T4zn4">
+                <source>narration.guided_step_purchasecredits_block_edit</source>
+                <target>Open the page that will show the packs.</target>
+            </trans-unit>
+            <trans-unit id="6T0UMZS">
+                <source>narration.guided_step_purchasecredits_block_kind</source>
+                <target>Pick the Credit packs kind: the published packs will show up in it on their own.</target>
+            </trans-unit>
+            <trans-unit id="r707USJ">
+                <source>narration.guided_step_purchasecredits_block_open</source>
+                <target>Let's show the packs to visitors. The panel takes you to the list of pages.</target>
+            </trans-unit>
+            <trans-unit id="dzOKw6N">
+                <source>narration.guided_step_purchasecredits_block_save</source>
+                <target>Save. The packs appear on the page right away, each with its buy button.</target>
+            </trans-unit>
             <trans-unit id="wl53xsr">
                 <source>narration.guided_step_purchasecredits_gift_amount</source>
                 <target>Enter the number of credits: positive to give some, negative to take some.</target>

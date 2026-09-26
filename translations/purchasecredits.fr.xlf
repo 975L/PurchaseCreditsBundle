@@ -2,6 +2,10 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" target-language="fr" datatype="plaintext" original="purchasecredits.en.xlf">
         <body>
+            <trans-unit id="SGjQJ6l">
+                <source>description.guided_project_purchasecredits_block</source>
+                <target>Placez le bloc des packs sur une page : c'est là que les visiteurs les voient et les achètent.</target>
+            </trans-unit>
             <trans-unit id="E5ZDi8B">
                 <source>description.guided_project_purchasecredits_gift</source>
                 <target>Ajoutez à la main une ligne au grand livre d'un compte : un cadeau, un geste, une correction.</target>
@@ -9,6 +13,26 @@
             <trans-unit id="owJnUNH">
                 <source>description.guided_project_purchasecredits_pack</source>
                 <target>Créez le pack que les visiteurs pourront acheter : un nombre de crédits et son prix.</target>
+            </trans-unit>
+            <trans-unit id="pYN8_ha">
+                <source>description.guided_step_purchasecredits_block_add</source>
+                <target>Ajoutez un bloc à la page, à l'endroit où les packs doivent apparaître.</target>
+            </trans-unit>
+            <trans-unit id="VW2FYkI">
+                <source>description.guided_step_purchasecredits_block_edit</source>
+                <target>Choisissez la page qui présentera les packs. Le bouton mis en évidence est celui de la première ligne : cliquez celui de votre page.</target>
+            </trans-unit>
+            <trans-unit id="Fpag5s8">
+                <source>description.guided_step_purchasecredits_block_kind</source>
+                <target>Dans la liste des types, choisissez Packs de crédits. Les packs publiés s'y affichent d'eux-mêmes, dans l'ordre de leur position.</target>
+            </trans-unit>
+            <trans-unit id="lZ8m2Ni">
+                <source>description.guided_step_purchasecredits_block_open</source>
+                <target>Le bloc des packs se place sur l'écran de modification d'une page.</target>
+            </trans-unit>
+            <trans-unit id="VHYnK4N">
+                <source>description.guided_step_purchasecredits_block_save</source>
+                <target>Enregistrez : les packs apparaissent sur la page, chacun avec son bouton d'achat.</target>
             </trans-unit>
             <trans-unit id="VIvla8o">
                 <source>description.guided_step_purchasecredits_gift_amount</source>
@@ -114,6 +138,10 @@
                 <source>label.discount</source>
                 <target>−%discount% %</target>
             </trans-unit>
+            <trans-unit id="nPbgd2u">
+                <source>label.guided_project_purchasecredits_block</source>
+                <target>Afficher les packs sur une page</target>
+            </trans-unit>
             <trans-unit id="0UCLfFW">
                 <source>label.guided_project_purchasecredits_gift</source>
                 <target>Offrir ou retirer des crédits</target>
@@ -121,6 +149,26 @@
             <trans-unit id="LOJdWeu">
                 <source>label.guided_project_purchasecredits_pack</source>
                 <target>Mettre un pack de crédits en vente</target>
+            </trans-unit>
+            <trans-unit id="kVWB1HR">
+                <source>label.guided_step_purchasecredits_block_add</source>
+                <target>Ajouter un bloc</target>
+            </trans-unit>
+            <trans-unit id="o0g4GLI">
+                <source>label.guided_step_purchasecredits_block_edit</source>
+                <target>Modifier une page</target>
+            </trans-unit>
+            <trans-unit id="gCNd9Kn">
+                <source>label.guided_step_purchasecredits_block_kind</source>
+                <target>Choisir Packs de crédits</target>
+            </trans-unit>
+            <trans-unit id="lz2ZwCv">
+                <source>label.guided_step_purchasecredits_block_open</source>
+                <target>Ouvrir les pages</target>
+            </trans-unit>
+            <trans-unit id="WBhvvhZ">
+                <source>label.guided_step_purchasecredits_block_save</source>
+                <target>Enregistrer</target>
             </trans-unit>
             <trans-unit id="q0sQHPP">
                 <source>label.guided_step_purchasecredits_gift_amount</source>

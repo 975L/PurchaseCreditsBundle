@@ -2,6 +2,26 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" target-language="es" datatype="plaintext" original="purchasecredits_narration.en.xlf">
         <body>
+            <trans-unit id="J8HN4Fj">
+                <source>narration.guided_step_purchasecredits_block_add</source>
+                <target>Añada un bloque, donde deben aparecer los paquetes.</target>
+            </trans-unit>
+            <trans-unit id="R7T4zn4">
+                <source>narration.guided_step_purchasecredits_block_edit</source>
+                <target>Abra la página que presentará los paquetes.</target>
+            </trans-unit>
+            <trans-unit id="6T0UMZS">
+                <source>narration.guided_step_purchasecredits_block_kind</source>
+                <target>Elija el tipo Paquetes de créditos: los paquetes publicados aparecerán en él por sí solos.</target>
+            </trans-unit>
+            <trans-unit id="r707USJ">
+                <source>narration.guided_step_purchasecredits_block_open</source>
+                <target>Vamos a mostrar los paquetes a los visitantes. El panel le lleva a la lista de páginas.</target>
+            </trans-unit>
+            <trans-unit id="dzOKw6N">
+                <source>narration.guided_step_purchasecredits_block_save</source>
+                <target>Guarde. Los paquetes aparecen de inmediato en la página, cada uno con su botón de compra.</target>
+            </trans-unit>
             <trans-unit id="wl53xsr">
                 <source>narration.guided_step_purchasecredits_gift_amount</source>
                 <target>Introduzca el número de créditos: positivo para regalar, negativo para retirar.</target>

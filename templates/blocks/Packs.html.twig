@@ -1,4 +1,4 @@
-{# Adapter for the dynamic Block system - the packs and the balance are read live (see CreditsExtension), the block only storing its head. The "packs_intro", "pack_class", "pack_top" and "pack_extra" blocks are empty hooks a site fills by extending this template, to say what a pack buys there #}
+{# Adapter for the dynamic Block system - the packs and the balance are read live (see CreditsExtension), the block only storing its head, each pack drawn as UiBundle's pricing card. The "packs_intro", "pack_class", "pack_top" and "pack_extra" blocks are empty hooks a site fills by extending this template, to say what a pack buys there - " card--featured" and a ".card-ribbon" for the pack it puts forward #}
 {% set packs = purchasecredits_packs() %}
 {% if packs is not empty %}
     {% set balance = purchasecredits_balance() %}
@@ -14,7 +14,7 @@
             {% block packs_intro %}
                 {# No nl2br: Trix already encodes its line breaks #}
                 {% if content|default('') %}
-                    <div class="purchasecredits-packs__intro">{{ content|raw }}</div>
+                    <div class="purchasecredits-packs__intro text-hook">{{ content|raw }}</div>
                 {% endif %}
             {% endblock %}
             {# A site setting its credits up, or a showcase, says so above the packs - the charge itself being announced by PaymentBundle's own banner in the basket #}
@@ -32,11 +32,11 @@
                     {% for pack in packs %}
                         {% set packTitle = 'label.pack_title'|trans({'%count%': pack.credits}, 'purchasecredits') %}
                         {% set discount = (100 - pack.price * 100 / (pack.credits * creditPrice))|round %}
-                        <div class="card purchasecredits-pack{% block pack_class %}{% endblock %}">
+                        <div class="card card--pricing purchasecredits-pack{% block pack_class %}{% endblock %}">
                             <div class="card-body">
                                 {% block pack_top %}{% endblock %}
                                 <h3 class="card-title">{{ packTitle }}</h3>
-                                <p class="purchasecredits-pack__price">{{ (pack.price / 100)|format_currency(currency) }}</p>
+                                <p class="price price--standalone">{{ (pack.price / 100)|format_currency(currency) }}</p>
                                 {# The price of one credit, what a buyer compares the packs on #}
                                 {% if pack.credits > 1 %}
                                     <p class="text-muted">{{ 'label.unit_price'|trans({'%price%': (pack.price / pack.credits / 100)|format_currency(currency)}, 'purchasecredits') }}</p>

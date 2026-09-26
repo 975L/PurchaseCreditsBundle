@@ -2,6 +2,10 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" target-language="en" datatype="plaintext" original="purchasecredits.en.xlf">
         <body>
+            <trans-unit id="SGjQJ6l">
+                <source>description.guided_project_purchasecredits_block</source>
+                <target>Place the packs block on a page: that is where visitors see and buy them.</target>
+            </trans-unit>
             <trans-unit id="E5ZDi8B">
                 <source>description.guided_project_purchasecredits_gift</source>
                 <target>Add a line to an account's ledger by hand: a gift, a goodwill gesture, a correction.</target>
@@ -9,6 +13,26 @@
             <trans-unit id="owJnUNH">
                 <source>description.guided_project_purchasecredits_pack</source>
                 <target>Create the pack visitors will be able to buy: a number of credits and its price.</target>
+            </trans-unit>
+            <trans-unit id="pYN8_ha">
+                <source>description.guided_step_purchasecredits_block_add</source>
+                <target>Add a block to the page, where the packs should appear.</target>
+            </trans-unit>
+            <trans-unit id="VW2FYkI">
+                <source>description.guided_step_purchasecredits_block_edit</source>
+                <target>Pick the page that will show the packs. The highlighted button is the first row's: click the one of your page.</target>
+            </trans-unit>
+            <trans-unit id="Fpag5s8">
+                <source>description.guided_step_purchasecredits_block_kind</source>
+                <target>In the list of kinds, pick Credit packs. The published packs show up in it on their own, in the order of their position.</target>
+            </trans-unit>
+            <trans-unit id="lZ8m2Ni">
+                <source>description.guided_step_purchasecredits_block_open</source>
+                <target>The packs block is placed on a page's edit screen.</target>
+            </trans-unit>
+            <trans-unit id="VHYnK4N">
+                <source>description.guided_step_purchasecredits_block_save</source>
+                <target>Save: the packs appear on the page, each with its buy button.</target>
             </trans-unit>
             <trans-unit id="VIvla8o">
                 <source>description.guided_step_purchasecredits_gift_amount</source>
@@ -114,6 +138,10 @@
                 <source>label.discount</source>
                 <target>−%discount%%</target>
             </trans-unit>
+            <trans-unit id="nPbgd2u">
+                <source>label.guided_project_purchasecredits_block</source>
+                <target>Show the packs on a page</target>
+            </trans-unit>
             <trans-unit id="0UCLfFW">
                 <source>label.guided_project_purchasecredits_gift</source>
                 <target>Give or take credits</target>
@@ -121,6 +149,26 @@
             <trans-unit id="LOJdWeu">
                 <source>label.guided_project_purchasecredits_pack</source>
                 <target>Put a credit pack on sale</target>
+            </trans-unit>
+            <trans-unit id="kVWB1HR">
+                <source>label.guided_step_purchasecredits_block_add</source>
+                <target>Add a block</target>
+            </trans-unit>
+            <trans-unit id="o0g4GLI">
+                <source>label.guided_step_purchasecredits_block_edit</source>
+                <target>Edit a page</target>
+            </trans-unit>
+            <trans-unit id="gCNd9Kn">
+                <source>label.guided_step_purchasecredits_block_kind</source>
+                <target>Pick Credit packs</target>
+            </trans-unit>
+            <trans-unit id="lz2ZwCv">
+                <source>label.guided_step_purchasecredits_block_open</source>
+                <target>Open the pages</target>
+            </trans-unit>
+            <trans-unit id="WBhvvhZ">
+                <source>label.guided_step_purchasecredits_block_save</source>
+                <target>Save</target>
             </trans-unit>
             <trans-unit id="q0sQHPP">
                 <source>label.guided_step_purchasecredits_gift_amount</source>

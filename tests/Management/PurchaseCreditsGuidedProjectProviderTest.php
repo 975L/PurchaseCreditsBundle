@@ -19,8 +19,8 @@ use PHPUnit\Framework\TestCase;
 
 class PurchaseCreditsGuidedProjectProviderTest extends TestCase
 {
-    // A provider whose url generator records the controllers it is asked for
-    private function createProvider(array &$controllers = []): PurchaseCreditsGuidedProjectProvider
+    // A provider whose url generator records the controllers it is asked for, SiteBundle registered or not
+    private function createProvider(array &$controllers = [], bool $siteBundle = false): PurchaseCreditsGuidedProjectProvider
     {
         $generator = $this->createStub(AdminUrlGeneratorInterface::class);
         $generator->method('unsetAll')->willReturnSelf();
@@ -35,7 +35,7 @@ class PurchaseCreditsGuidedProjectProviderTest extends TestCase
         $configService = $this->createStub(ConfigServiceInterface::class);
         $configService->method('get')->willReturn('ROLE_ADMIN');
 
-        return new PurchaseCreditsGuidedProjectProvider($generator, $configService);
+        return new PurchaseCreditsGuidedProjectProvider($generator, $configService, $siteBundle ? ['c975LSiteBundle' => 'c975L\\SiteBundle\\c975LSiteBundle'] : []);
     }
 
     // The 10000 block GuidedProjectProviderInterface reserves this bundle, at the step of 10 it states
@@ -45,6 +45,17 @@ class PurchaseCreditsGuidedProjectProviderTest extends TestCase
 
         $this->assertSame(['purchasecredits-pack', 'purchasecredits-gift'], array_column($projects, 'slug'));
         $this->assertSame([10010, 10020], array_column($projects, 'order'));
+    }
+
+    // The block parcours walks SiteBundle's pages screen, so it is offered only where the app booted SiteBundle
+    public function testTheBlockProjectNeedsSiteBundle(): void
+    {
+        $controllers = [];
+        $projects = $this->createProvider($controllers, true)->getGuidedProjects();
+
+        $this->assertSame(['purchasecredits-pack', 'purchasecredits-gift', 'purchasecredits-block'], array_column($projects, 'slug'));
+        $this->assertSame(10030, $projects[2]['order']);
+        $this->assertSame('c975L\\SiteBundle\\Controller\\Management\\PageCrudController', $controllers[2]);
     }
 
     // Both screens gate their own index by the site's admin role, so a parcours walking them is dropped for anybody else
@@ -59,7 +70,8 @@ class PurchaseCreditsGuidedProjectProviderTest extends TestCase
     // Only the opening step leaves the screen, everything after it walking the one the user has been sent to
     public function testOnlyTheFirstStepOfEachProjectCarriesAnUrl(): void
     {
-        foreach ($this->createProvider()->getGuidedProjects() as $project) {
+        $controllers = [];
+        foreach ($this->createProvider($controllers, true)->getGuidedProjects() as $project) {
             $steps = $project['steps'];
 
             $this->assertArrayHasKey('url', $steps[0], sprintf('Project "%s" does not open on a screen', $project['slug']));
@@ -103,7 +115,8 @@ class PurchaseCreditsGuidedProjectProviderTest extends TestCase
             $translated = $this->translatedKeys('purchasecredits', $locale);
             $narrated = $this->translatedKeys('purchasecredits_narration', $locale);
 
-            foreach ($this->createProvider()->getGuidedProjects() as $project) {
+            $controllers = [];
+            foreach ($this->createProvider($controllers, true)->getGuidedProjects() as $project) {
                 foreach ([$project, ...$project['steps']] as $item) {
                     $this->assertContains($item['label'], $translated, sprintf('"%s" is missing from the %s catalogue', $item['label'], $locale));
                     $this->assertContains($item['description'], $translated, sprintf('"%s" is missing from the %s catalogue', $item['description'], $locale));

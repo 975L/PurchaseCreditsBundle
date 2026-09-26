@@ -1,5 +1,17 @@
 # Changelog
 
+## v5.2.0
+
+Packs drawn as UiBundle's pricing card
+
+- Packs block price uses PaymentBundle's `price price--standalone` classes (26/09/2026)
+- Removes the `purchasecredits-pack__price` class (26/09/2026)
+- Each pack is UiBundle's pricing card (`card--pricing`) (26/09/2026)
+- The packs' introduction is UiBundle's `text-hook`, flush left like a page's lead-in, its own centered rule removed (26/09/2026)
+- **Breaking**: `purchasecredits-pack--featured` and `purchasecredits-pack__ribbon` removed, UiBundle's `card--featured` and `card-ribbon` taking their place (26/09/2026)
+- Requires `c975l/payment-bundle` ^6.11 and `c975l/core-bundle` ^1.42.1 (26/09/2026)
+- Adds the `purchasecredits-block` guided project placing the packs block on a page, offered when SiteBundle is registered (26/09/2026)
+
 ## v5.1.6
 
 The packs block gets its own stylesheet and override hooks
