@@ -1,5 +1,15 @@
 # Changelog
 
+## v5.1.5
+
+A visitor fills the basket and signs in at the checkout
+
+- `CreditBasketItemProvider` implements PaymentBundle's `AccountBasketItemProviderInterface` (26/09/2026)
+- A visitor may add a pack to the basket, the sign-in being asked at the checkout (26/09/2026)
+- The packs block shows the "Buy" button to a visitor too (26/09/2026)
+- Removes the `label.sign_in_to_buy` translation (26/09/2026)
+- Requires `c975l/payment-bundle` ^6.10.1 (26/09/2026)
+
 ## v5.1.4
 
 The README links the tutorials, block kinds and demo

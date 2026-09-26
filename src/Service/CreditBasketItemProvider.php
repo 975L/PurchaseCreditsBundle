@@ -12,6 +12,7 @@ namespace c975L\PurchaseCreditsBundle\Service;
 
 use c975L\ConfigBundle\Contract\UserInterface;
 use c975L\ConfigBundle\Service\ConfigServiceInterface;
+use c975L\PaymentBundle\Contract\AccountBasketItemProviderInterface;
 use c975L\PaymentBundle\Contract\BasketItemProviderInterface;
 use c975L\PaymentBundle\Entity\Basket;
 use c975L\PaymentBundle\Service\VatCalculator;
@@ -21,8 +22,8 @@ use c975L\PurchaseCreditsBundle\Repository\CreditTransactionRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-// Plugs the credit packs into PaymentBundle's basket and checkout (see BasketItemProviderInterface). Credits land on an account, so a pack is only sold to a signed-in user
-class CreditBasketItemProvider implements BasketItemProviderInterface
+// Plugs the credit packs into PaymentBundle's basket and checkout (see BasketItemProviderInterface). Credits land on an account: a visitor fills the basket freely and is asked to sign in at the checkout (see AccountBasketItemProviderInterface)
+class CreditBasketItemProvider implements BasketItemProviderInterface, AccountBasketItemProviderInterface
 {
     public const string KIND = 'purchasecredits';
 
@@ -57,10 +58,6 @@ class CreditBasketItemProvider implements BasketItemProviderInterface
 
         if (!$item instanceof CreditPack || !$item->isPublished()) {
             return $this->translator->trans('label.pack_unavailable', [], 'purchasecredits');
-        }
-
-        if (!$this->security->getUser() instanceof UserInterface) {
-            return $this->translator->trans('label.sign_in_required', [], 'purchasecredits');
         }
 
         return null;

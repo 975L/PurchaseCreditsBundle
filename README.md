@@ -78,7 +78,7 @@ No route to import, no asset to install - and one config key, loaded with the ot
 ## Selling credits
 
 1. In the back office, **Credits > Credit packs**: create the packs (credits, price in the shop's currency, VAT).
-2. Place the **Credit packs** block on a page. A signed-in visitor sees their balance and a "Buy" button per pack; a visitor is asked to sign in, credits landing on an account.
+2. Place the **Credit packs** block on a page. Every visitor sees a "Buy" button per pack, a signed-in one their balance too; credits landing on an account, a visitor is asked to sign in at the checkout.
 3. Once the basket is paid, `CreditBasketItemProvider::onBasketPaid()` writes one ledger line per pack, with the number of credits frozen in the basket when it was filled — what the customer agreed to is what is credited, whatever the pack becomes before the payment.
 
 A pack withdrawn from sale is refused at the checkout too, a basket living several days in the session. A basket filled before signing in is bound to the account signed in at the checkout.

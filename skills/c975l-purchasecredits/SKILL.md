@@ -1,6 +1,6 @@
 ---
 name: c975l-purchasecredits
-description: "Use this skill when working with prepaid credits in a Symfony application built on the c975L ecosystem with c975l/purchasecredits-bundle. Covers the credit packs sold through PaymentBundle's basket, the per-user ledger, and the spending API a site's own services call. Triggers on: credits, prepaid credits, credit pack, buy credits, spend credits, balance, CreditPack, CreditTransaction, CreditServiceInterface, getBalance, grant, spend, InsufficientCreditsException, CreditBasketItemProvider, purchasecredits_packs, purchasecredits_balance, sign-up bonus, ledger, purchasecredits-test-mode, test mode, PurchaseCreditsShortcutProvider, PurchaseCreditsDemoFixtureProvider, demo fixtures."
+description: "Use this skill when working with prepaid credits in a Symfony application built on the c975L ecosystem with c975l/purchasecredits-bundle. Covers the credit packs sold through PaymentBundle's basket, the per-user ledger, and the spending API a site's own services call. Triggers on: credits, prepaid credits, credit pack, buy credits, spend credits, balance, CreditPack, CreditTransaction, CreditServiceInterface, getBalance, grant, spend, InsufficientCreditsException, CreditBasketItemProvider, AccountBasketItemProviderInterface, sign in at checkout, purchasecredits_packs, purchasecredits_balance, sign-up bonus, ledger, purchasecredits-test-mode, test mode, PurchaseCreditsShortcutProvider, PurchaseCreditsDemoFixtureProvider, demo fixtures."
 ---
 
 # c975L PurchaseCreditsBundle
@@ -45,7 +45,7 @@ $this->creditService->grant($user, 3, 'Welcome credits', 'signup');
 - A line is never edited nor deleted; a mistake is corrected by the reversing line (the back office only offers "new").
 - `spend()` locks the user's row while it reads the balance and writes: never read `getBalance()` then write a line yourself.
 - `InsufficientCreditsException` leaves the EntityManager open: catch it and carry on, no reset needed.
-- A pack is only sold to a signed-in user, credits landing on an account.
+- Credits land on an account: a visitor may fill the basket, PaymentBundle asks them to sign in at the checkout (`CreditBasketItemProvider` implements `AccountBasketItemProviderInterface`). Never hide the "Buy" button from a visitor.
 - The price currency is PaymentBundle's `shop-currency`, falling back on `EUR` while it is not set.
 - The demo dataset (`PurchaseCreditsDemoFixtureProvider`) seeds three published packs and no ledger line: a site wanting a ledger to show writes it for the accounts it seeds itself.
 

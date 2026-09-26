@@ -110,6 +110,10 @@
                 <source>label.credits</source>
                 <target>Crédits</target>
             </trans-unit>
+            <trans-unit id="SEjSKCY">
+                <source>label.discount</source>
+                <target>−%discount% %</target>
+            </trans-unit>
             <trans-unit id="0UCLfFW">
                 <source>label.guided_project_purchasecredits_gift</source>
                 <target>Offrir ou retirer des crédits</target>
@@ -245,10 +249,6 @@
             <trans-unit id="yGOxphS">
                 <source>label.sign_in_required</source>
                 <target>Connectez-vous : les crédits sont ajoutés à votre compte.</target>
-            </trans-unit>
-            <trans-unit id="8wksH7c">
-                <source>label.sign_in_to_buy</source>
-                <target>Se connecter pour acheter des crédits</target>
             </trans-unit>
             <trans-unit id="2nMDj1i">
                 <source>label.test_mode</source>

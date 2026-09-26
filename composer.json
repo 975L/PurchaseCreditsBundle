@@ -19,7 +19,7 @@
     "require": {
         "php": ">=8.4",
         "c975l/core-bundle": "^1.33.1",
-        "c975l/payment-bundle": "^6.9",
+        "c975l/payment-bundle": "^6.10.1",
         "doctrine/dbal": "^4.4",
         "doctrine/orm": "^3.7",
         "easycorp/easyadmin-bundle": "^5.1",

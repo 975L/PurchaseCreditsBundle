@@ -12,6 +12,7 @@ namespace c975L\PurchaseCreditsBundle\Tests\Service;
 
 use c975L\ConfigBundle\Contract\UserInterface;
 use c975L\ConfigBundle\Service\ConfigServiceInterface;
+use c975L\PaymentBundle\Contract\AccountBasketItemProviderInterface;
 use c975L\PaymentBundle\Entity\Basket;
 use c975L\PurchaseCreditsBundle\Entity\CreditPack;
 use c975L\PurchaseCreditsBundle\Repository\CreditPackRepository;
@@ -57,9 +58,16 @@ class CreditBasketItemProviderTest extends TestCase
         return new Basket()->setUser($user)->setNumber('20260924-1')->setLocale('fr');
     }
 
-    public function testAVisitorCannotAddAPack(): void
+    // The sign-in is asked at the checkout, not before choosing: a visitor fills the basket freely
+    public function testAVisitorCanAddAPack(): void
     {
-        $this->assertSame('label.sign_in_required', $this->provider(null)->validateAddition($this->pack(), 1));
+        $this->assertNull($this->provider(null)->validateAddition($this->pack(), 1));
+    }
+
+    // What has PaymentBundle ask an anonymous visitor to sign in before the coordinates
+    public function testThePacksAreSoldToAnAccount(): void
+    {
+        $this->assertInstanceOf(AccountBasketItemProviderInterface::class, $this->provider(null));
     }
 
     public function testASignedInUserCanAddAPack(): void

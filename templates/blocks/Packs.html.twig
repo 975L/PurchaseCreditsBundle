@@ -2,6 +2,8 @@
 {% set packs = purchasecredits_packs() %}
 {% if packs is not empty %}
     {% set balance = purchasecredits_balance() %}
+    {# What a credit costs in the dearest pack, the reference the others are discounted from, whatever order the packs are placed in #}
+    {% set creditPrice = max(packs|map(pack => pack.price / pack.credits)) %}
     {# Matched, not interpolated: the value comes from stored block data and must not write any class name #}
     {% set flat = background|default('') in ['muted', 'primary', 'dark'] ? ' section--bg-' ~ background : '' %}
     {% set tag = title|default('') ? 'section' : 'div' %}
@@ -12,7 +14,6 @@
             {% if content|default('') %}
                 <div class="purchasecredits-packs__intro">{{ content|raw }}</div>
             {% endif %}
-            <twig:c975LPayment:Basket:Message/>
             {# A site setting its credits up, or a showcase, says so above the packs - the charge itself being announced by PaymentBundle's own banner in the basket #}
             {% if config('purchasecredits-test-mode') %}
                 <twig:c975LUi:Alert:Alert type="warning">
@@ -22,14 +23,20 @@
             {% if balance is not null %}
                 <p class="purchasecredits-packs__balance">{{ 'label.balance'|trans({'%count%': balance}, 'purchasecredits') }}</p>
             {% endif %}
-            <div class="cards">
-                {% for pack in packs %}
-                    {% set packTitle = 'label.pack_title'|trans({'%count%': pack.credits}, 'purchasecredits') %}
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="card-title">{{ packTitle }}</h3>
-                            <p class="card-text lead">{{ (pack.price / 100)|format_currency(config('shop-currency')|default('EUR')) }}</p>
-                            {% if balance is not null %}
+            {# Its own "basket" controller and message area, as ShopBundle's blocks: the buttons then work on a page carrying no basket of its own #}
+            <div data-controller="basket">
+                <div class="cards">
+                    {% for pack in packs %}
+                        {% set packTitle = 'label.pack_title'|trans({'%count%': pack.credits}, 'purchasecredits') %}
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">{{ packTitle }}</h3>
+                                <p class="card-text lead">{{ (pack.price / 100)|format_currency(config('shop-currency')|default('EUR')) }}</p>
+                                {% set discount = (100 - pack.price * 100 / (pack.credits * creditPrice))|round %}
+                                {% if discount > 0 %}
+                                    <p><span class="badge badge-success">{{ 'label.discount'|trans({'%discount%': discount}, 'purchasecredits') }}</span></p>
+                                {% endif %}
+                                {# Offered to a visitor too, the sign-in being asked at the checkout (see AccountBasketItemProviderInterface) #}
                                 <button type="button"
                                         class="btn btn-primary"
                                         data-action="click->basket#addItem"
@@ -43,15 +50,12 @@
                                         data-alert="success">
                                     {{ 'label.buy'|trans({}, 'purchasecredits') }}
                                 </button>
-                            {% endif %}
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
+                <twig:c975LPayment:Basket:Message/>
             </div>
-            {# Credits land on an account: a visitor is asked to sign in rather than shown a button that would refuse #}
-            {% if balance is null %}
-                <p><a class="btn btn-secondary" href="{{ path('app_login') }}">{{ 'label.sign_in_to_buy'|trans({}, 'purchasecredits') }}</a></p>
-            {% endif %}
         </div>
     </{{ tag }}>
 {% endif %}
