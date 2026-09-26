@@ -1,6 +1,6 @@
 ---
 name: c975l-purchasecredits
-description: "Use this skill when working with prepaid credits in a Symfony application built on the c975L ecosystem with c975l/purchasecredits-bundle. Covers the credit packs sold through PaymentBundle's basket, the per-user ledger, and the spending API a site's own services call. Triggers on: credits, prepaid credits, credit pack, buy credits, spend credits, balance, CreditPack, CreditTransaction, CreditServiceInterface, getBalance, grant, spend, InsufficientCreditsException, CreditBasketItemProvider, AccountBasketItemProviderInterface, sign in at checkout, purchasecredits_packs, purchasecredits_balance, packs_intro, pack_class, pack_top, pack_extra, featured pack, StylesheetProvider, sign-up bonus, ledger, purchasecredits-test-mode, test mode, PurchaseCreditsShortcutProvider, PurchaseCreditsDemoFixtureProvider, demo fixtures."
+description: "Use this skill when working with prepaid credits in a Symfony application built on the c975L ecosystem with c975l/purchasecredits-bundle. Covers the credit packs sold through PaymentBundle's basket, the per-user ledger, and the spending API a site's own services call. Triggers on: credits, prepaid credits, credit pack, buy credits, spend credits, balance, CreditPack, CreditTransaction, CreditServiceInterface, getBalance, grant, spend, InsufficientCreditsException, CreditBasketItemProvider, AccountBasketItemProviderInterface, sign in at checkout, purchasecredits_packs, purchasecredits_balance, AccountSectionProvider, my account, packs_intro, pack_class, pack_top, pack_extra, featured pack, StylesheetProvider, sign-up bonus, ledger, purchasecredits-test-mode, test mode, PurchaseCreditsShortcutProvider, PurchaseCreditsDemoFixtureProvider, demo fixtures."
 ---
 
 # c975L PurchaseCreditsBundle
@@ -56,5 +56,7 @@ $this->creditService->grant($user, 3, 'Welcome credits', 'signup');
 ## Front
 
 Place the `purchasecredits_packs` block on any page from the back office. Templates may also call `purchasecredits_packs()` and `purchasecredits_balance()` (null for a visitor).
+
+The member's own page (ConfigBundle's `/account`) shows the balance through `Management\AccountSectionProvider` (position 20): `account/_section.html.twig` includes the packs block itself (`with_context = false`), which says the balance above its "Buy" buttons, or the balance alone when no pack is on sale.
 
 The block's styles ship in `sass/styles.scss`, added to every page by `StylesheetProvider`. A site extends `@c975LPurchaseCredits/blocks/Packs.html.twig` and fills its empty `packs_intro`, `pack_class`, `pack_top` and `pack_extra` blocks to say what a pack buys; each pack is UiBundle's pricing card (`card--pricing`), and `card--featured` (in `pack_class`) and a `card-ribbon` badge (in `pack_top`) put a pack forward. The pack's price takes PaymentBundle's `price price--standalone` classes, grown inside the pricing card by its `--price-size` token, so it is restyled there, not here.

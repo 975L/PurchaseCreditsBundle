@@ -226,6 +226,10 @@
                 <source>label.info_transactions</source>
                 <target>Tous les mouvements de crédits, compte par compte : achats, cadeaux et dépenses.</target>
             </trans-unit>
+            <trans-unit id="nfrb2xS">
+                <source>label.my_credits</source>
+                <target>Mes crédits</target>
+            </trans-unit>
             <trans-unit id="J_Qb4yB">
                 <source>label.pack</source>
                 <target>Pack de crédits</target>

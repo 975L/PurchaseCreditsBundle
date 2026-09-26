@@ -162,11 +162,11 @@ class TranslationDomainTest extends TestCase
         return $matches[1];
     }
 
-    // The labels declared as plain array values, and the choices of a ChoiceType, whose key stands left of the value it stores
+    // The labels declared as plain array values (an account section's 'title' among them), and the choices of a ChoiceType, whose key stands left of the value it stores
     /** @return list<string> */
     private function declaredLabelKeys(string $contents): array
     {
-        preg_match_all("/'(?:label|help|description)' => '([a-z][a-zA-Z0-9_]*\\.[a-zA-Z0-9_.]+)'/", $contents, $matches);
+        preg_match_all("/'(?:label|help|description|title)' => '([a-z][a-zA-Z0-9_]*\\.[a-zA-Z0-9_.]+)'/", $contents, $matches);
         preg_match_all("/'((?:label|text)\\.[a-zA-Z0-9_.]+)'\\s*=>/", $contents, $choices);
 
         return array_merge($matches[1], $choices[1]);

@@ -226,6 +226,10 @@
                 <source>label.info_transactions</source>
                 <target>Every movement of credits, account by account: purchases, gifts and spending.</target>
             </trans-unit>
+            <trans-unit id="nfrb2xS">
+                <source>label.my_credits</source>
+                <target>My credits</target>
+            </trans-unit>
             <trans-unit id="J_Qb4yB">
                 <source>label.pack</source>
                 <target>Credit pack</target>

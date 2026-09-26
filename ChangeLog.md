@@ -1,5 +1,12 @@
 # Changelog
 
+## v5.3.0
+
+The credits on the member's own page
+
+- New `AccountSectionProvider`: the balance and the packs on sale on ConfigBundle's `/account` (26/09/2026)
+- Requires `c975l/core-bundle` ^1.44 (26/09/2026)
+
 ## v5.2.0
 
 Packs drawn as UiBundle's pricing card
