@@ -1,11 +1,13 @@
-{# The member's credits on their own page (see AccountSectionProvider): the packs block itself, given its "title" and "anchor_id" by ConfigBundle's AccountController, which says the balance above its "Buy" buttons - the balance alone in a section of its own when no pack is on sale #}
-{% if purchasecredits_packs() is empty %}
-    <section class="block-section purchasecredits-packs" id="{{ anchor_id }}">
-        <div class="section-wrap">
-            {{ include('@c975LUi/components/Section/_head.html.twig') }}
-            <p class="purchasecredits-packs__balance">{{ 'label.balance'|trans({'%count%': balance}, 'purchasecredits') }}</p>
-        </div>
-    </section>
-{% else %}
-    {{ include('@c975LPurchaseCredits/blocks/Packs.html.twig', {title: title, anchor_id: anchor_id}, with_context = false) }}
-{% endif %}
+{# The member's credits on their own page (see AccountSectionProvider): the balance with the way to the packs, then the latest movements, and the whole history a page away when there are more (see AccountCreditsController) #}
+<section class="block-section purchasecredits-account" id="{{ anchor_id }}">
+    <div class="section-wrap">
+        {{ include('@c975LUi/components/Section/_head.html.twig') }}
+        {{ include('@c975LPurchaseCredits/account/_balance.html.twig', {balance: balance}, with_context = false) }}
+        {% if transactions is not empty %}
+            {{ include('@c975LPurchaseCredits/account/_transactions.html.twig', {transactions: transactions|slice(0, latest)}, with_context = false) }}
+            {% if transactions|length > latest %}
+                <p><a href="{{ localized_path('purchasecredits_account_credits') }}">{{ 'label.transactions_all'|trans({}, 'purchasecredits') }}</a></p>
+            {% endif %}
+        {% endif %}
+    </div>
+</section>

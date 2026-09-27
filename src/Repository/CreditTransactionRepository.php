@@ -35,17 +35,31 @@ class CreditTransactionRepository extends ServiceEntityRepository
         ;
     }
 
-    // The movements of a user, latest first
+    // The movements of a user, latest first, a slice of them when a limit is given
     /** @return list<CreditTransaction> */
-    public function findForUser(UserInterface $user): array
+    public function findForUser(UserInterface $user, ?int $limit = null, int $offset = 0): array
     {
         return $this->createQueryBuilder('t')
             ->where('t.user = :user')
             ->setParameter('user', $user)
             ->orderBy('t.createdAt', 'DESC')
             ->addOrderBy('t.id', 'DESC')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    // How many movements a user has, for the history's pages
+    public function countForUser(UserInterface $user): int
+    {
+        return (int) $this->createQueryBuilder('t')
+            ->select('COUNT(t.id)')
+            ->where('t.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult()
         ;
     }
 

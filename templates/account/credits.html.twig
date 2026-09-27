@@ -1,0 +1,26 @@
+{# The whole credit history, a page at a time (see AccountCreditsController), on the same layouts and page sections as the account page it comes from. "currentPage" and not "page": SiteBundle's layout reads a "page" as the Page entity it renders #}
+{% extends ['layout.html.twig', '@c975LSite/layout.html.twig', '@c975LUi/layout.html.twig'] %}
+
+{% set title = 'label.my_credits'|trans({}, 'purchasecredits') %}
+
+{# The member's own ledger, behind the firewall #}
+{% set robots = 'noindex, nofollow' %}
+
+{% block content %}
+    <div class="blocks blocks--tight">
+        <section class="block-section purchasecredits-account">
+            <div class="section-wrap">
+                {{ include('@c975LPurchaseCredits/account/_balance.html.twig', {balance: balance}, with_context = false) }}
+                {{ include('@c975LPurchaseCredits/account/_transactions.html.twig', {transactions: transactions}, with_context = false) }}
+                {% if pageCount > 1 %}
+                    <nav class="purchasecredits-account__pages" aria-label="{{ 'label.transactions'|trans({}, 'purchasecredits') }}">
+                        {% if currentPage > 1 %}<a href="{{ localized_path('purchasecredits_account_credits', {page: currentPage - 1}) }}" rel="prev">&larr; {{ 'label.page_previous'|trans({}, 'purchasecredits') }}</a>{% endif %}
+                        <span>{{ 'label.page_of'|trans({'%page%': currentPage, '%pages%': pageCount}, 'purchasecredits') }}</span>
+                        {% if currentPage < pageCount %}<a href="{{ localized_path('purchasecredits_account_credits', {page: currentPage + 1}) }}" rel="next">{{ 'label.page_next'|trans({}, 'purchasecredits') }} &rarr;</a>{% endif %}
+                    </nav>
+                {% endif %}
+                <p><a href="{{ localized_path('config_account') }}">{{ 'label.back_to_account'|trans({}, 'purchasecredits') }}</a></p>
+            </div>
+        </section>
+    </div>
+{% endblock %}

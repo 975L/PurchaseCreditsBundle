@@ -1,0 +1,21 @@
+{# Ledger lines as the member reads them (see account/_section.html.twig): the date, what it was, and the credits it added or took #}
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">{{ 'label.transaction_date'|trans({}, 'purchasecredits') }}</th>
+                <th scope="col">{{ 'label.transaction_description'|trans({}, 'purchasecredits') }}</th>
+                <th scope="col">{{ 'label.transaction_amount'|trans({}, 'purchasecredits') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.createdAt|format_date('short') }}</td>
+                    <td>{{ transaction.description }}</td>
+                    <td>{{ transaction.amount > 0 ? '+' ~ transaction.amount : transaction.amount }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

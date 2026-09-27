@@ -21,7 +21,7 @@ Add PurchaseCreditsBundle on top of the shared [CoreBundle](https://github.com/9
 
 ---
 
-> **TL;DR** — Credit packs sold through PaymentBundle's basket, a ledger per user whose sum is the balance, and `CreditServiceInterface::spend()` for the site's services. No route, one config key (its test mode), no email of its own; the balance and the packs also show on the member's account page.
+> **TL;DR** — Credit packs sold through PaymentBundle's basket, a ledger per user whose sum is the balance, and `CreditServiceInterface::spend()` for the site's services. One route (the member's credit history), one config key (its test mode), no email of its own; the balance, with a link to the packs, also shows on the member's account page.
 
 ## Contents
 
@@ -35,7 +35,8 @@ Add PurchaseCreditsBundle on top of the shared [CoreBundle](https://github.com/9
 - A spending API, `CreditServiceInterface`, that locks the account while it reads the balance and writes, so two spendings at once cannot both pass on the same credits
 - A payment delivered twice credited once: a purchase line answers to the basket number and the pack
 - The `purchasecredits_packs` block, placed on any composed page, with the reader's balance, each pack's price per credit and a "Buy" button per pack
-- The member's balance on their account page (ConfigBundle's `/account`, through `AccountSectionProviderInterface`), with the packs on sale to top it up there
+- The balance and the whole ledger in the member's data export (ConfigBundle's `/account/export`, through `AccountDataProviderInterface`)
+- The member's balance on their account page (ConfigBundle's `/account`, through `AccountSectionProviderInterface`), with its latest movements, the whole ledger at `/account/credits` a page at a time, and a button to the page where the site shows the packs (UiBundle's `block_page_url()`, SiteBundle finding the page carrying the `purchasecredits_packs` block)
 - Two back-office screens contributed to the EasyAdmin dashboard (`MenuProviderInterface`): the packs, and the ledger, which only ever adds lines
 - Guided projects (`GuidedProjectProviderInterface`): putting a pack on sale, giving or taking credits by hand, and — when SiteBundle is registered — placing the packs block on a page
 - Its own `purchasecredits` translation catalogue, in English, French and Spanish

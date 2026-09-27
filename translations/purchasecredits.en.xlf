@@ -102,6 +102,10 @@
                 <source>label.anchor_help</source>
                 <target>Short id to link a menu entry to this section (e.g. "credits"). Empty = derived from the title.</target>
             </trans-unit>
+            <trans-unit id="vYeCKAw">
+                <source>label.back_to_account</source>
+                <target>Back to my account</target>
+            </trans-unit>
             <trans-unit id="T8.rAB6">
                 <source>label.balance</source>
                 <target>]-Inf,0]You have no credits left|{1}You have 1 credit|]1,Inf[You have %count% credits</target>
@@ -125,6 +129,10 @@
             <trans-unit id="MJfK172">
                 <source>label.buy</source>
                 <target>Buy</target>
+            </trans-unit>
+            <trans-unit id="u716djj">
+                <source>label.buy_credits</source>
+                <target>Buy credits</target>
             </trans-unit>
             <trans-unit id="_.MKMcC">
                 <source>label.category_purchasecredits</source>
@@ -266,6 +274,18 @@
                 <source>label.packs</source>
                 <target>Credit packs</target>
             </trans-unit>
+            <trans-unit id="gBPxkDe">
+                <source>label.page_next</source>
+                <target>Next</target>
+            </trans-unit>
+            <trans-unit id="xEixJVa">
+                <source>label.page_of</source>
+                <target>Page %page% of %pages%</target>
+            </trans-unit>
+            <trans-unit id="R3d84x6">
+                <source>label.page_previous</source>
+                <target>Previous</target>
+            </trans-unit>
             <trans-unit id="5icF3x9">
                 <source>label.purchasecredits_test_mode_disable</source>
                 <target>Disable the credits test mode</target>
@@ -337,6 +357,10 @@
             <trans-unit id="CL3j1Za">
                 <source>label.transactions</source>
                 <target>Credit movements</target>
+            </trans-unit>
+            <trans-unit id="Pw1sQio">
+                <source>label.transactions_all</source>
+                <target>See the whole history</target>
             </trans-unit>
             <trans-unit id="TCWL3G2">
                 <source>label.unit_price</source>

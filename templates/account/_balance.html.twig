@@ -1,0 +1,8 @@
+{# The balance and, beside it, the way to the packs wherever the site shows them (UiBundle's block_page_url, SiteBundle answering with the page carrying the packs block) - no button when no page does #}
+{% set packsUrl = block_page_url('purchasecredits_packs') %}
+<div class="purchasecredits-account__balance">
+    <p class="purchasecredits-packs__balance">{{ 'label.balance'|trans({'%count%': balance}, 'purchasecredits') }}</p>
+    {% if packsUrl %}
+        <a class="btn btn-secondary btn-small" href="{{ packsUrl }}">{{ 'label.buy_credits'|trans({}, 'purchasecredits') }}</a>
+    {% endif %}
+</div>

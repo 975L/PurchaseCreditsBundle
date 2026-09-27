@@ -4,8 +4,11 @@
 
 The credits on the member's own page
 
-- New `AccountSectionProvider`: the balance and the packs on sale on ConfigBundle's `/account` (26/09/2026)
-- Requires `c975l/core-bundle` ^1.44 (26/09/2026)
+- New `AccountSectionProvider`: the balance on ConfigBundle's `/account` (26/09/2026)
+- The account section shows the balance with a button to the page selling the packs, found through `block_page_url()`, and the latest movements (27/09/2026)
+- New `/account/credits` page (`purchasecredits_account_credits`): the whole ledger, 20 lines a page (27/09/2026)
+- New `Management\AccountDataProvider`: the balance and ledger in ConfigBundle's data export (27/09/2026)
+- Requires `c975l/core-bundle` ^1.45 (27/09/2026)
 
 ## v5.2.0
 

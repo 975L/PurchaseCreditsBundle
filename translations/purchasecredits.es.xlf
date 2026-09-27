@@ -102,6 +102,10 @@
                 <source>label.anchor_help</source>
                 <target>Identificador corto para enlazar el menú a esta sección (ej. "creditos"). Vacío = deducido del título.</target>
             </trans-unit>
+            <trans-unit id="vYeCKAw">
+                <source>label.back_to_account</source>
+                <target>Volver a mi cuenta</target>
+            </trans-unit>
             <trans-unit id="T8.rAB6">
                 <source>label.balance</source>
                 <target>]-Inf,0]No le quedan créditos|{1}Tiene 1 crédito|]1,Inf[Tiene %count% créditos</target>
@@ -125,6 +129,10 @@
             <trans-unit id="MJfK172">
                 <source>label.buy</source>
                 <target>Comprar</target>
+            </trans-unit>
+            <trans-unit id="u716djj">
+                <source>label.buy_credits</source>
+                <target>Comprar créditos</target>
             </trans-unit>
             <trans-unit id="_.MKMcC">
                 <source>label.category_purchasecredits</source>
@@ -266,6 +274,18 @@
                 <source>label.packs</source>
                 <target>Paquetes de créditos</target>
             </trans-unit>
+            <trans-unit id="gBPxkDe">
+                <source>label.page_next</source>
+                <target>Siguiente</target>
+            </trans-unit>
+            <trans-unit id="xEixJVa">
+                <source>label.page_of</source>
+                <target>Página %page% de %pages%</target>
+            </trans-unit>
+            <trans-unit id="R3d84x6">
+                <source>label.page_previous</source>
+                <target>Anterior</target>
+            </trans-unit>
             <trans-unit id="5icF3x9">
                 <source>label.purchasecredits_test_mode_disable</source>
                 <target>Desactivar el modo de prueba de los créditos</target>
@@ -337,6 +357,10 @@
             <trans-unit id="CL3j1Za">
                 <source>label.transactions</source>
                 <target>Movimientos de créditos</target>
+            </trans-unit>
+            <trans-unit id="Pw1sQio">
+                <source>label.transactions_all</source>
+                <target>Ver todo el historial</target>
             </trans-unit>
             <trans-unit id="TCWL3G2">
                 <source>label.unit_price</source>
