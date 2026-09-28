@@ -1,5 +1,12 @@
 # Changelog
 
+## v5.4.0
+
+Credits granted from the console, and their terms of sales section
+
+- New `c975l:purchasecredits:grant <email> <credits> [--description=...]` command writing a ledger line (28/09/2026)
+- New `templates/legal/terms-of-sales.{fr,en,es}.html.twig`: the credits section of UiBundle's terms of sales (28/09/2026)
+
 ## v5.3.0
 
 The credits on the member's own page

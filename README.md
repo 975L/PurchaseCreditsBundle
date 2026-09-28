@@ -109,6 +109,8 @@ try {
 $this->creditService->grant($user, 3, 'Welcome credits', 'signup');
 ```
 
+From the console, `php bin/console c975l:purchasecredits:grant <email> <credits> --description="Goodwill gesture"` writes the same line.
+
 `spend()` locks the user's row while it reads the balance and writes the line, so two spendings at once cannot both pass on the same credits. Never read `getBalance()` and then write a line yourself. `InsufficientCreditsException` is thrown once the transaction is over, so the EntityManager stays open and the caller carries on.
 
 The ledger is the only truth: never store a balance beside it. A line is never edited nor deleted — **Credits > Credit movements** only adds lines, a mistake being corrected by the reversing line.

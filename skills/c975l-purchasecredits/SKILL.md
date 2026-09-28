@@ -1,6 +1,6 @@
 ---
 name: c975l-purchasecredits
-description: "Use this skill when working with prepaid credits in a Symfony application built on the c975L ecosystem with c975l/purchasecredits-bundle. Covers the credit packs sold through PaymentBundle's basket, the per-user ledger, and the spending API a site's own services call. Triggers on: credits, prepaid credits, credit pack, buy credits, spend credits, balance, CreditPack, CreditTransaction, CreditServiceInterface, getBalance, grant, spend, InsufficientCreditsException, CreditBasketItemProvider, AccountBasketItemProviderInterface, sign in at checkout, purchasecredits_packs, purchasecredits_balance, AccountSectionProvider, AccountDataProvider, data export, my account, block_page_url, packs_intro, pack_class, pack_top, pack_extra, featured pack, StylesheetProvider, sign-up bonus, ledger, purchasecredits-test-mode, test mode, PurchaseCreditsShortcutProvider, PurchaseCreditsDemoFixtureProvider, demo fixtures."
+description: "Use this skill when working with prepaid credits in a Symfony application built on the c975L ecosystem with c975l/purchasecredits-bundle. Covers the credit packs sold through PaymentBundle's basket, the per-user ledger, and the spending API a site's own services call. Triggers on: credits, prepaid credits, credit pack, buy credits, spend credits, balance, CreditPack, CreditTransaction, CreditServiceInterface, getBalance, grant, spend, InsufficientCreditsException, CreditBasketItemProvider, AccountBasketItemProviderInterface, sign in at checkout, purchasecredits_packs, purchasecredits_balance, AccountSectionProvider, AccountDataProvider, data export, my account, block_page_url, packs_intro, pack_class, pack_top, pack_extra, featured pack, StylesheetProvider, sign-up bonus, ledger, purchasecredits-test-mode, test mode, PurchaseCreditsShortcutProvider, PurchaseCreditsDemoFixtureProvider, demo fixtures, c975l:purchasecredits:grant, GrantCreditsCommand, give credits from the console, terms of sales, CGV, legal credits section."
 ---
 
 # c975L PurchaseCreditsBundle
@@ -10,7 +10,7 @@ description: "Use this skill when working with prepaid credits in a Symfony appl
 **Package:** `c975l/purchasecredits-bundle` · **Namespace:** `c975L\PurchaseCreditsBundle\` · **Twig namespace:** `@c975LPurchaseCredits` · **Translation domain:** `purchasecredits`
 
 **Key source paths** (relative to the package root):
-`src/Entity/`, `src/Repository/`, `src/Service/`, `src/Exception/`, `src/Controller/Management/`, `src/Management/`, `src/Twig/Extension/`, `src/Form/Block/`, `templates/blocks/`, `templates/management/`, `sass/`, `config/services.yaml`, `config/configs.json`
+`src/Entity/`, `src/Repository/`, `src/Service/`, `src/Exception/`, `src/Command/`, `src/Controller/Management/`, `src/Management/`, `src/Twig/Extension/`, `src/Form/Block/`, `templates/blocks/`, `templates/management/`, `templates/legal/`, `sass/`, `config/services.yaml`, `config/configs.json`
 
 **Related documentation:** this package's `README.md` is the reference. The ecosystem's rules (configuration, blocks, management contributions) live in `c975l/core-bundle`, the basket in `c975l/payment-bundle`.
 
@@ -39,6 +39,8 @@ try {
 $this->creditService->grant($user, 3, 'Welcome credits', 'signup');
 ```
 
+From the console, `php bin/console c975l:purchasecredits:grant <email> <credits> --description="Goodwill gesture"` (`GrantCreditsCommand`) writes the same `grant()` line - a whole number above zero, the account found by email.
+
 ## Rules an agent must keep
 
 - The ledger is the only truth: a balance is the sum of `CreditTransaction` lines. Never add a `credits` column on the user.
@@ -52,6 +54,10 @@ $this->creditService->grant($user, 3, 'Welcome credits', 'signup');
 ## Test mode
 
 `purchasecredits-test-mode` (bool, loaded by `c975l:config:load-all`) shows a warning banner above the packs: nothing is really sold. Admins flip it from a dashboard toggle tile (`PurchaseCreditsShortcutProvider`, route `management_purchasecredits_test_mode_toggle`). It is independent of PaymentBundle's own test mode, which is what actually keeps the charge fake.
+
+## Terms of sales
+
+`templates/legal/terms-of-sales.{fr,en,es}.html.twig` hold the credits section (`data-legal-id="credits"`) that UiBundle's `france/terms-of-sales` model includes after "payment" when this bundle is installed. The include is `ignore missing`: keep the file names exact, a renamed file silently drops the section.
 
 ## Front
 
