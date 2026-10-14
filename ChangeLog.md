@@ -1,5 +1,11 @@
 # Changelog
 
+## v5.4.1
+
+EasyAdmin 5.7
+
+- Requires `easycorp/easyadmin-bundle` ^5.7 (14/10/2026)
+
 ## v5.4.0
 
 Credits granted from the console, and their terms of sales section

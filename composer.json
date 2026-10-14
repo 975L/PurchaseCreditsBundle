@@ -22,7 +22,7 @@
         "c975l/payment-bundle": "^6.11",
         "doctrine/dbal": "^4.4",
         "doctrine/orm": "^3.7",
-        "easycorp/easyadmin-bundle": "^5.1",
+        "easycorp/easyadmin-bundle": "^5.7",
         "symfony/form": "^8.0",
         "symfony/framework-bundle": "^8.0",
         "symfony/routing": "^8.0",
