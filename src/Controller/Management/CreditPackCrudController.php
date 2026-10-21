@@ -10,6 +10,7 @@
 
 namespace c975L\PurchaseCreditsBundle\Controller\Management;
 
+use c975L\ConfigBundle\Management\EasyAdminActionHelper;
 use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\PurchaseCreditsBundle\Entity\CreditPack;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -20,6 +21,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function Symfony\Component\Translation\t;
 
@@ -28,6 +30,7 @@ class CreditPackCrudController extends AbstractCrudController
 {
     public function __construct(
         private readonly ConfigServiceInterface $configService,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -62,7 +65,7 @@ class CreditPackCrudController extends AbstractCrudController
             $actions->setPermission($action, $this->roleNeeded());
         }
 
-        return $actions;
+        return EasyAdminActionHelper::iconOnlyDefaults($actions, $this->translator);
     }
 
     #[\Override]

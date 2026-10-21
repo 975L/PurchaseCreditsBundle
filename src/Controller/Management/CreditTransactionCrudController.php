@@ -10,6 +10,7 @@
 
 namespace c975L\PurchaseCreditsBundle\Controller\Management;
 
+use c975L\ConfigBundle\Management\EasyAdminActionHelper;
 use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\PurchaseCreditsBundle\Entity\CreditTransaction;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -22,6 +23,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function Symfony\Component\Translation\t;
 
@@ -30,6 +32,7 @@ class CreditTransactionCrudController extends AbstractCrudController
 {
     public function __construct(
         private readonly ConfigServiceInterface $configService,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -52,6 +55,7 @@ class CreditTransactionCrudController extends AbstractCrudController
             ->setEntityPermission($this->roleNeeded())
             ->setDefaultSort(['createdAt' => 'DESC', 'id' => 'DESC'])
             ->setSearchFields(['description', 'reference'])
+            ->showEntityActionsInlined()
             ->overrideTemplate('crud/index', '@c975LPurchaseCredits/management/credit_transaction_crud_index.html.twig')
         ;
     }
@@ -59,13 +63,15 @@ class CreditTransactionCrudController extends AbstractCrudController
     #[\Override]
     public function configureActions(Actions $actions): Actions
     {
-        return $actions
+        $actions
             ->disable(Action::EDIT, Action::DELETE, Action::BATCH_DELETE)
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->setPermission(Action::INDEX, $this->roleNeeded())
             ->setPermission(Action::NEW, $this->roleNeeded())
             ->setPermission(Action::DETAIL, $this->roleNeeded())
         ;
+
+        return EasyAdminActionHelper::iconOnlyDefaults($actions, $this->translator, [Action::DETAIL]);
     }
 
     #[\Override]

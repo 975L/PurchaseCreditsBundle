@@ -1,5 +1,12 @@
 # Changelog
 
+## v5.4.2
+
+Icon-only row actions in the back office
+
+- Packs and transactions indexes show their row actions icon-only, titled on hover (21/10/2026)
+- Requires `c975l/core-bundle` ^1.72.2 (21/10/2026)
+
 ## v5.4.1
 
 EasyAdmin 5.7

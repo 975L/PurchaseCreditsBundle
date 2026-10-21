@@ -16,6 +16,7 @@ use c975L\PurchaseCreditsBundle\Controller\Management\CreditTransactionCrudContr
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 // Each index shows the description its menu item carries, so the text is the page's own and not an onboarding-only string
 class IndexTemplatesTest extends TestCase
@@ -30,7 +31,10 @@ class IndexTemplatesTest extends TestCase
     #[DataProvider('controllers')]
     public function testIndexTemplateShowsTheMenuDescription(string $controllerClass, string $descriptionKey): void
     {
-        $controller = new $controllerClass($this->createStub(ConfigServiceInterface::class));
+        $controller = new $controllerClass(
+            $this->createStub(ConfigServiceInterface::class),
+            $this->createStub(TranslatorInterface::class),
+        );
         $template = $controller->configureCrud(Crud::new())->getAsDto()->getOverriddenTemplates()['crud/index'] ?? null;
 
         $this->assertIsString($template);
