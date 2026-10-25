@@ -74,7 +74,7 @@ jobs:
 
             - name: Complexité
               run: |
-                  pip install lizard==1.17.31
+                  pip install lizard
                   composer lizard
 
             - name: Tests

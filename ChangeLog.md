@@ -1,5 +1,11 @@
 # Changelog
 
+## v5.4.3
+
+Lizard unpinned in the CI
+
+- CI installs the latest `lizard` instead of pinning 1.17.31 (25/10/2026)
+
 ## v5.4.2
 
 Icon-only row actions in the back office
