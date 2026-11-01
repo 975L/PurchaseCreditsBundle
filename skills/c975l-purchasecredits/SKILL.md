@@ -49,6 +49,7 @@ From the console, `php bin/console c975l:purchasecredits:grant <email> <credits>
 - `InsufficientCreditsException` leaves the EntityManager open: catch it and carry on, no reset needed.
 - Credits land on an account: a visitor may fill the basket, PaymentBundle asks them to sign in at the checkout (`CreditBasketItemProvider` implements `AccountBasketItemProviderInterface`). Never hide the "Buy" button from a visitor.
 - The price currency is PaymentBundle's `shop-currency`, falling back on `EUR` while it is not set.
+- The block's `content` is what an editor wrote: a template overriding `blocks/Packs.html.twig` or filling `packs_intro` prints it through `|sanitize_html('c975l.rich')`, never `|raw`.
 - The demo dataset (`PurchaseCreditsDemoFixtureProvider`) seeds three published packs and no ledger line: a site wanting a ledger to show writes it for the accounts it seeds itself.
 
 ## Test mode

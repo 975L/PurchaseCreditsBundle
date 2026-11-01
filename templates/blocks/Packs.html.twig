@@ -14,7 +14,7 @@
             {% block packs_intro %}
                 {# No nl2br: Trix already encodes its line breaks #}
                 {% if content|default('') %}
-                    <div class="purchasecredits-packs__intro text-hook">{{ content|raw }}</div>
+                    <div class="purchasecredits-packs__intro text-hook">{{ content|sanitize_html('c975l.rich') }}</div>
                 {% endif %}
             {% endblock %}
             {# A site setting its credits up, or a showcase, says so above the packs - the charge itself being announced by PaymentBundle's own banner in the basket #}

@@ -1,5 +1,13 @@
 # Changelog
 
+## v5.4.4
+
+Security audit: the packs block sanitizes what the editor wrote
+
+- `blocks/Packs`: `|raw` replaced with `|sanitize_html('c975l.rich')` (01/11/2026)
+- Skill: an override of the block keeps the sanitizer (01/11/2026)
+- Requires `c975l/core-bundle` ^1.85.0 (01/11/2026)
+
 ## v5.4.3
 
 Lizard unpinned in the CI
