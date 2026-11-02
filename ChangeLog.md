@@ -1,5 +1,13 @@
 # Changelog
 
+## v5.4.5
+
+Lizard unpinned in ci.sh, stale CI comments corrected
+
+- `bin/ci.sh` installs the latest `lizard`, as the CI does (02/11/2026)
+- `bin/ci.sh` comment and message: the local vendor stays at its `composer.lock`, no symlinks (02/11/2026)
+- CI workflow comment: `lizard` is no longer pinned (02/11/2026)
+
 ## v5.4.4
 
 Security audit: the packs block sanitizes what the editor wrote

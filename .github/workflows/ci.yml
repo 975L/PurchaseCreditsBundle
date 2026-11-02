@@ -67,7 +67,7 @@ jobs:
             - name: Modernisation
               run: composer rector
 
-            # Lizard is a Python tool, and it is pinned where the PHP ones take their latest release: its counting changed between versions and this is the one Codacy runs, which the thresholds composer.json hands it are read against
+            # Lizard is a Python tool taking its latest release like the PHP ones, as the local one does: pinning one side alone lets the counts drift apart
             - uses: actions/setup-python@v6
               with:
                   python-version: '3.12'

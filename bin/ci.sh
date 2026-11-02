@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Replays the CI locally, but on fresh dependencies: the development machine's vendor holds symlinks to the sibling repositories, which expose code not yet tagged on Packagist. This script works on a clean copy, where `composer update` only sees the published versions - exactly what GitHub sees.
+# Replays the CI locally, but on fresh dependencies: the development machine's vendor stays at the versions of its composer.lock, which can lag behind Packagist. This script works on a clean copy, where `composer update` only sees the published versions - exactly what GitHub sees.
 
 set -euo pipefail
 
@@ -36,7 +36,7 @@ rsync -a \
 
 cd "$WORK"
 
-echo "→ composer update (Packagist, sans les liens symboliques du vendor local)"
+echo "→ composer update (Packagist, sans le vendor ni le composer.lock locaux)"
 composer update --no-interaction --no-progress
 
 # The quality tools are not dependencies of the bundle - PHPStan aside, which require-dev carries for its deprecation rules and composer update has just installed: the CI installs them with setup-php, which always takes the latest release, while the development machine keeps whatever was installed the day it was installed. Replaying `composer qa` with the machine's own tools therefore proves nothing - a rule removed upstream since is still enforced here, and a rule added since is missed. They are installed fresh, one isolated project per tool so their own dependencies never have to agree with each other, and put ahead of everything else in the PATH. setup-php installs phars where this installs the same versions through Composer: same rules, different packaging
@@ -49,9 +49,9 @@ for Package in squizlabs/php_codesniffer friendsofphp/php-cs-fixer rector/rector
     PATH="$Directory/vendor/bin:$PATH"
 done
 
-# Lizard is a Python tool, and it is pinned where the PHP ones take their latest release: its counting changed between versions and this is the one Codacy runs, which the thresholds composer.json hands it are read against
+# Lizard is a Python tool taking its latest release like the four above, as the CI and the local one do: pinning one side alone lets the counts drift apart
 python3 -m venv "$TOOLS/lizard"
-"$TOOLS/lizard/bin/pip" install --quiet lizard==1.17.31
+"$TOOLS/lizard/bin/pip" install --quiet lizard
 PATH="$TOOLS/lizard/bin:$PATH"
 export PATH
 
