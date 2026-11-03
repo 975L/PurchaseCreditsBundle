@@ -72,7 +72,7 @@ for Version in $PHP_VERSIONS; do
 
     echo "→ Tests sur PHP $Version, dépendances résolues pour cette version"
     rm -rf vendor composer.lock
-    "php$Version" "$COMPOSER" update --no-interaction --no-progress --quiet
+    "php$Version" "$COMPOSER" update --no-interaction --no-progress
     "php$Version" vendor/bin/phpunit
 done
 
