@@ -87,3 +87,38 @@ jobs:
               with:
                   project-token: ${{ env.CODACY_PROJECT_TOKEN }}
                   coverage-reports: clover.xml
+
+    # Quality stays on the job above, on the oldest PHP the bundle accepts: the tools answer the same on any version, what can differ on a newer one is the code running
+    tests:
+        runs-on: ubuntu-latest
+
+        strategy:
+            fail-fast: false
+            matrix:
+                php: ['8.5', '8.6']
+
+        steps:
+            - uses: actions/checkout@v5
+
+            - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+              with:
+                  php-version: ${{ matrix.php }}
+                  coverage: none
+
+            - name: Répertoire de cache de Composer
+              id: composer-cache
+              run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+            - name: Cache des dépendances
+              uses: actions/cache@v6
+              with:
+                  path: ${{ steps.composer-cache.outputs.dir }}
+                  key: composer-${{ runner.os }}-php${{ matrix.php }}-${{ hashFiles('composer.json') }}
+                  restore-keys: composer-${{ runner.os }}-php${{ matrix.php }}-
+
+            # update rather than install: composer.lock is not versioned, and each PHP version resolves its own dependencies
+            - name: Dépendances
+              run: composer update --no-interaction --no-progress
+
+            - name: Tests
+              run: composer test

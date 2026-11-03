@@ -5,14 +5,8 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PHP_CI="8.4"
-
-# The PHP version itself is not reproducible here: it depends on the installed interpreter
+PHP_VERSIONS="8.4 8.5 8.6"
 PHP_LOCAL="$(php -r 'echo PHP_MAJOR_VERSION . "." . PHP_MINOR_VERSION;')"
-if [ "$PHP_LOCAL" != "$PHP_CI" ]; then
-    echo "⚠  PHP $PHP_LOCAL en local, $PHP_CI en CI : les écarts liés à la version du langage ne seront pas détectés ici."
-    echo
-fi
 
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
@@ -65,6 +59,22 @@ printf '   phpcs %s | phpstan %s | php-cs-fixer %s | rector %s | lizard %s\n' \
 
 echo "→ Contrôles qualité"
 composer qa
+
+# The other PHP versions the CI tests: each resolves its own dependencies, since a lock made on one version may not install on another. phpunit is called directly, its shebang would otherwise pick the machine's default PHP
+COMPOSER="$(command -v composer)"
+for Version in $PHP_VERSIONS; do
+    [ "$Version" = "$PHP_LOCAL" ] && continue
+
+    if ! command -v "php$Version" > /dev/null; then
+        echo "⚠  PHP $Version absent de cette machine : ses tests ne tournent qu'en CI."
+        continue
+    fi
+
+    echo "→ Tests sur PHP $Version, dépendances résolues pour cette version"
+    rm -rf vendor composer.lock
+    "php$Version" "$COMPOSER" update --no-interaction --no-progress --quiet
+    "php$Version" vendor/bin/phpunit
+done
 
 echo
 echo "✓ Les contrôles de la CI passent sur des dépendances fraîches."
