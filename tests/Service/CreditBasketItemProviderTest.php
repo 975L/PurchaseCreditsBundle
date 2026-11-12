@@ -13,7 +13,9 @@ namespace c975L\PurchaseCreditsBundle\Tests\Service;
 use c975L\ConfigBundle\Contract\UserInterface;
 use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\PaymentBundle\Contract\AccountBasketItemProviderInterface;
+use c975L\PaymentBundle\Contract\RefundableBasketItemProviderInterface;
 use c975L\PaymentBundle\Entity\Basket;
+use c975L\PaymentBundle\Enum\BasketStatus;
 use c975L\PurchaseCreditsBundle\Entity\CreditPack;
 use c975L\PurchaseCreditsBundle\Repository\CreditPackRepository;
 use c975L\PurchaseCreditsBundle\Repository\CreditTransactionRepository;
@@ -26,7 +28,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class CreditBasketItemProviderTest extends TestCase
 {
     // A provider whose signed-in user is $user, the translator answering the key it is asked for
-    private function provider(?UserInterface $user, ?CreditServiceInterface $creditService = null, bool $alreadyCredited = false): CreditBasketItemProvider
+    /** @param list<string> $references the references the ledger already holds, every one when null */
+    private function provider(?UserInterface $user, ?CreditServiceInterface $creditService = null, bool $alreadyCredited = false, ?array $references = null): CreditBasketItemProvider
     {
         $security = $this->createStub(Security::class);
         $security->method('getUser')->willReturn($user);
@@ -35,7 +38,11 @@ class CreditBasketItemProviderTest extends TestCase
         $translator->method('trans')->willReturnArgument(0);
 
         $transactionRepository = $this->createStub(CreditTransactionRepository::class);
-        $transactionRepository->method('hasReference')->willReturn($alreadyCredited);
+        if (null === $references) {
+            $transactionRepository->method('hasReference')->willReturn($alreadyCredited);
+        } else {
+            $transactionRepository->method('hasReference')->willReturnCallback(static fn (UserInterface $user, string $reference): bool => \in_array($reference, $references, true));
+        }
 
         return new CreditBasketItemProvider(
             $this->createStub(CreditPackRepository::class),
@@ -123,7 +130,7 @@ class CreditBasketItemProviderTest extends TestCase
     {
         $user = $this->createStub(UserInterface::class);
         $creditService = $this->createMock(CreditServiceInterface::class);
-        $creditService->expects($this->once())->method('grant')->with($user, 20, 'label.transaction_purchase', '20260924-1-7');
+        $creditService->expects($this->once())->method('grant')->with($user, 20, 'label.transaction_purchase', '20260924-1-7', false);
 
         $this->provider($user, $creditService)->onBasketPaid($this->paidBasket($user), [7 => ['item' => ['credits' => 10], 'quantity' => 2]], []);
     }
@@ -178,5 +185,70 @@ class CreditBasketItemProviderTest extends TestCase
         $creditService->expects($this->never())->method('grant');
 
         $this->provider($user, $creditService, true)->onBasketPaid($this->paidBasket($user), [7 => ['item' => ['credits' => 10], 'quantity' => 2]], []);
+    }
+
+    // A basket paid in test mode writes a rehearsal line, left out of the balance once the site sells for real
+    public function testATestBasketGrantsRehearsalCredits(): void
+    {
+        $user = $this->createStub(UserInterface::class);
+        $creditService = $this->createMock(CreditServiceInterface::class);
+        $creditService->expects($this->once())->method('grant')->with($user, 10, 'label.transaction_purchase', '20260924-1-7', true);
+
+        $this->provider($user, $creditService)->onBasketPaid($this->paidBasket($user)->setTestMode(true), [7 => ['item' => ['credits' => 10], 'quantity' => 1]], []);
+    }
+
+    // A pack saved at no price before prices had to be positive is not sold
+    public function testAFreePackIsNotFound(): void
+    {
+        $packRepository = $this->createStub(CreditPackRepository::class);
+        $packRepository->method('find')->willReturn($this->pack()->setPrice(0));
+
+        $provider = new CreditBasketItemProvider(
+            $packRepository,
+            $this->createStub(CreditTransactionRepository::class),
+            $this->createStub(CreditServiceInterface::class),
+            $this->createStub(ConfigServiceInterface::class),
+            $this->createStub(Security::class),
+            $this->createStub(TranslatorInterface::class),
+        );
+
+        $this->assertNull($provider->findItem(7));
+    }
+
+    // A shared order whose account was deleted is never handed to the third party paying it
+    public function testCheckoutRefusesAnOrderWhoseAccountIsGone(): void
+    {
+        $basket = new Basket()->setStatus(BasketStatus::Validated);
+
+        $this->assertSame('label.account_not_found', $this->provider($this->createStub(UserInterface::class))->validateCheckout($basket, []));
+        $this->assertNull($basket->getUser());
+    }
+
+    public function testThePacksAreTakenBackOnRefund(): void
+    {
+        $this->assertInstanceOf(RefundableBasketItemProviderInterface::class, $this->provider(null));
+    }
+
+    // A refund takes back the credits the payment wrote, in the basket's own mode
+    public function testARefundTakesBackWhatWasCredited(): void
+    {
+        $user = $this->createStub(UserInterface::class);
+        $creditService = $this->createMock(CreditServiceInterface::class);
+        $creditService->expects($this->once())->method('takeBack')->with($user, 20, 'label.transaction_refund', '20260924-1-7-refund', true);
+
+        $this->provider($user, $creditService, references: ['20260924-1-7'])->onBasketRefunded($this->paidBasket($user)->setTestMode(true), [7 => ['item' => ['credits' => 10], 'quantity' => 2]]);
+    }
+
+    // Nothing credited, nothing to take back; already taken back, not twice
+    public function testARefundTakesBackNothingNeverCreditedNorTwice(): void
+    {
+        $user = $this->createStub(UserInterface::class);
+        $creditService = $this->createMock(CreditServiceInterface::class);
+        $creditService->expects($this->never())->method('takeBack');
+        $items = [7 => ['item' => ['credits' => 10], 'quantity' => 1]];
+
+        $this->provider($user, $creditService, references: [])->onBasketRefunded($this->paidBasket($user), $items);
+        $this->provider($user, $creditService, references: ['20260924-1-7', '20260924-1-7-refund'])->onBasketRefunded($this->paidBasket($user), $items);
+        $this->provider(null, $creditService)->onBasketRefunded($this->paidBasket(null), $items);
     }
 }

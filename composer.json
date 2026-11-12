@@ -18,8 +18,8 @@
     ],
     "require": {
         "php": ">=8.4",
-        "c975l/core-bundle": "^1.85.0",
-        "c975l/payment-bundle": "^6.11",
+        "c975l/core-bundle": "^1.90",
+        "c975l/payment-bundle": "^6.26",
         "doctrine/dbal": "^4.4",
         "doctrine/orm": "^3.7",
         "easycorp/easyadmin-bundle": "^5.7",

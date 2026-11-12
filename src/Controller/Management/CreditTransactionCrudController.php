@@ -10,6 +10,7 @@
 
 namespace c975L\PurchaseCreditsBundle\Controller\Management;
 
+use c975L\ConfigBundle\Contract\UserInterface;
 use c975L\ConfigBundle\Management\EasyAdminActionHelper;
 use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\PurchaseCreditsBundle\Entity\CreditTransaction;
@@ -86,9 +87,10 @@ class CreditTransactionCrudController extends AbstractCrudController
     {
         yield DateTimeField::new('createdAt', t('label.transaction_date', [], 'purchasecredits'))->hideOnForm();
 
-        // Named by its identifier: the application's User entity owes the bundle no __toString(), only what c975L's UserInterface guarantees
+        // Named by its identifier (the application's User entity owes the bundle no __toString(), only what c975L's UserInterface guarantees), and searched as typed rather than every account loaded into the list
         yield AssociationField::new('user', t('label.transaction_user', [], 'purchasecredits'))
             ->setFormTypeOption('choice_label', 'userIdentifier')
+            ->autocomplete(callback: static fn (UserInterface $user): string => $user->getUserIdentifier())
             ->formatValue(static fn (mixed $value, CreditTransaction $transaction): ?string => $transaction->getUser()?->getUserIdentifier())
         ;
 

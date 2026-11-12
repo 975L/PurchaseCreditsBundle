@@ -12,6 +12,7 @@ namespace c975L\PurchaseCreditsBundle\Tests\Entity;
 
 use c975L\PurchaseCreditsBundle\Entity\CreditPack;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Validator\Validation;
 
 class CreditPackTest extends TestCase
 {
@@ -43,5 +44,14 @@ class CreditPackTest extends TestCase
         $this->assertSame(5.5, $pack->getVat());
         $this->assertSame(2, $pack->getPosition());
         $this->assertFalse($pack->isPublished());
+    }
+
+    // A free pack would hand out credits without limit: the price is refused at zero
+    public function testAPackIsNeverFree(): void
+    {
+        $validator = Validation::createValidatorBuilder()->enableAttributeMapping()->getValidator();
+
+        $this->assertCount(1, $validator->validateProperty(new CreditPack()->setPrice(0), 'price'));
+        $this->assertCount(0, $validator->validateProperty(new CreditPack()->setPrice(1), 'price'));
     }
 }

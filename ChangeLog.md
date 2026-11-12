@@ -1,5 +1,19 @@
 # Changelog
 
+## v5.5.0
+
+[BC-Break] Refunds take credits back, test baskets write rehearsal lines
+
+- [BC-Break] `CreditServiceInterface::takeBack()` and `grant()`'s `$testMode` argument (12/11/2026)
+- A full refund or lost dispute takes the credits back, even below zero (12/11/2026)
+- A basket paid in test mode writes rehearsal lines, counted only in test mode (12/11/2026)
+- `spend()` reads the balance by a locking read (12/11/2026)
+- A pack's price must be above zero, a free pack saved before is neither listed nor sold (12/11/2026)
+- A placed order whose account is gone is refused at the checkout (12/11/2026)
+- The ledger's user field is searched by autocomplete (12/11/2026)
+- `CodeRulesTest` replays the audit's rules (12/11/2026)
+- Requires `c975l/core-bundle` ^1.90 and `c975l/payment-bundle` ^6.26 (12/11/2026)
+
 ## v5.4.7
 
 Composer states why a PHP version failed to resolve

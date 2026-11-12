@@ -79,11 +79,15 @@ No route to import, the stylesheet published by `php bin/console assets:install`
 
 ## Selling credits
 
-1. In the back office, **Credits > Credit packs**: create the packs (credits, price in the shop's currency, VAT).
+1. In the back office, **Credits > Credit packs**: create the packs (credits, price in the shop's currency, VAT). A price is above zero: credits offered go through the ledger, never through a free pack.
 2. Place the **Credit packs** block on a page. Every visitor sees a "Buy" button per pack, a signed-in one their balance too; credits landing on an account, a visitor is asked to sign in at the checkout.
 3. Once the basket is paid, `CreditBasketItemProvider::onBasketPaid()` writes one ledger line per pack, with the number of credits frozen in the basket when it was filled — what the customer agreed to is what is credited, whatever the pack becomes before the payment.
 
-A pack withdrawn from sale is refused at the checkout too, a basket living several days in the session. A basket filled before signing in is bound to the account signed in at the checkout.
+A pack withdrawn from sale is refused at the checkout too, a basket living several days in the session. A basket filled before signing in is bound to the account signed in at the checkout; an order already placed whose account was deleted (a shared order paid by someone else) is refused, never handed to whoever pays it.
+
+A full refund or a lost dispute takes the credits back (`RefundableBasketItemProviderInterface::onBasketRefunded()`): one reversing line per pack, referenced `<number>-<id>-refund`, written whatever the balance — the credits spent since stay owed, the balance going below zero.
+
+A basket paid in PaymentBundle's test mode (`payment-test-mode`) writes rehearsal lines (`CreditTransaction::isTestMode()`), and so does `spend()` while that mode is on: the balance, the history and the data export count them only while the payments run in test mode, so credits bought with a test card are never spent once the site sells for real.
 
 ---
 
@@ -111,7 +115,7 @@ $this->creditService->grant($user, 3, 'Welcome credits', 'signup');
 
 From the console, `php bin/console c975l:purchasecredits:grant <email> <credits> --description="Goodwill gesture"` writes the same line.
 
-`spend()` locks the user's row while it reads the balance and writes the line, so two spendings at once cannot both pass on the same credits. Never read `getBalance()` and then write a line yourself. `InsufficientCreditsException` is thrown once the transaction is over, so the EntityManager stays open and the caller carries on.
+`spend()` locks the user's row and reads the balance by a locking read (`sumForUserLocked()`, `SELECT ... FOR UPDATE`) while it writes the line, so two spendings at once cannot both pass on the same credits, even inside a transaction the caller opened earlier. `takeBack()` writes a reversing line whatever the balance, for something since undone. Never read `getBalance()` and then write a line yourself. `InsufficientCreditsException` is thrown once the transaction is over, so the EntityManager stays open and the caller carries on.
 
 The ledger is the only truth: never store a balance beside it. A line is never edited nor deleted — **Credits > Credit movements** only adds lines, a mistake being corrected by the reversing line.
 

@@ -11,6 +11,7 @@
 namespace c975L\PurchaseCreditsBundle\Service;
 
 use c975L\ConfigBundle\Contract\UserInterface;
+use c975L\PaymentBundle\Service\PaymentTestModeInterface;
 use c975L\PurchaseCreditsBundle\Entity\CreditTransaction;
 use c975L\PurchaseCreditsBundle\Exception\InsufficientCreditsException;
 use c975L\PurchaseCreditsBundle\Repository\CreditTransactionRepository;
@@ -23,6 +24,7 @@ class CreditService implements CreditServiceInterface
     public function __construct(
         private readonly CreditTransactionRepository $transactionRepository,
         private readonly EntityManagerInterface $entityManager,
+        private readonly PaymentTestModeInterface $testMode,
     ) {
     }
 
@@ -33,20 +35,26 @@ class CreditService implements CreditServiceInterface
     }
 
     // Adds credits to a user
-    public function grant(UserInterface $user, int $amount, string $description, ?string $reference = null): CreditTransaction
+    public function grant(UserInterface $user, int $amount, string $description, ?string $reference = null, bool $testMode = false): CreditTransaction
     {
         if ($amount <= 0) {
             throw new \InvalidArgumentException('Credits granted must be positive.');
         }
 
-        $transaction = $this->transaction($user, $amount, $description, $reference);
-        $this->entityManager->persist($transaction);
-        $this->entityManager->flush();
-
-        return $transaction;
+        return $this->write($this->transaction($user, $amount, $description, $reference, $testMode));
     }
 
-    // Takes credits from a user, the user's row being locked while the balance is read and the line written, so two spendings at once cannot both pass on the same credits
+    // Takes back credits handed over for something since undone, the balance allowed below zero
+    public function takeBack(UserInterface $user, int $amount, string $description, string $reference, bool $testMode = false): CreditTransaction
+    {
+        if ($amount <= 0) {
+            throw new \InvalidArgumentException('Credits taken back must be positive.');
+        }
+
+        return $this->write($this->transaction($user, -$amount, $description, $reference, $testMode));
+    }
+
+    // Takes credits from a user, the user's row being locked and the balance read by a locking read while the line is written, so two spendings at once cannot both pass on the same credits, even inside a transaction the caller opened earlier
     public function spend(UserInterface $user, int $amount, string $description, ?string $reference = null): CreditTransaction
     {
         if ($amount <= 0) {
@@ -56,12 +64,12 @@ class CreditService implements CreditServiceInterface
         $result = $this->entityManager->wrapInTransaction(function (EntityManagerInterface $entityManager) use ($user, $amount, $description, $reference): CreditTransaction | int {
             $entityManager->lock($user, LockMode::PESSIMISTIC_WRITE);
 
-            $balance = $this->getBalance($user);
+            $balance = $this->transactionRepository->sumForUserLocked($user);
             if ($balance < $amount) {
                 return $balance;
             }
 
-            $transaction = $this->transaction($user, -$amount, $description, $reference);
+            $transaction = $this->transaction($user, -$amount, $description, $reference, $this->testMode->isEnabled());
             $entityManager->persist($transaction);
             $entityManager->flush();
 
@@ -76,14 +84,24 @@ class CreditService implements CreditServiceInterface
         return $result;
     }
 
+    // Persists and flushes a ledger line
+    private function write(CreditTransaction $transaction): CreditTransaction
+    {
+        $this->entityManager->persist($transaction);
+        $this->entityManager->flush();
+
+        return $transaction;
+    }
+
     // A ledger line, not yet persisted
-    private function transaction(UserInterface $user, int $amount, string $description, ?string $reference): CreditTransaction
+    private function transaction(UserInterface $user, int $amount, string $description, ?string $reference, bool $testMode): CreditTransaction
     {
         return new CreditTransaction()
             ->setUser($user)
             ->setAmount($amount)
             ->setDescription($description)
             ->setReference($reference)
+            ->setTestMode($testMode)
         ;
     }
 }

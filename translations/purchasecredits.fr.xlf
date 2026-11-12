@@ -94,6 +94,10 @@
                 <source>help.transaction_amount</source>
                 <target>Positif pour offrir des crédits, négatif pour en retirer. Une ligne ne se modifie jamais : une erreur se corrige par la ligne inverse.</target>
             </trans-unit>
+            <trans-unit id="Cw5ufCW">
+                <source>label.account_not_found</source>
+                <target>Le compte de cette commande n'existe plus : les crédits n'ont nulle part où aller.</target>
+            </trans-unit>
             <trans-unit id="PmT6SQr">
                 <source>label.anchor</source>
                 <target>Ancre</target>
@@ -349,6 +353,10 @@
             <trans-unit id="0GvSbBh">
                 <source>label.transaction_reference</source>
                 <target>Référence</target>
+            </trans-unit>
+            <trans-unit id="JN4dy8a">
+                <source>label.transaction_refund</source>
+                <target>{1}1 crédit repris : commande remboursée|]1,Inf[%count% crédits repris : commande remboursée</target>
             </trans-unit>
             <trans-unit id="JPsCOE1">
                 <source>label.transaction_user</source>

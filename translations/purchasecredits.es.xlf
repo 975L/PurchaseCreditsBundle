@@ -94,6 +94,10 @@
                 <source>help.transaction_amount</source>
                 <target>Positivo para regalar créditos, negativo para retirarlos. Una línea nunca se modifica: un error se corrige con la línea inversa.</target>
             </trans-unit>
+            <trans-unit id="Cw5ufCW">
+                <source>label.account_not_found</source>
+                <target>La cuenta de este pedido ya no existe: los créditos no tienen adónde ir.</target>
+            </trans-unit>
             <trans-unit id="PmT6SQr">
                 <source>label.anchor</source>
                 <target>Ancla</target>
@@ -349,6 +353,10 @@
             <trans-unit id="0GvSbBh">
                 <source>label.transaction_reference</source>
                 <target>Referencia</target>
+            </trans-unit>
+            <trans-unit id="JN4dy8a">
+                <source>label.transaction_refund</source>
+                <target>{1}1 crédito retirado: pedido reembolsado|]1,Inf[%count% créditos retirados: pedido reembolsado</target>
             </trans-unit>
             <trans-unit id="JPsCOE1">
                 <source>label.transaction_user</source>

@@ -27,6 +27,7 @@ class CreditTransactionTest extends TestCase
         $this->assertSame(0, $transaction->getAmount());
         $this->assertSame('', $transaction->getDescription());
         $this->assertNull($transaction->getReference());
+        $this->assertFalse($transaction->isTestMode());
     }
 
     // The import of a former ledger keeps each line's own date
@@ -46,5 +47,6 @@ class CreditTransactionTest extends TestCase
         $this->assertSame(-3, $transaction->getAmount());
         $this->assertSame('Short link', $transaction->getDescription());
         $this->assertSame('42', $transaction->getReference());
+        $this->assertTrue($transaction->setTestMode(true)->isTestMode());
     }
 }

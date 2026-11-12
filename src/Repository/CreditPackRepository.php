@@ -22,12 +22,13 @@ class CreditPackRepository extends ServiceEntityRepository
         parent::__construct($registry, CreditPack::class);
     }
 
-    // The packs on sale, in the order the back office sets
+    // The packs on sale, in the order the back office sets, a pack saved at no price before prices had to be positive left out (see CreditBasketItemProvider::findItem())
     /** @return list<CreditPack> */
     public function findPublished(): array
     {
         return $this->createQueryBuilder('p')
             ->where('p.published = true')
+            ->andWhere('p.price > 0')
             ->orderBy('p.position', 'ASC')
             ->addOrderBy('p.credits', 'ASC')
             ->getQuery()

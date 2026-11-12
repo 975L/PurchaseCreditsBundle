@@ -11,6 +11,7 @@
 namespace c975L\PurchaseCreditsBundle\Tests\Service;
 
 use c975L\ConfigBundle\Contract\UserInterface;
+use c975L\PaymentBundle\Service\PaymentTestModeInterface;
 use c975L\PurchaseCreditsBundle\Entity\CreditTransaction;
 use c975L\PurchaseCreditsBundle\Exception\InsufficientCreditsException;
 use c975L\PurchaseCreditsBundle\Repository\CreditTransactionRepository;
@@ -21,13 +22,17 @@ use PHPUnit\Framework\TestCase;
 
 class CreditServiceTest extends TestCase
 {
-    // A service over a ledger whose sum is $balance, the transaction running its callback straight away
-    private function service(int $balance, EntityManagerInterface $entityManager): CreditService
+    // A service over a ledger whose sum is $balance, the payments running in test mode when $testMode says so
+    private function service(int $balance, EntityManagerInterface $entityManager, bool $testMode = false): CreditService
     {
         $repository = $this->createStub(CreditTransactionRepository::class);
         $repository->method('sumForUser')->willReturn($balance);
+        $repository->method('sumForUserLocked')->willReturn($balance);
 
-        return new CreditService($repository, $entityManager);
+        $paymentTestMode = $this->createStub(PaymentTestModeInterface::class);
+        $paymentTestMode->method('isEnabled')->willReturn($testMode);
+
+        return new CreditService($repository, $entityManager, $paymentTestMode);
     }
 
     // An EntityManager whose transaction runs its callback and, as Doctrine does, closes itself when an exception crosses it
@@ -105,5 +110,58 @@ class CreditServiceTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
 
         $this->service(10, $this->createStub(EntityManagerInterface::class))->spend($this->createStub(UserInterface::class), -1, 'Nothing');
+    }
+
+    // The balance is read by a locking read, so a spending inside a transaction the caller opened earlier still sees what another one committed
+    public function testSpendReadsTheBalanceWithALockingRead(): void
+    {
+        $repository = $this->createMock(CreditTransactionRepository::class);
+        $repository->expects($this->once())->method('sumForUserLocked')->willReturn(5);
+        $repository->expects($this->never())->method('sumForUser');
+        $entityManager = $this->transactionalEntityManager();
+        $entityManager->expects($this->once())->method('persist');
+
+        new CreditService($repository, $entityManager, $this->createStub(PaymentTestModeInterface::class))->spend($this->createStub(UserInterface::class), 5, 'Shortcut');
+    }
+
+    // A spending while the payments run in test mode is a rehearsal line, left out once the site sells for real
+    public function testSpendInTestModeWritesARehearsalLine(): void
+    {
+        $entityManager = $this->transactionalEntityManager();
+        $entityManager->expects($this->once())->method('persist');
+
+        $transaction = $this->service(5, $entityManager, true)->spend($this->createStub(UserInterface::class), 5, 'Shortcut');
+
+        $this->assertTrue($transaction->isTestMode());
+    }
+
+    // A grant is a real line unless the caller says it is a rehearsal (a basket paid in test mode)
+    public function testGrantIsARealLineUnlessToldOtherwise(): void
+    {
+        $service = $this->service(0, $this->createStub(EntityManagerInterface::class), true);
+        $user = $this->createStub(UserInterface::class);
+
+        $this->assertFalse($service->grant($user, 3, 'Gift')->isTestMode());
+        $this->assertTrue($service->grant($user, 3, 'Purchase', 'TEST-1-7', true)->isTestMode());
+    }
+
+    // A refund takes credits back whatever the balance, the credits spent since staying owed
+    public function testTakeBackWritesANegativeLineWhateverTheBalance(): void
+    {
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->expects($this->once())->method('persist');
+        $entityManager->expects($this->once())->method('flush');
+
+        $transaction = $this->service(0, $entityManager)->takeBack($this->createStub(UserInterface::class), 120, 'Refund', '20260924-1-7-refund');
+
+        $this->assertSame(-120, $transaction->getAmount());
+        $this->assertSame('20260924-1-7-refund', $transaction->getReference());
+    }
+
+    public function testTakeBackRefusesANonPositiveAmount(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->service(0, $this->createStub(EntityManagerInterface::class))->takeBack($this->createStub(UserInterface::class), 0, 'Nothing', 'ref');
     }
 }

@@ -14,7 +14,9 @@ use c975L\ConfigBundle\Contract\UserInterface;
 use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\PaymentBundle\Contract\AccountBasketItemProviderInterface;
 use c975L\PaymentBundle\Contract\BasketItemProviderInterface;
+use c975L\PaymentBundle\Contract\RefundableBasketItemProviderInterface;
 use c975L\PaymentBundle\Entity\Basket;
+use c975L\PaymentBundle\Enum\BasketStatus;
 use c975L\PaymentBundle\Service\VatCalculator;
 use c975L\PurchaseCreditsBundle\Entity\CreditPack;
 use c975L\PurchaseCreditsBundle\Repository\CreditPackRepository;
@@ -22,8 +24,8 @@ use c975L\PurchaseCreditsBundle\Repository\CreditTransactionRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-// Plugs the credit packs into PaymentBundle's basket and checkout (see BasketItemProviderInterface). Credits land on an account: a visitor fills the basket freely and is asked to sign in at the checkout (see AccountBasketItemProviderInterface)
-class CreditBasketItemProvider implements BasketItemProviderInterface, AccountBasketItemProviderInterface
+// Plugs the credit packs into PaymentBundle's basket and checkout (see BasketItemProviderInterface). Credits land on an account: a visitor fills the basket freely and is asked to sign in at the checkout (see AccountBasketItemProviderInterface), and a refund takes them back (see RefundableBasketItemProviderInterface)
+class CreditBasketItemProvider implements BasketItemProviderInterface, AccountBasketItemProviderInterface, RefundableBasketItemProviderInterface
 {
     public const string KIND = 'purchasecredits';
 
@@ -46,7 +48,8 @@ class CreditBasketItemProvider implements BasketItemProviderInterface, AccountBa
     {
         $pack = $this->packRepository->find((int) $id);
 
-        return null !== $pack && $pack->isPublished() ? $pack : null;
+        // A pack saved at no price before prices had to be positive is not sold: it would hand out credits without limit
+        return null !== $pack && $pack->isPublished() && $pack->getPrice() > 0 ? $pack : null;
     }
 
     public function validateAddition(object $item, int $quantity): ?string
@@ -72,14 +75,21 @@ class CreditBasketItemProvider implements BasketItemProviderInterface, AccountBa
             }
         }
 
-        if (null === $basket->getUser()) {
-            $user = $this->security->getUser();
-            if (!$user instanceof UserInterface) {
-                return $this->translator->trans('label.sign_in_required', [], 'purchasecredits');
-            }
-
-            $basket->setUser($user);
+        if (null !== $basket->getUser()) {
+            return null;
         }
+
+        // An order already placed whose account is gone (a shared order paid by someone else) is never handed to whoever is signed in
+        if (BasketStatus::New !== $basket->getStatus()) {
+            return $this->translator->trans('label.account_not_found', [], 'purchasecredits');
+        }
+
+        $user = $this->security->getUser();
+        if (!$user instanceof UserInterface) {
+            return $this->translator->trans('label.sign_in_required', [], 'purchasecredits');
+        }
+
+        $basket->setUser($user);
 
         return null;
     }
@@ -124,7 +134,7 @@ class CreditBasketItemProvider implements BasketItemProviderInterface, AccountBa
         return [];
     }
 
-    // Credits the account, one ledger line per pack, with the number of credits frozen in the basket
+    // Credits the account, one ledger line per pack, with the number of credits frozen in the basket. A basket paid in test mode writes rehearsal lines, left out of the balance once the site sells for real
     public function onBasketPaid(Basket $basket, array $itemsOfThisKind, array $checkoutData): void
     {
         $user = $basket->getUser();
@@ -133,15 +143,49 @@ class CreditBasketItemProvider implements BasketItemProviderInterface, AccountBa
         }
 
         foreach ($itemsOfThisKind as $id => $itemContent) {
-            $credits = (int) ($itemContent['item']['credits'] ?? 0) * (int) ($itemContent['quantity'] ?? 0);
-            $reference = $basket->getNumber() . '-' . $id;
+            $credits = $this->credits($itemContent);
+            $reference = $this->reference($basket, $id);
 
             if ($credits <= 0 || $this->transactionRepository->hasReference($user, $reference)) {
                 continue;
             }
 
             $description = $this->translator->trans('label.transaction_purchase', ['%count%' => $credits], 'purchasecredits', $basket->getLocale());
-            $this->creditService->grant($user, $credits, $description, $reference);
+            $this->creditService->grant($user, $credits, $description, $reference, $basket->isTestMode());
         }
+    }
+
+    // A full refund or a lost dispute takes back what the payment credited, one reversing line per pack, even below zero: the credits spent since stay owed
+    public function onBasketRefunded(Basket $basket, array $itemsOfThisKind): void
+    {
+        $user = $basket->getUser();
+        if (null === $user) {
+            return;
+        }
+
+        foreach ($itemsOfThisKind as $id => $itemContent) {
+            $credits = $this->credits($itemContent);
+            $reference = $this->reference($basket, $id);
+
+            // Only what was credited, and only once
+            if ($credits <= 0 || !$this->transactionRepository->hasReference($user, $reference) || $this->transactionRepository->hasReference($user, $reference . '-refund')) {
+                continue;
+            }
+
+            $description = $this->translator->trans('label.transaction_refund', ['%count%' => $credits], 'purchasecredits', $basket->getLocale());
+            $this->creditService->takeBack($user, $credits, $description, $reference . '-refund', $basket->isTestMode());
+        }
+    }
+
+    // The credits a basket line is worth, as frozen in the basket
+    private function credits(array $itemContent): int
+    {
+        return (int) ($itemContent['item']['credits'] ?? 0) * (int) ($itemContent['quantity'] ?? 0);
+    }
+
+    // What the ledger line of a basket line answers to
+    private function reference(Basket $basket, int | string $id): string
+    {
+        return $basket->getNumber() . '-' . $id;
     }
 }

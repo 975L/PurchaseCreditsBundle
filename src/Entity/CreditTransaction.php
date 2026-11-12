@@ -13,6 +13,7 @@ namespace c975L\PurchaseCreditsBundle\Entity;
 use c975L\ConfigBundle\Contract\UserInterface;
 use c975L\PurchaseCreditsBundle\Repository\CreditTransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 // One movement of a user's credits, positive when granted or bought, negative when spent. The ledger is the only truth: a balance is the sum of its lines, never a counter stored beside them
 #[ORM\Entity(repositoryClass: CreditTransactionRepository::class)]
@@ -34,11 +35,17 @@ class CreditTransaction
     private int $amount = 0;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 255)]
     private string $description = '';
 
     // What the movement answers to - the basket number of a purchase, the site's own id of what was paid for with credits
     #[ORM\Column(length: 64, nullable: true)]
+    #[Assert\Length(max: 64)]
     private ?string $reference = null;
+
+    // Written while the payments ran on the provider's test keys, or by a basket paid in test mode: a rehearsal, left out of the balance once the site sells for real (see PaymentTestModeInterface)
+    #[ORM\Column(options: ['default' => false])]
+    private bool $testMode = false;
 
     #[ORM\Column]
     private \DateTimeImmutable $createdAt;
@@ -97,6 +104,18 @@ class CreditTransaction
     public function setReference(?string $reference): self
     {
         $this->reference = $reference;
+
+        return $this;
+    }
+
+    public function isTestMode(): bool
+    {
+        return $this->testMode;
+    }
+
+    public function setTestMode(bool $testMode): self
+    {
+        $this->testMode = $testMode;
 
         return $this;
     }

@@ -29,10 +29,10 @@ class CreditPack implements \Stringable
     #[Assert\Positive]
     private ?int $credits = null;
 
-    // In cents, as every price of the ecosystem
+    // In cents, as every price of the ecosystem. Never free: a free pack would hand out credits without limit, gifts going through the ledger instead
     #[ORM\Column]
     #[Assert\NotBlank]
-    #[Assert\PositiveOrZero]
+    #[Assert\Positive]
     private ?int $price = null;
 
     #[ORM\Column]

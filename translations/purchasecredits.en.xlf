@@ -94,6 +94,10 @@
                 <source>help.transaction_amount</source>
                 <target>Positive to give credits, negative to take them back. A line is never edited: a mistake is corrected by the line that reverses it.</target>
             </trans-unit>
+            <trans-unit id="Cw5ufCW">
+                <source>label.account_not_found</source>
+                <target>This order's account no longer exists: the credits have nowhere to go.</target>
+            </trans-unit>
             <trans-unit id="PmT6SQr">
                 <source>label.anchor</source>
                 <target>Anchor</target>
@@ -349,6 +353,10 @@
             <trans-unit id="0GvSbBh">
                 <source>label.transaction_reference</source>
                 <target>Reference</target>
+            </trans-unit>
+            <trans-unit id="JN4dy8a">
+                <source>label.transaction_refund</source>
+                <target>{1}1 credit taken back: order refunded|]1,Inf[%count% credits taken back: order refunded</target>
             </trans-unit>
             <trans-unit id="JPsCOE1">
                 <source>label.transaction_user</source>

@@ -1,5 +1,12 @@
 # UPGRADE
 
+## v5.4.x > v5.5.0
+
+- `CreditServiceInterface` gains `takeBack()` and a last `bool $testMode = false` argument on `grant()`: a class implementing the interface itself adds both.
+- `credit_transaction` gains a `test_mode` column (`ALTER TABLE credit_transaction ADD test_mode TINYINT(1) DEFAULT 0 NOT NULL`, or the site's next Doctrine migration).
+- `CreditPack::$price` must be above zero: a pack saved at 0 is no longer sold until given a price.
+- `CreditTransactionRepository` takes PaymentBundle's `PaymentTestModeInterface` as second constructor argument (autowired).
+
 ## v4.x > v5.x
 
 A rewrite on the c975L core (Symfony 8, `c975l/core-bundle`, `c975l/payment-bundle` v6). Nothing of v4's API survives: no routes, no `TransactionServiceInterface`, no `credits` column on the user.

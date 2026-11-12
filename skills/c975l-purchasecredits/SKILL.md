@@ -1,6 +1,6 @@
 ---
 name: c975l-purchasecredits
-description: "Use this skill when working with prepaid credits in a Symfony application built on the c975L ecosystem with c975l/purchasecredits-bundle. Covers the credit packs sold through PaymentBundle's basket, the per-user ledger, and the spending API a site's own services call. Triggers on: credits, prepaid credits, credit pack, buy credits, spend credits, balance, CreditPack, CreditTransaction, CreditServiceInterface, getBalance, grant, spend, InsufficientCreditsException, CreditBasketItemProvider, AccountBasketItemProviderInterface, sign in at checkout, purchasecredits_packs, purchasecredits_balance, AccountSectionProvider, AccountDataProvider, data export, my account, block_page_url, packs_intro, pack_class, pack_top, pack_extra, featured pack, StylesheetProvider, sign-up bonus, ledger, purchasecredits-test-mode, test mode, PurchaseCreditsShortcutProvider, PurchaseCreditsDemoFixtureProvider, demo fixtures, c975l:purchasecredits:grant, GrantCreditsCommand, give credits from the console, terms of sales, CGV, legal credits section."
+description: "Use this skill when working with prepaid credits in a Symfony application built on the c975L ecosystem with c975l/purchasecredits-bundle. Covers the credit packs sold through PaymentBundle's basket, the per-user ledger, and the spending API a site's own services call. Triggers on: credits, prepaid credits, credit pack, buy credits, spend credits, balance, CreditPack, CreditTransaction, CreditServiceInterface, getBalance, grant, spend, takeBack, refund, onBasketRefunded, RefundableBasketItemProviderInterface, InsufficientCreditsException, CreditBasketItemProvider, AccountBasketItemProviderInterface, sign in at checkout, purchasecredits_packs, purchasecredits_balance, AccountSectionProvider, AccountDataProvider, data export, my account, block_page_url, packs_intro, pack_class, pack_top, pack_extra, featured pack, StylesheetProvider, sign-up bonus, ledger, purchasecredits-test-mode, test mode, PurchaseCreditsShortcutProvider, PurchaseCreditsDemoFixtureProvider, demo fixtures, c975l:purchasecredits:grant, GrantCreditsCommand, give credits from the console, terms of sales, CGV, legal credits section."
 ---
 
 # c975L PurchaseCreditsBundle
@@ -45,7 +45,10 @@ From the console, `php bin/console c975l:purchasecredits:grant <email> <credits>
 
 - The ledger is the only truth: a balance is the sum of `CreditTransaction` lines. Never add a `credits` column on the user.
 - A line is never edited nor deleted; a mistake is corrected by the reversing line (the back office only offers "new").
-- `spend()` locks the user's row while it reads the balance and writes: never read `getBalance()` then write a line yourself.
+- `spend()` locks the user's row and reads the balance by a locking read (`sumForUserLocked()`) while it writes: never read `getBalance()` then write a line yourself.
+- A refund takes the credits back (`CreditBasketItemProvider::onBasketRefunded()` calls `takeBack()`), even below zero: the credits spent since stay owed.
+- A basket paid in PaymentBundle's test mode writes rehearsal lines (`grant()`'s `$testMode`, `CreditTransaction::isTestMode()`), counted by `CreditTransactionRepository` only while the payments run in test mode.
+- A pack's price is above zero (`Assert\Positive`): credits offered go through `grant()`, never a free pack.
 - `InsufficientCreditsException` leaves the EntityManager open: catch it and carry on, no reset needed.
 - Credits land on an account: a visitor may fill the basket, PaymentBundle asks them to sign in at the checkout (`CreditBasketItemProvider` implements `AccountBasketItemProviderInterface`). Never hide the "Buy" button from a visitor.
 - The price currency is PaymentBundle's `shop-currency`, falling back on `EUR` while it is not set.
@@ -54,7 +57,7 @@ From the console, `php bin/console c975l:purchasecredits:grant <email> <credits>
 
 ## Test mode
 
-`purchasecredits-test-mode` (bool, loaded by `c975l:config:load-all`) shows a warning banner above the packs: nothing is really sold. Admins flip it from a dashboard toggle tile (`PurchaseCreditsShortcutProvider`, route `management_purchasecredits_test_mode_toggle`). It is independent of PaymentBundle's own test mode, which is what actually keeps the charge fake.
+`purchasecredits-test-mode` (bool, loaded by `c975l:config:load-all`) shows a warning banner above the packs: nothing is really sold. Admins flip it from a dashboard toggle tile (`PurchaseCreditsShortcutProvider`, route `management_purchasecredits_test_mode_toggle`). It is independent of PaymentBundle's own test mode, which is what actually keeps the charge fake and flags the ledger lines as rehearsals.
 
 ## Terms of sales
 
