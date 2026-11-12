@@ -1,5 +1,12 @@
 # Changelog
 
+## v5.5.1
+
+CI replay runs the other PHP versions in parallel
+
+- `bin/ci.sh`: tests on the other PHP versions run in parallel with `composer qa`, each in its own copy, its log shown only on failure (12/11/2026)
+- `bin/ci.sh`: identical in every bundle, the versions printed are those of the binaries `composer qa` runs (12/11/2026)
+
 ## v5.5.0
 
 [BC-Break] Refunds take credits back, test baskets write rehearsal lines
