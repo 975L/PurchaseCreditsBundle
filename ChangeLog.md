@@ -1,5 +1,11 @@
 # Changelog
 
+## v5.6.1
+
+php-http/discovery plugin allowed
+
+- `php-http/discovery` plugin allowed in `allow-plugins`, so `composer qa` no longer stops on its prompt (21/11/2026)
+
 ## v5.6.0
 
 Credits read on the site's MCP endpoint
