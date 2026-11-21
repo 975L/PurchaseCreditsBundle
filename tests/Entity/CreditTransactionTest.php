@@ -12,6 +12,7 @@ namespace c975L\PurchaseCreditsBundle\Tests\Entity;
 
 use c975L\ConfigBundle\Contract\UserInterface;
 use c975L\PurchaseCreditsBundle\Entity\CreditTransaction;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 use PHPUnit\Framework\TestCase;
 
 class CreditTransactionTest extends TestCase
@@ -36,6 +37,17 @@ class CreditTransactionTest extends TestCase
         $date = new \DateTimeImmutable('2021-10-11 10:00:00');
 
         $this->assertSame($date, new CreditTransaction()->setCreatedAt($date)->getCreatedAt());
+    }
+
+    // The database holds one line per reference and account, so a purchase delivered twice cannot be credited twice whatever the code above it does
+    public function testAReferenceIsUniquePerAccount(): void
+    {
+        $constraints = array_map(
+            static fn (\ReflectionAttribute $attribute): UniqueConstraint => $attribute->newInstance(),
+            new \ReflectionClass(CreditTransaction::class)->getAttributes(UniqueConstraint::class)
+        );
+
+        $this->assertSame([['user_id', 'reference']], array_map(static fn (UniqueConstraint $constraint): ?array => $constraint->columns, $constraints));
     }
 
     public function testTheSettersAreFluent(): void

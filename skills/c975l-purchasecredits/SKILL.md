@@ -45,6 +45,7 @@ From the console, `php bin/console c975l:purchasecredits:grant <email> <credits>
 
 - The ledger is the only truth: a balance is the sum of `CreditTransaction` lines. Never add a `credits` column on the user.
 - A line is never edited nor deleted; a mistake is corrected by the reversing line (the back office only offers "new").
+- A `reference` is unique per account (`uniq_credit_transaction_user_reference`): never reuse one for a second line of the same account - a service sold twice to one account takes a reference per sale, or none (NULLs never collide).
 - `spend()` locks the user's row and reads the balance by a locking read (`sumForUserLocked()`) while it writes: never read `getBalance()` then write a line yourself.
 - A refund takes the credits back (`CreditBasketItemProvider::onBasketRefunded()` calls `takeBack()`), even below zero: the credits spent since stay owed.
 - A basket paid in PaymentBundle's test mode writes rehearsal lines (`grant()`'s `$testMode`, `CreditTransaction::isTestMode()`), counted by `CreditTransactionRepository` only while the payments run in test mode.

@@ -19,6 +19,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: CreditTransactionRepository::class)]
 #[ORM\Table(name: 'credit_transaction')]
 #[ORM\Index(name: 'idx_credit_transaction_user', columns: ['user_id'])]
+// One line per reference and account, the database saying so whatever the code reading hasReference() first: a purchase delivered twice is credited once. Lines without a reference are NULLs, which a unique index never compares
+#[ORM\UniqueConstraint(name: 'uniq_credit_transaction_user_reference', columns: ['user_id', 'reference'])]
 class CreditTransaction
 {
     #[ORM\Id]

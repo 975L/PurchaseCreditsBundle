@@ -1,5 +1,10 @@
 # UPGRADE
 
+## v5.6.x > v5.7.0
+
+- `credit_transaction` gains a unique index on `(user_id, reference)` (`CREATE UNIQUE INDEX uniq_credit_transaction_user_reference ON credit_transaction (user_id, reference)`, or the site's next Doctrine migration). Lines without a reference are not concerned. Before migrating, look for duplicates the index would refuse - a v4 ledger taken over by `order_id`, or a site that spent twice under one reference: `SELECT user_id, reference, COUNT(*) FROM credit_transaction WHERE reference IS NOT NULL GROUP BY user_id, reference HAVING COUNT(*) > 1`. Rename the extra ones, never delete them, the balance being their sum: `UPDATE credit_transaction t JOIN (SELECT user_id, reference, MIN(id) AS kept FROM credit_transaction WHERE reference IS NOT NULL GROUP BY user_id, reference HAVING COUNT(*) > 1) d ON d.user_id = t.user_id AND d.reference = t.reference AND t.id <> d.kept SET t.reference = CONCAT(LEFT(t.reference, 63 - LENGTH(t.id)), '-', t.id)`.
+- [BC-Break] A second `grant()`, `spend()` or `takeBack()` under a reference the account already holds throws `UniqueConstraintViolationException`: a service sold several times to one account gives each sale its own reference, or none.
+
 ## v5.4.x > v5.5.0
 
 - `CreditServiceInterface` gains `takeBack()` and a last `bool $testMode = false` argument on `grant()`: a class implementing the interface itself adds both.
@@ -26,7 +31,7 @@ The v4 balance stored on the user is what the site actually used; its `user_tran
 
 ```sql
 INSERT INTO credit_transaction (user_id, amount, description, reference, created_at)
-SELECT t.user_id, t.credits, LEFT(COALESCE(t.description, ''), 255), t.order_id, COALESCE(t.creation, NOW())
+SELECT t.user_id, t.credits, LEFT(COALESCE(t.description, ''), 255), IF(COUNT(*) OVER (PARTITION BY t.user_id, t.order_id) > 1, CONCAT(LEFT(t.order_id, 63 - LENGTH(t.id)), '-', t.id), t.order_id), COALESCE(t.creation, NOW())
 FROM old.user_transactions t
 JOIN user u ON u.id = t.user_id
 WHERE t.credits IS NOT NULL AND t.credits <> 0;

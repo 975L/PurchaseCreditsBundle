@@ -33,7 +33,7 @@ Add PurchaseCreditsBundle on top of the shared [CoreBundle](https://github.com/9
 - Credit packs — a number of credits at a price and a VAT rate — managed in the back office and sold through PaymentBundle's basket
 - A ledger per user: every movement (purchase, gift, spending) is a line, and the balance is their sum — never a counter stored beside them
 - A spending API, `CreditServiceInterface`, that locks the account while it reads the balance and writes, so two spendings at once cannot both pass on the same credits
-- A payment delivered twice credited once: a purchase line answers to the basket number and the pack
+- A payment delivered twice credited once: a purchase line answers to the basket number and the pack, a reference being unique per account in the database itself
 - The `purchasecredits_packs` block, placed on any composed page, with the reader's balance, each pack's price per credit and a "Buy" button per pack
 - The balance and the whole ledger in the member's data export (ConfigBundle's `/account/export`, through `AccountDataProviderInterface`)
 - The member's balance on their account page (ConfigBundle's `/account`, through `AccountSectionProviderInterface`), with its latest movements, the whole ledger at `/account/credits` a page at a time, and a button to the page where the site shows the packs (UiBundle's `block_page_url()`, SiteBundle finding the page carrying the `purchasecredits_packs` block)
@@ -70,7 +70,7 @@ php bin/console doctrine:migrations:diff
 php bin/console doctrine:migrations:migrate
 ```
 
-Two tables: `credit_pack` and `credit_transaction`, whose lines go with the account they belong to (`ON DELETE CASCADE`).
+Two tables: `credit_pack` and `credit_transaction`, whose lines go with the account they belong to (`ON DELETE CASCADE`). A `reference` is unique per account (`uniq_credit_transaction_user_reference`), lines without one being free of it. **Needs db update** from v5.6: see [UPGRADE.md](UPGRADE.md).
 
 ### Nothing to register by hand
 
@@ -116,7 +116,7 @@ $this->creditService->grant($user, 3, 'Welcome credits', 'signup');
 
 From the console, `php bin/console c975l:purchasecredits:grant <email> <credits> --description="Goodwill gesture"` writes the same line.
 
-`spend()` locks the user's row and reads the balance by a locking read (`sumForUserLocked()`, `SELECT ... FOR UPDATE`) while it writes the line, so two spendings at once cannot both pass on the same credits, even inside a transaction the caller opened earlier. `takeBack()` writes a reversing line whatever the balance, for something since undone. Never read `getBalance()` and then write a line yourself. `InsufficientCreditsException` is thrown once the transaction is over, so the EntityManager stays open and the caller carries on.
+`spend()` locks the user's row and reads the balance by a locking read (`sumForUserLocked()`, `SELECT ... FOR UPDATE`) while it writes the line, so two spendings at once cannot both pass on the same credits, even inside a transaction the caller opened earlier. `takeBack()` writes a reversing line whatever the balance, for something since undone. Never read `getBalance()` and then write a line yourself. A `reference` is unique per account: a second `grant()`, `spend()` or `takeBack()` under one the account already has throws Doctrine's `UniqueConstraintViolationException`, so a service the site sells more than once to the same account gives each sale a reference of its own, or none. `InsufficientCreditsException` is thrown once the transaction is over, so the EntityManager stays open and the caller carries on.
 
 The ledger is the only truth: never store a balance beside it. A line is never edited nor deleted — **Credits > Credit movements** only adds lines, a mistake being corrected by the reversing line.
 

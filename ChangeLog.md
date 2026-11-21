@@ -1,5 +1,11 @@
 # Changelog
 
+## v5.7.0
+
+Ledger reference unique per account
+
+- [BC-Break] Unique index on `credit_transaction (user_id, reference)`, so a purchase cannot be credited twice (21/11/2026) **Needs db update** see [UPGRADE.md](UPGRADE.md)
+
 ## v5.6.1
 
 php-http/discovery plugin allowed
