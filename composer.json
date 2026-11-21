@@ -18,7 +18,7 @@
     ],
     "require": {
         "php": ">=8.4",
-        "c975l/core-bundle": "^1.90",
+        "c975l/core-bundle": "^1.96",
         "c975l/payment-bundle": "^6.26",
         "doctrine/dbal": "^4.4",
         "doctrine/orm": "^3.7",

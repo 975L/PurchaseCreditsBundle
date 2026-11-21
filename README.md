@@ -26,7 +26,7 @@ Add PurchaseCreditsBundle on top of the shared [CoreBundle](https://github.com/9
 ## Contents
 
 - **Setup** — [requirements](#requirements) · [installation](#installation)
-- **Using it** — [selling credits](#selling-credits) · [spending credits](#spending-credits) · [twig](#twig) · [translations](#translations) · [what it does not contribute](#what-this-bundle-deliberately-does-not-contribute) · [AI agent skills](#ai-agent-skills) · [upgrading from v4](#upgrading-from-v4)
+- **Using it** — [selling credits](#selling-credits) · [spending credits](#spending-credits) · [twig](#twig) · [translations](#translations) · [what it does not contribute](#what-this-bundle-deliberately-does-not-contribute) · [MCP tools](#mcp-tools) · [AI agent skills](#ai-agent-skills) · [upgrading from v4](#upgrading-from-v4)
 
 ## Features
 
@@ -42,6 +42,7 @@ Add PurchaseCreditsBundle on top of the shared [CoreBundle](https://github.com/9
 - Its own `purchasecredits` translation catalogue, in English, French and Spanish
 - A test mode, `purchasecredits-test-mode`, switched from a dashboard tile (`ShortcutProviderInterface`): a banner above the packs says nothing is really sold
 - A demo dataset (UiBundle's `DemoFixtureProviderInterface`): three packs on sale, and no ledger — its lines name accounts, which are the site's own
+- Read-only tools for AI agents on the site's MCP endpoint — see [MCP tools](#mcp-tools)
 - **A skill for coding agents**, shipped in the package and read straight from `vendor/` — see [AI agent skills](#ai-agent-skills)
 
 ---
@@ -49,7 +50,7 @@ Add PurchaseCreditsBundle on top of the shared [CoreBundle](https://github.com/9
 ## Requirements
 
 - PHP >= 8.4, Symfony 8
-- [c975L/CoreBundle](https://github.com/975L/CoreBundle) — ConfigBundle and UiBundle in one package: user accounts, the dashboard, the blocks
+- [c975L/CoreBundle](https://github.com/975L/CoreBundle) ^1.96 — ConfigBundle and UiBundle in one package: user accounts, the dashboard, the blocks
 - [c975L/PaymentBundle](https://github.com/975L/PaymentBundle) — owns the Basket/checkout engine, installed and configured (payment provider keys, `shop-currency`)
 
 ---
@@ -154,6 +155,20 @@ ConfigBundle and UiBundle expose a long list of contribution points, and not bra
 | Sitemap, linkable routes | no public page of its own: the packs are a block placed on the site's pages |
 | Health check, status `extra` | nothing here calls for an action a maintainer takes |
 | Import / export | a ledger is not a catalogue |
+
+---
+
+## MCP tools
+
+The credits bring their tools to the site's MCP endpoint, `/api/mcp`, which c975l/core-bundle serves and opens (see its README, "Opening the site to AI agents"): `Mcp\PurchaseCreditsMcpProvider`, under the `credits` key of the agent tokens, for an account holding `site-role-admin` as on the back office. They only read: credits are granted, taken back and priced by a human.
+
+| Tool | Does |
+| --- | --- |
+| `credits_packs` | Every pack, on sale or not, in the back office's order: credits, price in cents with `shop-currency`, VAT rate, whether it is on sale |
+| `credits_transactions` | The latest ledger lines of every account, `limit` of them (50 at most), the latest first: date, signed amount, `credit` or `debit`, description, reference; the account is not named |
+| `credits_totals` | The credits granted, spent and still held over every account, with the number of ledger lines |
+
+The ledger lines and totals filter the rehearsal lines as the balance does: counted only while the payments run in test mode.
 
 ---
 

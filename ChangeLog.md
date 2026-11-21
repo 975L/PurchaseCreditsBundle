@@ -1,5 +1,12 @@
 # Changelog
 
+## v5.6.0
+
+Credits read on the site's MCP endpoint
+
+- `PurchaseCreditsMcpProvider`: an agent reads the credit packs, the latest ledger lines and the totals, with the rights of its token's account, nothing written (21/11/2026)
+- Requires `c975l/core-bundle` ^1.96 (21/11/2026)
+
 ## v5.5.1
 
 CI replay runs the other PHP versions in parallel

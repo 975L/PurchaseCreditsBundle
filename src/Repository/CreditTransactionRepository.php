@@ -74,6 +74,39 @@ class CreditTransactionRepository extends ServiceEntityRepository
         return null !== $this->findOneBy(['user' => $user, 'reference' => $reference]);
     }
 
+    // The latest movements of every account, the rehearsal lines filtered as for a balance
+    /** @return list<CreditTransaction> */
+    public function findLatest(int $limit): array
+    {
+        return $this->lines()
+            ->orderBy('t.createdAt', 'DESC')
+            ->addOrderBy('t.id', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    // The credits granted, spent and still held over every account, with the number of lines
+    /** @return array{granted: int, spent: int, balance: int, lines: int} */
+    public function totals(): array
+    {
+        $row = $this->lines()
+            ->select('COALESCE(SUM(CASE WHEN t.amount > 0 THEN t.amount ELSE 0 END), 0) AS granted')
+            ->addSelect('COALESCE(SUM(CASE WHEN t.amount < 0 THEN 0 - t.amount ELSE 0 END), 0) AS spent')
+            ->addSelect('COUNT(t.id) AS lineCount')
+            ->getQuery()
+            ->getSingleResult()
+        ;
+
+        return [
+            'granted' => (int) $row['granted'],
+            'spent' => (int) $row['spent'],
+            'balance' => (int) $row['granted'] - (int) $row['spent'],
+            'lines' => (int) $row['lineCount'],
+        ];
+    }
+
     // The sum of a user's lines, as a query
     private function sumQuery(UserInterface $user): Query
     {
@@ -83,13 +116,19 @@ class CreditTransactionRepository extends ServiceEntityRepository
         ;
     }
 
-    // The lines of a user, the rehearsal ones counted only while the payments run in test mode: the one filter the balance, the history and the export share, so they never disagree
+    // The lines of a user
     private function forUser(UserInterface $user): QueryBuilder
     {
-        $queryBuilder = $this->createQueryBuilder('t')
-            ->where('t.user = :user')
+        return $this->lines()
+            ->andWhere('t.user = :user')
             ->setParameter('user', $user)
         ;
+    }
+
+    // The lines, the rehearsal ones counted only while the payments run in test mode: the one filter the balance, the history, the export and the agents' reads share, so they never disagree
+    private function lines(): QueryBuilder
+    {
+        $queryBuilder = $this->createQueryBuilder('t');
 
         if (!$this->testMode->isEnabled()) {
             $queryBuilder->andWhere('t.testMode = false');
