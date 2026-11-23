@@ -1,32 +1,63 @@
 # PurchaseCreditsBundle
 
-Symfony bundle for prepaid credits on the c975L core — credit packs sold through the basket, a per-user ledger and a spending API the site's own services call. Checkout is delegated to [c975L/PaymentBundle](https://github.com/975L/PaymentBundle).
-
 [![GitHub](https://img.shields.io/github/license/975L/PurchaseCreditsBundle)](https://github.com/975L/PurchaseCreditsBundle/blob/main/LICENSE)
 [![Packagist Version](https://img.shields.io/packagist/v/c975l/purchasecredits-bundle)](https://packagist.org/packages/c975l/purchasecredits-bundle)
 [![PHP Version](https://img.shields.io/packagist/php-v/c975l/purchasecredits-bundle)](https://packagist.org/packages/c975l/purchasecredits-bundle)
 [![Codacy Grade](https://app.codacy.com/project/badge/Grade/566b313db5fe4cedbf11368f298f320a)](https://app.codacy.com/gh/975L/PurchaseCreditsBundle/dashboard)
 
+![PurchaseCreditsBundle](.github/images/PurchaseCreditsBundle.svg)
+
+**Credit packs your visitors buy, and a balance your site spends from.**
+
 **[Bundle page](https://bundles.975l.com/en/pages/purchasecredits-bundle) · [Tutorials](https://bundles.975l.com/en/tutoriels/purchasecredits-bundle) · [Block kinds](https://bundles.975l.com/en/pages/blocks/PurchaseCredits) · [Live demo](https://bundles.975l.com/demo/) · [Demo back-office](https://bundles.975l.com/demo/login)**
 
 > **BUNDLE UNDER DEVELOPMENT — USE AT YOUR OWN RISK**
+
+> **TL;DR** — PurchaseCreditsBundle sells packs of prepaid credits through PaymentBundle's basket and keeps each member's balance as a ledger of movements. What a credit buys is up to your site. It rests on CoreBundle and PaymentBundle: install it with Composer and run the migrations.
+
+## What you get
+
+- Credit packs priced and managed in the back office, sold through the basket
+- A ledger per member: every purchase, gift or spending is a line, the balance is their sum
+- Spending that cannot pass twice on the same credits
+- A payment delivered twice credited only once
+- A block showing the packs and the reader's balance, placed on any page
+- The balance and its latest movements on the member's account page, with the whole history
+- A test mode switched from the dashboard, and guided projects for the back office
+
+## Quick start
+
+```bash
+composer require c975l/purchasecredits-bundle
+```
+
+Then follow the full [installation](#installation) section below.
+
+## For AI agents
+
+- Skills, read straight from `vendor/c975l/purchasecredits-bundle/skills/` by a coding agent:
+  - [`c975l-purchasecredits`](skills/c975l-purchasecredits/SKILL.md) — selling packs, spending credits and reading the ledger
+- MCP: an AI agent reads the packs, the ledger and the totals through the site's MCP endpoint (CoreBundle's `/api/mcp`), with the rights of its token's account, nothing written: `credits_packs`, `credits_transactions`, `credits_totals` (see [MCP tools](#mcp-tools)).
+
+## Reference
+
+> **For developers** — Credit packs sold through PaymentBundle's basket, a ledger per user whose sum is the balance, and `CreditServiceInterface::spend()` for the site's services. One route (the member's credit history), one config key (its test mode), no email of its own; the balance, with a link to the packs, also shows on the member's account page.
+
+<details>
+<summary>Contents</summary>
+
+- **Setup** — [requirements](#requirements) · [installation](#installation)
+- **Using it** — [selling credits](#selling-credits) · [spending credits](#spending-credits) · [twig](#twig) · [translations](#translations) · [what it does not contribute](#what-this-bundle-deliberately-does-not-contribute) · [MCP tools](#mcp-tools) · [AI agent skills](#ai-agent-skills) · [upgrading from v4](#upgrading-from-v4)
+
+</details>
 
 ---
 
 ## Why PurchaseCreditsBundle
 
-![PurchaseCreditsBundle](.github/images/PurchaseCreditsBundle.svg)
-
 Add PurchaseCreditsBundle on top of the shared [CoreBundle](https://github.com/975L/CoreBundle) foundation to sell credits and let the site spend them. The purchase flows through [PaymentBundle](https://github.com/975L/PaymentBundle)'s Basket/checkout engine (`BasketItemProviderInterface`) instead of duplicating one; what a credit buys is the site's own business, decided by its own services.
 
 ---
-
-> **TL;DR** — Credit packs sold through PaymentBundle's basket, a ledger per user whose sum is the balance, and `CreditServiceInterface::spend()` for the site's services. One route (the member's credit history), one config key (its test mode), no email of its own; the balance, with a link to the packs, also shows on the member's account page.
-
-## Contents
-
-- **Setup** — [requirements](#requirements) · [installation](#installation)
-- **Using it** — [selling credits](#selling-credits) · [spending credits](#spending-credits) · [twig](#twig) · [translations](#translations) · [what it does not contribute](#what-this-bundle-deliberately-does-not-contribute) · [MCP tools](#mcp-tools) · [AI agent skills](#ai-agent-skills) · [upgrading from v4](#upgrading-from-v4)
 
 ## Features
 

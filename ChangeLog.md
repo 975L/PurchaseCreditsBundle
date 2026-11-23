@@ -1,5 +1,11 @@
 # Changelog
 
+## v5.7.1
+
+README opened on a short overview for humans
+
+- README opened on a short overview for humans, the reference folded below it (23/11/2026)
+
 ## v5.7.0
 
 Ledger reference unique per account
