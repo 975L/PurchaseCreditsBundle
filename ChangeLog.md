@@ -1,5 +1,13 @@
 # Changelog
 
+## v5.7.2
+
+README banner centred, showcase film shown
+
+- The contents of the README shown as a plain list again under its reference (23/11/2026)
+- README banner centred, the showcase film's poster under the links, opening its YouTube video (23/11/2026)
+- README support tip under its "Why" section (23/11/2026)
+
 ## v5.7.1
 
 README opened on a short overview for humans

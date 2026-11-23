@@ -5,11 +5,15 @@
 [![PHP Version](https://img.shields.io/packagist/php-v/c975l/purchasecredits-bundle)](https://packagist.org/packages/c975l/purchasecredits-bundle)
 [![Codacy Grade](https://app.codacy.com/project/badge/Grade/566b313db5fe4cedbf11368f298f320a)](https://app.codacy.com/gh/975L/PurchaseCreditsBundle/dashboard)
 
-![PurchaseCreditsBundle](.github/images/PurchaseCreditsBundle.svg)
+<p align="center"><img src=".github/images/PurchaseCreditsBundle.svg" alt="PurchaseCreditsBundle"></p>
 
 **Credit packs your visitors buy, and a balance your site spends from.**
 
 **[Bundle page](https://bundles.975l.com/en/pages/purchasecredits-bundle) · [Tutorials](https://bundles.975l.com/en/tutoriels/purchasecredits-bundle) · [Block kinds](https://bundles.975l.com/en/pages/blocks/PurchaseCredits) · [Live demo](https://bundles.975l.com/demo/) · [Demo back-office](https://bundles.975l.com/demo/login)**
+
+[![Watch the PurchaseCreditsBundle film](.github/images/showcase.jpg)](https://youtu.be/Yn3xPfxzH94)
+
+▶ [Watch the film](https://youtu.be/Yn3xPfxzH94) · [PurchaseCreditsBundle's page](https://bundles.975l.com/en/pages/purchasecredits-bundle)
 
 > **BUNDLE UNDER DEVELOPMENT — USE AT YOUR OWN RISK**
 
@@ -43,19 +47,24 @@ Then follow the full [installation](#installation) section below.
 
 > **For developers** — Credit packs sold through PaymentBundle's basket, a ledger per user whose sum is the balance, and `CreditServiceInterface::spend()` for the site's services. One route (the member's credit history), one config key (its test mode), no email of its own; the balance, with a link to the packs, also shows on the member's account page.
 
-<details>
-<summary>Contents</summary>
+### Contents
 
 - **Setup** — [requirements](#requirements) · [installation](#installation)
 - **Using it** — [selling credits](#selling-credits) · [spending credits](#spending-credits) · [twig](#twig) · [translations](#translations) · [what it does not contribute](#what-this-bundle-deliberately-does-not-contribute) · [MCP tools](#mcp-tools) · [AI agent skills](#ai-agent-skills) · [upgrading from v4](#upgrading-from-v4)
-
-</details>
 
 ---
 
 ## Why PurchaseCreditsBundle
 
 Add PurchaseCreditsBundle on top of the shared [CoreBundle](https://github.com/975L/CoreBundle) foundation to sell credits and let the site spend them. The purchase flows through [PaymentBundle](https://github.com/975L/PaymentBundle)'s Basket/checkout engine (`BasketItemProviderInterface`) instead of duplicating one; what a credit buys is the site's own business, decided by its own services.
+
+> [!TIP]
+> If this project **helps you save development time**:
+>
+> - [**star** it on GitHub](https://github.com/975L/PurchaseCreditsBundle) — helps others find it
+> - [**open an issue**](https://github.com/975L/PurchaseCreditsBundle/issues/new) to share how you use it — genuinely useful feedback
+>
+> And if you'd like to support the work directly, the **Sponsor** button at the top of the GitHub page is there for that.
 
 ---
 
